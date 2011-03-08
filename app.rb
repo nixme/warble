@@ -24,7 +24,7 @@ get '/' do
 end
 
 
-get '/screen.css' do
+get '/styles.css' do
   content_type 'text/css', :charset => 'utf-8'
-  sass :screen
+  sass :styles
 end
