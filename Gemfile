@@ -4,8 +4,7 @@ gem 'sinatra'
 
 # datastore
 gem 'redis'
-gem 'mongoid', '2.0.0.rc.7'
-gem 'bson_ext'
+gem 'ohm'
 
 # auth
 gem 'omniauth'
@@ -17,10 +16,4 @@ gem 'compass', '0.11.beta.2'          # css helpers and mixins
 gem 'fancy-buttons', '1.1.0.alpha.1'  # css3 buttons
 gem 'coffee-script'                   # js pre-processor
 
-# push
-gem 'juggernaut'
-
-
-group :development do
-  gem 'shotgun'
-end
+gem 'crypt19'
