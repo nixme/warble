@@ -26,16 +26,24 @@ end
 
 enable :logging
 enable :sessions
+enable :method_override
 enable :run
+
 
 class User < Ohm::Model
   attribute :google_id
+  attribute :token   # for authenticating websocket client since cookies won't pass
   attribute :first_name
   attribute :last_name
   attribute :email
-  attribute :profile_photo
+  attribute :domain
+  attribute :photo_url
+  attribute :pandora_username
+  attribute :pandora_password
 
   index :google_id
+
+  collection :songs, Song   # songs the user has added
 
   def validations
     assert_unique :google_id
@@ -49,8 +57,45 @@ class User < Ohm::Model
       User.create :first_name => user_info['first_name'],
                   :last_name  => user_info['last_name'],
                   :email      => user_info['email'],
+                  :domain     => user_info['domain'], # TODO: check if this is right
+                  :token      => generate_token_here, # TODO: generate token
                   :google_id  => access_token['uid']
     end
+  end
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def pandora_credentials?
+    pandora_username && pandora_password
+  end
+
+  def pandora_client
+    @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
+  end
+end
+
+class Song < Ohm::Model
+  attribute :source
+  attribute :title
+  attribute :artist
+  attribute :album
+  attribute :cover_url
+  attribute :url          # url if appropriate for source
+  attribute :local_path   # path if downloaded
+  reference :user, User   # user who added the song
+  set :lovers, User       # users who liked the song
+  set :haters, User       # users who disliked the song
+end
+
+class Jukebox < Ohm::Model
+  list      :played,   Song
+  reference :current,  Song
+  list      :upcoming, Song
+
+  def app    # TODO: hack for the meantime
+    self.first || self.create
   end
 end
 
@@ -63,11 +108,20 @@ end
 # setup google apps authentication for manymoon.com through omniauth
 use OmniAuth::Builder do
   provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :domain => 'manymoon.com'
+  provider :facebook   # TODO: what options here?
 end
 
-post '/auth/:name/callback' do
+post '/auth/google_apps/callback' do
   user = User.find_or_create_by_google_auth(request.env['omniauth.auth'])
   session[:user_id] = user.id
+  redirect to('/')
+end
+
+post '/auth/facebook/callback' do
+  # assume user is already logged-in. this is to get their profile photo only
+  @user = User[session[:user_id]]
+  @user.photo_url = request.env['omniauth.auth']['...somthing here...']  # TODO
+  @user.save
   redirect to('/')
 end
 
@@ -101,4 +155,68 @@ end
 
 get '/application.js' do
   coffee :application
+end
+
+
+# SERVER PLAYER
+
+# TODO: protect this somehow?
+get '/player' do
+  haml :player
+end
+
+post '/player/next' do
+  jukebox = Jukebox.app
+  next_song = jukebox.upcoming.shift  # TODO: this requires a save, right? transactional?
+  jukebox.played << jukebox.current
+  jukebox.current = next_song
+  jukebox.save
+  next_song.to_json
+end
+
+## websockets???? to push to the server player, skips, etc.
+
+
+# CLIENT VIEW
+
+before '/app/*' do
+  if authenticated?
+    @user = User[session[:user_id]]
+  else
+    halt 403, 'Not logged in'
+  end
+end
+
+post '/app/pandora/credentials' do
+  @user.pandora_username = params[:pandora_username]
+  @user.pandora_password = params[:pandora_password]
+  @user.save
+  200  # TODO: correct http code?
+end
+
+before '/app/pandora/stations*' do
+  halt 401 unless @user.pandora_credentials?  # TODO: correct http code?
+end
+
+get '/app/pandora/stations' do
+  @user.pandora_client.stations.to_json
+end
+
+get '/app/pandora/stations/:station_id/songs' do
+  station = @user.pandora_client.stations.first { |s| s.id == params[:station_id] }
+  station.next_playlist.to_json
+end
+
+get '/app/current' do
+  Jukebox.app.current.to_json
+end
+
+get '/app/queue' do
+end
+
+post '/app/queue' do
+  @song = Song.new(params[:song])
+  @song.user = @user
+  @song.save
+  @song
 end

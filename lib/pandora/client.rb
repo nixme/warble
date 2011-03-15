@@ -13,10 +13,11 @@ module Warble
 
       attr_accessor :stations
 
-      def initialize
+      def initialize(username, password)
         super(HOST, RPC_PATH)
         @encryptor = Blowfish.encryptor
         @decryptor = Blowfish.decryptor
+        login(username, password)
       end
 
       def decrypt(str)

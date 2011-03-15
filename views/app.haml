@@ -1,4 +1,11 @@
-Blah!
-= @user.first_name
+#profile
+  %img{ src: @user.photo_url }
+  #name= @user.name
+  #email= @user.email
+  #toolbar
+    %a#settings.pictos(href='#' title='Settings') y
+    %a#logout.pictos(href='/logout' title='Logout') -
 
-%a#logout(href='/logout') Logout
+#current
+#queue
+#search
