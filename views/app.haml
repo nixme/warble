@@ -1,11 +1,230 @@
-#profile
-  %img{ src: @user.photo_url }
-  #name= @user.name
-  #email= @user.email
-  #toolbar
-    %a#settings.pictos(href='#' title='Settings') y
-    %a#logout.pictos(href='/logout' title='Logout') -
+%header
+  #info
+    %h1
+      %span.pictos m
+      Warble
+    #profile
+      %span#name= @user.name
+      %span#toolbar
+        %a#settings(href='#' title='Settings') y
+        %a#logout(href='/logout' title='Logout') -
 
-#current
+  #controls
+    %a#play 4
+    %a#forward 7
+
+  #playing
+    %img#cover(src='/images/img.jpg')
+    #artist Passion Pit
+    #title Better Things
+
 #queue
-#search
+  %ul#songs
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+    %li
+      .submitter Gopal Patel
+      %img.cover(src='/images/img.jpg')
+      #title
+        %span.artist Passion Pit
+        \-
+        %span.title Better Things
+
+%footer
+  %a(href='#')
+    %span.pictos +
+    Add music
