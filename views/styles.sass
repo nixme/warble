@@ -1,21 +1,104 @@
 @import url(http://fonts.googleapis.com/css?family=Crushed)
 @import url(http://fonts.googleapis.com/css?family=Lato)
 @import url(/stylesheets/pictos.css)
+@import 'compass'
+@import 'compass/reset'
+
+// http://colorschemedesigner.com/#3v31Tw0vfw0w0
+$primary:   #09649F
+$secondary: #F9B800
+$tertiary:  #F94000
+
+$primary_dark:   #034067
+$secondary_dark: #A27800
+$tertiary_dark:  #A22900
+
+$primary_bright:   #3D96CF
+$secondary_bright: #FCCB3F
+$tertiary_bright:  #FC6F3F
+
+
+
+// general styles
 
 *
   color: #555
+  font-family: 'Helvetica Neue', Arial, sans-serif
+
+body
+  background: url(/images/primary_bg.png)
+  width: 960px
+  margin-left: auto
+  margin-right: auto
+
+button, .button
+  display: inline-block
+  position: relative
+  padding: 8px 14px 9px
+  color: white
+  background: #222
+  +border-radius(5px)
+  +box-shadow(rgba(0, 0, 0, 0.5) 0 1px 3px)
+  +text-shadow(rgba(0, 0, 0, 0.25) 0 -1px 1px)
+  border: 0
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25)
+  font-size: 14px
+  font-weight: bold
+  line-height: 1
+  cursor: pointer
+
+  &:hover
+    background: #111
+    color: white
+
+  &:active
+    top: 1px
 
 h1
   font-family: 'Crushed', Arial, serif
   font-size: 48px
   font-weight: normal
-  color: #b33
-  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3)
+  color: $tertiary
+  text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.4)
+  margin-bottom: 25px
 
   .pictos
-    color: #668
+    color: $primary
     font-size: 66px
 
 span.pictos
   font-family: 'Pictos'
   line-height: 0
+
+
+
+// login page
+
+#loginboxwrapper
+  position: fixed
+  top: 50%
+  left: 50%
+  width: 300px
+  height: 150px
+  margin: -95px 0 0 -150px
+
+  #loginbox
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
+    +border-radius(10px)
+    +linear-gradient(color-stops(white, #bbb))
+    top: 40%
+    padding: 30px
+    text-align: center
+
+    button
+      padding: 13px 14px 14px 51px
+      background: #333 url(/images/google_32.png) no-repeat 8px center
+      font-size: 20px
+      font-weight: 500
+
+      &:hover
+        background: #111 url(/images/google_32.png) no-repeat 8px center
+
+
+
+// app

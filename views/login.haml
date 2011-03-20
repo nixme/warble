@@ -1,7 +1,7 @@
-#loginbox
-  %h1
-    %span.pictos m
-    Warble
-  %form(action='/auth/google_apps' method='post')
-    %img(src='/images/google_64.png')
-    %input(type='submit' value='Sign in with Google Apps')
+#loginboxwrapper
+  #loginbox
+    %h1
+      %span.pictos m
+      Warble
+    %form(action='/auth/google_apps' method='post')
+      %button(type='submit') Login with Google
