@@ -1,3 +1,0 @@
-[submodule "vendor/juggernaut"]
-	path = vendor/juggernaut
-	url = https://github.com/sespindola/juggernaut.git
