@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Crushed)
-@import url(http://fonts.googleapis.com/css?family=Lato)
+@import url(http://fonts.googleapis.com/css?family=Lato:light,regular)
 @import url(/stylesheets/pictos.css)
 @import 'compass'
 @import 'compass/reset'
@@ -161,14 +161,17 @@ header
       margin-right: 20px
 
     #artist, #title
-      font-size: 20px
+      +text-shadow
+      font-weight: 300
 
     #artist
+      font-size: 30px
       color: white
-      padding: 12px 0 7px
+      padding: 5px 0
 
     #title
-      color: #aaa
+      font-size: 20px
+      color: #bbb
 
   #info
     float: right
@@ -200,16 +203,16 @@ header
 
 #queue
   +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
-  background: $secondary_b_brightest
   padding-top: 110px
 
   ul#songs
     padding: 0 0px
 
     li
+      +background-image(linear-gradient(white, #ddd))
       height: 52px
       font-family: "Lato", Arial, sans-serif
-      border-bottom: 1px dotted $secondary_a_dark
+      border-top: 1px solid $secondary_a_dark
 
       #title, .submitter
         padding: 20px
@@ -226,8 +229,9 @@ header
         margin: 10px
 
       #title
-        font-size: 16px
-        font-weight: 300
+        font-size: 15px
+        font-weight: 400
+        +text-shadow
         span.artist
           color: $secondary_b_dark
         span.title
@@ -235,10 +239,11 @@ header
 
 footer
   bottom: 0
-  width: 900px
-  margin: 0 auto
-  +background-image(linear-gradient($secondary_a, darken($secondary_a, 20%)))
+  left: 50%
+  width: 960px
+  margin-left: -480px
+  +background-image(linear-gradient($primary_dark, darken($primary_dark, 10%)))
   +box-shadow
   +border-top-radius(5px)
-  height: 25px
+  height: 30px
   text-align: center
