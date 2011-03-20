@@ -1,15 +1,7 @@
 $: << './lib'
 
-require 'sinatra'
-require 'omniauth'
 require 'openid/store/filesystem'
-require 'ohm'
-require 'coffee-script'
-require 'haml'
-require 'sass'
-require 'compass'
-require 'fancy-buttons'
-
+require 'securerandom'
 require 'pandora/client'
 
 configure do
@@ -36,7 +28,7 @@ class User < Ohm::Model
   attribute :first_name
   attribute :last_name
   attribute :email
-  attribute :domain
+  #attribute :domain
   attribute :photo_url
   attribute :pandora_username
   attribute :pandora_password
@@ -57,8 +49,7 @@ class User < Ohm::Model
       User.create :first_name => user_info['first_name'],
                   :last_name  => user_info['last_name'],
                   :email      => user_info['email'],
-                  :domain     => user_info['domain'], # TODO: check if this is right
-                  :token      => generate_token_here, # TODO: generate token
+                  :token      => SecureRandom.hex(10),
                   :google_id  => access_token['uid']
     end
   end
@@ -94,7 +85,7 @@ class Jukebox < Ohm::Model
   reference :current,  Song
   list      :upcoming, Song
 
-  def app    # TODO: hack for the meantime
+  def app    # TODO: hack for the meantime until multiple jukebox support
     self.first || self.create
   end
 end
