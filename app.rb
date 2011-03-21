@@ -69,6 +69,13 @@ class User < Ohm::Model
   def pandora_client
     @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
   end
+
+  def to_hash
+    super.merge :first_name => first_name,
+                :last_name  => last_name,
+                :email      => email,
+                :photo_url  => photo_url,
+  end
 end
 
 class Song < Ohm::Model
