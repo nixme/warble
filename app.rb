@@ -3,6 +3,9 @@ $: << './lib'
 require 'openid/store/filesystem'
 require 'securerandom'
 require 'pandora/client'
+require 'json'
+
+PUBSUB_CHANNEL = 'Jukebox:player'
 
 configure do
   Ohm.connect
@@ -14,12 +17,13 @@ configure do
 
   set :haml, :format => :html5
   set :sass, Compass.sass_engine_options
+
+  redis = Redis.new
 end
 
 enable :logging
 enable :sessions
 enable :method_override
-enable :run
 
 
 class User < Ohm::Model
@@ -78,6 +82,19 @@ class Song < Ohm::Model
   reference :user, User   # user who added the song
   set :lovers, User       # users who liked the song
   set :haters, User       # users who disliked the song
+
+  def to_hash
+    super.merge :source     => source,
+                :title      => title,
+                :artist     => artist,
+                :album      => album,
+                :cover_url  => cover_url,
+                :url        => url,
+                :local_path => local_path,
+                :user       => user,
+                :lovers     => lovers.all,
+                :haters     => haters.all
+  end
 end
 
 class Jukebox < Ohm::Model
@@ -85,8 +102,13 @@ class Jukebox < Ohm::Model
   reference :current,  Song
   list      :upcoming, Song
 
-  def app    # TODO: hack for the meantime until multiple jukebox support
-    self.first || self.create
+  def to_hash
+    super.merge :current  => current,
+                :upcoming => upcoming.all
+  end
+
+  def self.app    # TODO: hack for the meantime until multiple jukebox support
+    self.all.first || self.create
   end
 end
 
@@ -94,12 +116,16 @@ helpers do
   def authenticated?
     session[:user_id]
   end
+
+  def notify_clients
+    redis.publish(PUBSUB_CHANNEL, Jukebox.app.to_json)
+  end
 end
 
 # setup google apps authentication for manymoon.com through omniauth
 use OmniAuth::Builder do
   provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :domain => 'manymoon.com'
-  provider :facebook   # TODO: what options here?
+  provider :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET']
 end
 
 post '/auth/google_apps/callback' do
@@ -111,12 +137,12 @@ end
 post '/auth/facebook/callback' do
   # assume user is already logged-in. this is to get their profile photo only
   @user = User[session[:user_id]]
-  @user.photo_url = request.env['omniauth.auth']['...somthing here...']  # TODO
+  @user.photo_url = request.env['omniauth.auth']['user_info']['image']
   @user.save
   redirect to('/')
 end
 
-post '/auth/:name/failure' do
+get '/auth/failure' do
   'Uh oh... something went wrong authenticating you'
 end
 
@@ -158,14 +184,14 @@ end
 
 post '/player/next' do
   jukebox = Jukebox.app
-  next_song = jukebox.upcoming.shift  # TODO: this requires a save, right? transactional?
+  next_song = jukebox.upcoming.shift
   jukebox.played << jukebox.current
   jukebox.current = next_song
   jukebox.save
-  next_song.to_json
-end
 
-## websockets???? to push to the server player, skips, etc.
+  notify_clients
+  200
+end
 
 
 # CLIENT VIEW
@@ -199,15 +225,14 @@ get '/app/pandora/stations/:station_id/songs' do
 end
 
 get '/app/current' do
-  Jukebox.app.current.to_json
-end
-
-get '/app/queue' do
+  Jukebox.app.to_json
 end
 
 post '/app/queue' do
   @song = Song.new(params[:song])
   @song.user = @user
   @song.save
-  @song
+
+  notify_clients
+  200
 end
