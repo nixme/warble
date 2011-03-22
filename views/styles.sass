@@ -13,7 +13,7 @@ $complementary:        #39EB00
 $primary_dark:         #840012
 $secondary_a_dark:     #884100
 $secondary_b_dark:     #00606D
-$complementary_dark:   #A22900
+$complementary_dark:   #1E7D00
 
 $primary_bright:       #FE7588
 $secondary_a_bright:   #FFB775
@@ -202,25 +202,39 @@ header
           +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
 #panes, footer
-  width: 900px
+  width: 950px
   margin-left: auto
   margin-right: auto
 
 #panes
+  padding-top: 100px
+
+  #add
+    position: fixed
+    top: 120px
+    bottom: 20px
+    left: 50%
+    margin-left: -10px
+    padding: 25px
+    width: 425px
+    +background-image(linear-gradient(#bbb, #999))
+    +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+    border: 1px solid #ccc
+
   #queue
+    width: 475px
     +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
-    padding-top: 100px
 
     ul#songs
       padding: 0 0px
 
       li
-        +background-image(linear-gradient(white, #ddd))
+        +background-image(linear-gradient(#eee, #ccc))
         height: 52px
         font-family: "Lato", Arial, sans-serif
         border-top: 1px solid $secondary_a_dark
 
-        #title, .submitter
+        .name, .submitter
           padding: 20px
 
         .submitter
@@ -234,7 +248,7 @@ header
           width: 32px
           margin: 10px
 
-        #title
+        .name
           font-size: 15px
           font-weight: 400
           +text-shadow
@@ -242,14 +256,3 @@ header
             color: $secondary_b_dark
           span.title
             color: $primary_dark
-
-footer
-  bottom: 0
-  left: 50%
-  width: 960px
-  margin-left: -480px
-  +background-image(linear-gradient($primary_dark, darken($primary_dark, 10%)))
-  +box-shadow
-  +border-top-radius(5px)
-  height: 30px
-  text-align: center

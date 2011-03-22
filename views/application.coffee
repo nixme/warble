@@ -3,7 +3,6 @@ jQuery(document).ready ($) ->
   class Jukebox extends Backbone.Model
     url: '/app/current'
 
-  window.jukebox = new Jukebox
 
 
   class Song extends Backbone.Model
@@ -11,22 +10,19 @@ jQuery(document).ready ($) ->
 
   class SongList extends Backbone.Collection
     model: Song
+    url: '/app/queue'
 
-
-  window.queue = new SongList
 
   class SongView extends Backbone.View
     tagName:  'li'
     template: Handlebars.compile '''
-      <li>
-        <div class="submitter">{{user/name}}</div>
-        <img class="cover" src="{{photo_url}}" />
-        <div class="title">
-          <span class="artist">{{artist}}</span>
-          -
-          <span class="title">{{title}}</span>
-        </div>
-      </li>
+      <div class="submitter">{{user/name}}</div>
+      <img class="cover" src="{{cover_url}}" />
+      <div class="name">
+        <span class="artist">{{artist}}</span>
+        -
+        <span class="title">{{title}}</span>
+      </div>
     '''
 
     initialize: ->
@@ -37,16 +33,30 @@ jQuery(document).ready ($) ->
       $(@el).html @template(@model.toJSON())
       this
 
+  class QueueView extends Backbone.View
+    el: $('#queue ul')
 
-  class AppView extends Backbone.View
-    el: $('body')
+    initialize: ->
+      _.bindAll this, 'addSong', 'addAll'
+      queue.bind 'refresh', @addAll
+      queue.fetch()
+
+    addSong: (song) ->
+      view = new SongView { model: song }
+      $(@el).append view.render().el
+
+    addAll: ->
+      queue.each @addSong
+
+  class CurrentSongView extends Backbone.View
+    el: $('#playing')
 
     initialize: ->
       _.bindAll this, 'render'
       jukebox.bind 'change', @render
       jukebox.fetch()
 
-    currentSongTemplate: Handlebars.compile '''
+    template: Handlebars.compile '''
       {{#current}}
         <img id="cover" src="{{cover_url}}" />
         <div id="artist">{{artist}}</div>
@@ -55,10 +65,13 @@ jQuery(document).ready ($) ->
     '''
 
     render: ->
-      this.$('#playing').html @currentSongTemplate(jukebox.toJSON())
+      $(@el).html @template(jukebox.toJSON())
       this
 
-  window.app = new AppView
+  window.jukebox = new Jukebox
+  window.queue = new SongList
+  window.currentSongView = new CurrentSongView
+  window.queueView = new QueueView
 
 
   class PlayerView extends Backbone.View

@@ -234,6 +234,10 @@ get '/app/current' do
   Jukebox.app.to_json
 end
 
+get '/app/queue' do
+  Jukebox.app.upcoming.all.to_json
+end
+
 post '/app/queue' do
   @song = Song.new(params[:song])
   @song.user = @user
