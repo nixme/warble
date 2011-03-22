@@ -31,3 +31,7 @@ OS X 10.6 only. Install the following:
         npm install redis socket.io coffee-script
 
 8. rvm gemset...
+
+9. To run: start redis, `cofee server.coffee` and `thin start`
+
+10. Browse to <http://localhost:3000>
