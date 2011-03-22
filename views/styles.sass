@@ -33,6 +33,13 @@ body
   color: #555
   font-family: Lato, 'Helvetica Neue', Arial, sans-serif
 
+  #fade
+    position: fixed
+    top: 0
+    bottom: 0
+    width: 100%
+    +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
+
 a
   text-decoration: none
   +link-colors(#333, $primary, $primary, #333, #333)
