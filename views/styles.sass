@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Crushed)
-@import url(http://fonts.googleapis.com/css?family=Lato:light,regular)
+@import url(http://fonts.googleapis.com/css?family=Lato:light)
 @import url(/stylesheets/pictos.css)
 @import 'compass'
 @import 'compass/reset'
@@ -37,6 +37,16 @@ a
   text-decoration: none
   +link-colors(#333, $primary, $primary, #333, #333)
 
+input
+  padding: 10px
+  font-size: 14px
+  color: #555
+
+input, button, .button
+  border: 0
+  font-family: 'Helvetica Neue', Arial, sans-serif
+  font-weight: 500
+
 button, .button
   display: inline-block
   position: relative
@@ -46,11 +56,8 @@ button, .button
   +border-radius(5px)
   +box-shadow(rgba(0, 0, 0, 0.5) 0 1px 3px)
   +text-shadow(rgba(0, 0, 0, 0.25) 0 -1px 1px)
-  border: 0
   border-bottom: 1px solid rgba(0, 0, 0, 0.25)
-  font-family: 'Helvetica Neue', Arial, sans-serif
   font-size: 18px
-  font-weight: 500
   line-height: 1
   cursor: pointer
 
@@ -167,7 +174,6 @@ header
 
     #artist, #title
       +text-shadow
-      font-weight: 300
 
     #artist
       font-size: 30px
@@ -192,7 +198,6 @@ header
       text-align: right
       color: #ccc
       font-size: 14px
-      font-weight: normal
 
       #toolbar
         @extend span.pictos
@@ -220,6 +225,22 @@ header
     +background-image(linear-gradient(#bbb, #999))
     +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
     border: 1px solid #ccc
+
+    h2
+      font-size: 24px
+      color: #222
+      padding-bottom: 7px
+      border-bottom: 1px dotted #666
+
+    p
+      font-size: 14px
+      margin-top: 10px
+
+    form
+      margin-top: 10px
+
+      input
+        margin-right: 10px
 
   #queue
     width: 475px

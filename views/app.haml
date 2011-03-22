@@ -19,10 +19,15 @@
   #queue
     %ul#songs
   #add
-    %h2
-      %span.pictos +
-      Add music
-    %p
+    %h2 Pandora Credentials
+    %p Enter your pandora username and password so we can grab your stations.
+    %form#pandora_credentials
+      %input(type='text' name='pandora_username' placeholder='Email')
+      %input(type='password' name='pandora_password' placeholder='Password')
+      %button Save
 
-%footer
-  %a(href='#')
+    /
+      %h2
+        %span.pictos +
+        Add music
+        %p
