@@ -115,7 +115,8 @@ header, footer
   position: fixed
 
 header
-  +background-image(linear-gradient(#333, #111))
+  //+background-image(linear-gradient(#333, #111))
+  background: url(/images/bar_bg.png) repeat-x
   +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
   width: 100%
   height: 100px
@@ -136,6 +137,7 @@ header
 
   #controls
     width: 200px
+    padding-top: 3px   // helps vertically center
     line-height: 70px
 
     a
@@ -145,11 +147,14 @@ header
       width: 40px
       +background-image(linear-gradient(#ccc, #777))
       +border-radius(20px)
-      +box-shadow(rgba(255, 255, 255, 0.5) 0 0 3px)
+      +box-shadow(rgba(255, 255, 255, 0.4) 0 0 3px)
       text-align: center
+      letter-spacing: -3px   // helps center the icon
       line-height: 25px
       font-size: 25px
       color: #222
+      margin-right: 7px
+      cursor: pointer
 
   #playing
     width: 300px
@@ -196,46 +201,47 @@ header
         a
           +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
-#queue, footer
+#panes, footer
   width: 900px
   margin-left: auto
   margin-right: auto
 
-#queue
-  +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
-  padding-top: 110px
+#panes
+  #queue
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
+    padding-top: 100px
 
-  ul#songs
-    padding: 0 0px
+    ul#songs
+      padding: 0 0px
 
-    li
-      +background-image(linear-gradient(white, #ddd))
-      height: 52px
-      font-family: "Lato", Arial, sans-serif
-      border-top: 1px solid $secondary_a_dark
+      li
+        +background-image(linear-gradient(white, #ddd))
+        height: 52px
+        font-family: "Lato", Arial, sans-serif
+        border-top: 1px solid $secondary_a_dark
 
-      #title, .submitter
-        padding: 20px
+        #title, .submitter
+          padding: 20px
 
-      .submitter
-        float: right
-        font-size: 12px
-        text-transform: uppercase
+        .submitter
+          float: right
+          font-size: 12px
+          text-transform: uppercase
 
-      img.cover
-        float: left
-        height: 32px
-        width: 32px
-        margin: 10px
+        img.cover
+          float: left
+          height: 32px
+          width: 32px
+          margin: 10px
 
-      #title
-        font-size: 15px
-        font-weight: 400
-        +text-shadow
-        span.artist
-          color: $secondary_b_dark
-        span.title
-          color: $primary_dark
+        #title
+          font-size: 15px
+          font-weight: 400
+          +text-shadow
+          span.artist
+            color: $secondary_b_dark
+          span.title
+            color: $primary_dark
 
 footer
   bottom: 0

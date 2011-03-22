@@ -1,11 +1,19 @@
 jQuery(document).ready ($) ->
 
+  class Jukebox extends Backbone.Model
+    url: '/app/current'
+
+  window.jukebox = new Jukebox
+
+
   class Song extends Backbone.Model
 
 
   class SongList extends Backbone.Collection
     model: Song
 
+
+  window.queue = new SongList
 
   class SongView extends Backbone.View
     tagName:  'li'
@@ -30,35 +38,42 @@ jQuery(document).ready ($) ->
       this
 
 
-  class CurrentSongView extends Backbone.View
-    tagName: '#playing'
+  class AppView extends Backbone.View
+    el: $('body')
 
-    template: Handlebars.compile '''
-      <div id="playing">
+    initialize: ->
+      _.bindAll this, 'render'
+      jukebox.bind 'change', @render
+      jukebox.fetch()
+
+    currentSongTemplate: Handlebars.compile '''
+      {{#current}}
         <img id="cover" src="{{cover_url}}" />
         <div id="artist">{{artist}}</div>
         <div id="title">{{title}}</div>
-      </div>
+      {{/current}}
     '''
 
+    render: ->
+      this.$('#playing').html @currentSongTemplate(jukebox.toJSON())
+      this
 
-  class AppView extends Backbone.View
+  window.app = new AppView
 
 
   class PlayerView extends Backbone.View
-    tagName: '#embed'
+    el: $('#embed')
 
     template: Handlebars.compile '''
-      <div id="embed">
-        <audio src="{{url}}" />
-      </div>
+      <audio src="{{url}}" />
     '''
 
+    render: ->
+      $(@el).html @template(jukebox.toJSON())
 
-  socket = new io.Socket 'localhost:8080'
+  socket = new io.Socket 'localhost', { port: 8080 }
   socket.connect()
   #socket.on 'message'
-
   # TODO: reconnection on failure?
 
   $.mapKey 'enter', ->

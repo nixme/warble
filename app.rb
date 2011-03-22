@@ -110,8 +110,7 @@ class Jukebox < Ohm::Model
   list      :upcoming, Song
 
   def to_hash
-    super.merge :current  => current,
-                :upcoming => upcoming.all
+    super.merge :current => current
   end
 
   def self.app    # TODO: hack for the meantime until multiple jukebox support
