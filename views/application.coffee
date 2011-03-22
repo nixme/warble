@@ -19,8 +19,7 @@ jQuery(document).ready ($) ->
       <div class="submitter">{{user/name}}</div>
       <img class="cover" src="{{cover_url}}" />
       <div class="name">
-        <span class="artist">{{artist}}</span>
-        -
+        <span class="artist">{{artist}}</span>:
         <span class="title">{{title}}</span>
       </div>
     '''

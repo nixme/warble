@@ -164,7 +164,7 @@ header
       cursor: pointer
 
   #playing
-    width: 300px
+    width: 600px
 
     img#cover
       float: left
@@ -250,10 +250,10 @@ header
       padding: 0 0px
 
       li
-        +background-image(linear-gradient(#eee, #ccc))
+        +background-image(linear-gradient(#eee, #ddd))
         height: 52px
-        font-family: "Lato", Arial, sans-serif
-        border-top: 1px solid $secondary_a_dark
+        border-top: 1px solid white
+        border-bottom: 1px solid #ccc
 
         .name, .submitter
           padding: 20px
@@ -270,10 +270,9 @@ header
           margin: 10px
 
         .name
-          font-size: 15px
-          font-weight: 400
-          +text-shadow
+          font-size: 14px
+          color: $secondary_a_dark
           span.artist
-            color: $secondary_b_dark
+            text-transform: uppercase
           span.title
             color: $primary_dark
