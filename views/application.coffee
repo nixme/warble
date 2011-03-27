@@ -117,6 +117,7 @@ jQuery(document).ready ($) ->
         <input type="password" name="pandora_password" placeholder="Password" />
         <button>Save</button>
       </form>
+      <a href="#!/" class="back">Back to Services</a>
     '''
 
     render: ->
@@ -133,30 +134,24 @@ jQuery(document).ready ($) ->
 
     template: Handlebars.compile '''
       <h2>Your Pandora Stations</h2>
-      <ul id="#pandora_stations">
+      <ul id="pandora_stations">
       {{#stations}}
-        <li><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
+        <li class="station"><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
       {{^}}
         <li><em>You have no stations. Login to Pandora to add some.</em></li>
       {{/stations}}
       </ul>
+      <a href="#!/" class="button">Back to Services</a>
+      <a href="#!/" class="button" id="pandora_logout">Log out of Pandora</a>
     '''
 
     initialize: ->
-      _.bindAll this, 'render', 'addStation', 'addAll'
-      @collection.bind 'refresh', @addAll
+      _.bindAll this, 'render'
+      @collection.bind 'refresh', @render
 
     render: ->
       $(@el).html @template
         stations: @collection.toJSON()
-      addAll()
-
-    addStation: (station) ->
-      #view = new PandoraStationView { model: station }
-      #$(@el).append view.render().el
-
-    addAll: ->
-      @collection.each @addStation
 
 
   class WorkspaceController extends Backbone.Controller

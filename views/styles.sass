@@ -25,6 +25,8 @@ $secondary_b_brightest: #D0F6FB
 $secondary_b_darkest:  #123034
 
 
+$default-transition-duration: 0.2s
+
 
 // general styles
 
@@ -76,6 +78,7 @@ button, .button
   &:hover
     background: #111
     color: white
+    +transition
 
   &:active
     top: 1px
@@ -236,9 +239,9 @@ header
   z-index: -1
   top: 120px
   bottom: 20px
-  left: 670px
+  left: 750px
   padding: 25px
-  width: 425px
+  width: 350px
   background: #bbb url(/images/add_bg.png)
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
   border: 1px solid #ccc
@@ -251,20 +254,44 @@ header
 
   p
     font-size: 14px
+
+  p, ul, form
     margin-top: 10px
+
+  ul, form
+    margin-bottom: 15px
 
   form
-    margin-top: 10px
-
     input
       margin-right: 10px
+
+  ul#pandora_stations
+    li.station
+      font-size: 18px
+      padding: 10px
+
+      &:before
+        @extend span.pictos
+        margin-right: 7px
+        content: 'm'
+        color: darken($primary, 40%)
+        font-size: 18px
+
+  a.button
+    font-size: 14px
+    background: $secondary_a_dark
+    color: white
+    margin-right: 10px
+
+    &:hover
+      background: darken($secondary_a_dark, 10%)
 
 
 #queue
   padding-top: 100px
   margin-left: 200px
-  width: 475px
-  +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
+  width: 550px
+  +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
 
   ul#songs
     padding: 0 0px
