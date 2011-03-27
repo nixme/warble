@@ -9,6 +9,7 @@ jQuery(document).ready ($) ->
     initialize: ->
       @songs = new PandoraSongList
       @songs.url = "/app/pandora/stations/#{@id}/songs"
+      @songs.station = this
 
   class PandoraStationList extends Backbone.Collection
     model: PandoraStation
@@ -52,7 +53,6 @@ jQuery(document).ready ($) ->
     initialize: ->
       _.bindAll this, 'addSong', 'addAll'
       @collection.bind 'refresh', @addAll
-      @collection.fetch()
 
     addSong: (song) ->
       view = new SongView { model: song }
@@ -67,7 +67,6 @@ jQuery(document).ready ($) ->
     initialize: ->
       _.bindAll this, 'render'
       @model.bind 'change', @render
-      @model.fetch()
 
     template: Handlebars.compile '''
       {{#current}}
@@ -136,23 +135,64 @@ jQuery(document).ready ($) ->
       <h2>Your Pandora Stations</h2>
       <ul id="pandora_stations">
       {{#stations}}
-        <li class="station"><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
-      {{^}}
-        <li><em>You have no stations. Login to Pandora to add some.</em></li>
+        <li><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
       {{/stations}}
       </ul>
+      {{^stations}}
+      <p><em>You have no stations. Login to Pandora to add some.</em></p>
+      {{/stations}}
       <a href="#!/" class="button">Back to Services</a>
       <a href="#!/" class="button" id="pandora_logout">Log out of Pandora</a>
     '''
 
     initialize: ->
       _.bindAll this, 'render'
-      @collection.bind 'refresh', @render
 
     render: ->
       $(@el).html @template
         stations: @collection.toJSON()
 
+
+  class PandoraSongsView extends Backbone.View
+    el: $('#add')
+    template: Handlebars.compile '''
+      <h2>Station: {{name}}</h2>
+      <ul id="pandora_songs">
+      {{#songs}}
+        <li>
+          <label>
+            <input type="checkbox" data-id="{{id}}" />
+            <span class="artist">{{artist}}</span>:
+            <span class="title">{{title}}</span>
+          </label>
+        </li>
+      {{/songs}}
+      </ul>
+      <a href="#" class="button" id="add_songs">Add Selected Songs</a>
+      <a href="#" class="button" id="select_all">Select All</a>
+      <br />
+      <a href="#!/pandora/stations" class="button">Back to Stations</a>
+    '''
+
+    events:
+      'click #add_songs':  'addSongs'
+      'click #select_all': 'selectAll'
+
+    initialize: ->
+      _.bindAll this, 'render', 'addSongs', 'selectAll'
+
+    render: ->
+      $(@el).html @template
+        name: @model.get 'name'
+        songs: @model.songs.toJSON()
+
+    addSongs: (event) ->
+      _.each this.$('input:checkbox').map(-> @attr('data-id')).get(), (id) ->
+      event.preventDefault()
+
+    selectAll: (event) ->
+      this.$('input:checkbox').attr('checked', true)
+      event.preventDefault()
 
   class WorkspaceController extends Backbone.Controller
     routes:
@@ -162,6 +202,7 @@ jQuery(document).ready ($) ->
       '!/pandora/stations/:id' : 'pandoraSongs'
 
     initialize: ->
+      # initialize app components
       @jukebox = new Jukebox
       @queue = new SongList
       @stationList = new PandoraStationList
@@ -170,6 +211,11 @@ jQuery(document).ready ($) ->
       @serviceChooserView ||= new ServiceChooserView
       @pandoraAuthView ||= new PandoraCredentialsView
       @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
+
+      # load data
+      @jukebox.fetch()
+      @queue.fetch()
+      @stationList.fetch()
 
     index: ->
       window.location.hash = '!/'
@@ -183,8 +229,13 @@ jQuery(document).ready ($) ->
         error:   => @pandoraAuthView.render()
 
     pandoraSongs: (id) ->
-      @pandoraSongView = new PandoraSongView { model: @queue.get(id) }
-      @pandoraSongView.render()
+      station = @stationList.get(id)
+      if station?
+        station.songs.fetch
+          success: -> (new PandoraSongsView { model: station }).render()
+          error:   -> window.location.hash = '!/pandora/stations'
+      else  # redirect back to station list
+        window.location.hash = '!/pandora/stations'
 
 
   window.workspace = new WorkspaceController

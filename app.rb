@@ -212,6 +212,13 @@ post '/app/pandora/credentials' do
   200  # TODO: correct http code?
 end
 
+post '/app/pandora/credentials/clear' do
+  @user.pandora_username = nil
+  @user.pandora_password = nil
+  @user.save
+  200
+end
+
 before '/app/pandora/stations*' do
   halt 401 unless @user.pandora_credentials?  # TODO: correct http code?
 end

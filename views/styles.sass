@@ -246,6 +246,11 @@ header
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
   border: 1px solid #ccc
 
+  *:not(.button):not(h2)
+    font-family: 'Helvetica Neue', Arial, sans-serif
+    font-size: 13px
+    +text-shadow(#EEE, 0, 1px, 1px)
+
   h2
     font-size: 24px
     color: #222
@@ -266,21 +271,22 @@ header
       margin-right: 10px
 
   ul#pandora_stations
-    li.station
-      font-size: 18px
+    li
+      font-weight: bold
       padding: 10px
 
       &:before
         @extend span.pictos
         margin-right: 7px
         content: 'm'
-        color: darken($primary, 40%)
+        color: darken($secondary_a_dark, 15%)
         font-size: 18px
 
   a.button
-    font-size: 14px
+    font-size: 13px
     background: $secondary_a_dark
     color: white
+    padding: 5px 12px 6px
     margin-right: 10px
 
     &:hover
