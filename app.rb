@@ -67,7 +67,7 @@ class User < Ohm::Model
   end
 
   def pandora_client
-    @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
+    @pandora ||= Warble::Pandora::Client.new(pandora_username, pandora_password)
   end
 
   def to_hash
@@ -167,18 +167,13 @@ get '/' do
   end
 end
 
-get '/test' do
-  haml :test
-end
-
 get '/styles.css' do
   content_type 'text/css', :charset => 'utf-8'
   sass :styles
 end
 
-get '/application.js' do
-  coffee :application
-end
+get '/application.js' do coffee :application; end
+get '/player.js'      do coffee :player;      end
 
 
 # SERVER PLAYER
@@ -188,7 +183,7 @@ get '/player' do
   haml :player
 end
 
-post '/player/next' do
+post '/player/next' do   # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
   jukebox = Jukebox.app
   next_song = jukebox.upcoming.shift
   jukebox.played << jukebox.current
@@ -222,12 +217,29 @@ before '/app/pandora/stations*' do
 end
 
 get '/app/pandora/stations' do
-  @user.pandora_client.stations.to_json
+  @user.pandora_client.stations.map do |station|
+    {
+      name:  station.name,
+      id:    station.id,
+      token: station.token
+    }
+  end.to_json
 end
 
 get '/app/pandora/stations/:station_id/songs' do
   station = @user.pandora_client.stations.first { |s| s.id == params[:station_id] }
-  station.next_playlist.to_json
+  station.next_playlist.map do |song|
+    {
+      title:          song.title,
+      artist:         song.artist,
+      album:          song.album,
+      id:             song.music_id,
+      audio_url:      song.audio_url,
+      artist_id:      song.artist_id,
+      art_url:        song.art_url,
+      artist_art_url: song.artist_art_url
+    }
+  end.to_json
 end
 
 get '/app/current' do

@@ -1,12 +1,26 @@
+# TODO: move all these templates to their own views
+
 jQuery(document).ready ($) ->
 
   class Jukebox extends Backbone.Model
     url: '/app/current'
 
+  class PandoraStation extends Backbone.Model
+    initialize: ->
+      @songs = new PandoraSongList
+      @songs.url = "/app/pandora/stations/#{@id}/songs"
+
+  class PandoraStationList extends Backbone.Collection
+    model: PandoraStation
+    url: '/app/pandora/stations'
+
+  class PandoraSong extends Backbone.Model
+
+  class PandoraSongList extends Backbone.Collection
+    model: PandoraSong
 
 
   class Song extends Backbone.Model
-
 
   class SongList extends Backbone.Collection
     model: Song
@@ -37,23 +51,23 @@ jQuery(document).ready ($) ->
 
     initialize: ->
       _.bindAll this, 'addSong', 'addAll'
-      queue.bind 'refresh', @addAll
-      queue.fetch()
+      @collection.bind 'refresh', @addAll
+      @collection.fetch()
 
     addSong: (song) ->
       view = new SongView { model: song }
       $(@el).append view.render().el
 
     addAll: ->
-      queue.each @addSong
+      @collection.each @addSong
 
   class CurrentSongView extends Backbone.View
     el: $('#playing')
 
     initialize: ->
       _.bindAll this, 'render'
-      jukebox.bind 'change', @render
-      jukebox.fetch()
+      @model.bind 'change', @render
+      @model.fetch()
 
     template: Handlebars.compile '''
       {{#current}}
@@ -64,29 +78,131 @@ jQuery(document).ready ($) ->
     '''
 
     render: ->
-      $(@el).html @template(jukebox.toJSON())
+      $(@el).html @template(@model.toJSON())
       this
 
-  window.jukebox = new Jukebox
-  window.queue = new SongList
-  window.currentSongView = new CurrentSongView
-  window.queueView = new QueueView
+  class ServiceChooserView extends Backbone.View
+    el: $('#add')
 
-
-  class PlayerView extends Backbone.View
-    el: $('#embed')
+    initialize: ->
+      _.bindAll this, 'render'
 
     template: Handlebars.compile '''
-      <audio src="{{url}}" />
+      <h2>Services</h2>
+      <p>
+        <a href="#!/pandora/stations">
+          <img src="/images/pandora.png" />
+        </a>
+      </p>
     '''
 
     render: ->
-      $(@el).html @template(jukebox.toJSON())
+      $(@el).html @template
+      this
 
-  socket = new io.Socket 'localhost', { port: 8080 }
+  class PandoraCredentialsView extends Backbone.View
+    el: $('#add')
+
+    events:
+      'click button' : 'save'
+
+    initialize: ->
+      _.bindAll this, 'render', 'save'
+
+    template: Handlebars.compile '''
+      <h2>Pandora Credentials</h2>
+      <p>Enter your pandora username and password so we can grab your stations.</p>
+      <form id="pandora_credentials">
+        <input type="text" name="pandora_username" placeholder="Email" />
+        <input type="password" name="pandora_password" placeholder="Password" />
+        <button>Save</button>
+      </form>
+    '''
+
+    render: ->
+      $(@el).html @template
+      this
+
+    save: ->
+      $.post '/app/pandora/credentials', this.$('#pandora_credentials').serialize(), =>
+        window.location.hash = '!/pandora/stations'
+      false
+
+  class PandoraStationsView extends Backbone.View
+    el: $('#add')
+
+    template: Handlebars.compile '''
+      <h2>Your Pandora Stations</h2>
+      <ul id="#pandora_stations">
+      {{#stations}}
+        <li><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
+      {{^}}
+        <li><em>You have no stations. Login to Pandora to add some.</em></li>
+      {{/stations}}
+      </ul>
+    '''
+
+    initialize: ->
+      _.bindAll this, 'render', 'addStation', 'addAll'
+      @collection.bind 'refresh', @addAll
+
+    render: ->
+      $(@el).html @template
+        stations: @collection.toJSON()
+      addAll()
+
+    addStation: (station) ->
+      #view = new PandoraStationView { model: station }
+      #$(@el).append view.render().el
+
+    addAll: ->
+      @collection.each @addStation
+
+
+  class WorkspaceController extends Backbone.Controller
+    routes:
+      ''                       : 'index'
+      '!/'                     : 'home'
+      '!/pandora/stations'     : 'pandoraStations'
+      '!/pandora/stations/:id' : 'pandoraSongs'
+
+    initialize: ->
+      @jukebox = new Jukebox
+      @queue = new SongList
+      @stationList = new PandoraStationList
+      @currentSongView ||= new CurrentSongView { model: @jukebox }
+      @queueView ||= new QueueView { collection: @queue }
+      @serviceChooserView ||= new ServiceChooserView
+      @pandoraAuthView ||= new PandoraCredentialsView
+      @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
+
+    index: ->
+      window.location.hash = '!/'
+
+    home: ->
+      @serviceChooserView.render()
+
+    pandoraStations: ->
+      @stationList.fetch
+        success: => @pandoraStationsView.render()
+        error:   => @pandoraAuthView.render()
+
+    pandoraSongs: (id) ->
+      @pandoraSongView = new PandoraSongView { model: @queue.get(id) }
+      @pandoraSongView.render()
+
+
+  window.workspace = new WorkspaceController
+  Backbone.history.start()
+
+
+
+  socket = new io.Socket 'localhost',
+    port: 8080
+    rememberTransport: false
   socket.connect()
-  #socket.on 'message'
-  # TODO: reconnection on failure?
+  socket.on 'message', (data) ->
+    window.jukebox.refresh data
 
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search

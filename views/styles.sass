@@ -31,10 +31,13 @@ $secondary_b_darkest:  #123034
 body
   background: $secondary_b_darkest url(/images/primary_bg.png) fixed
   color: #555
+  position: relative
+  z-index: -9
   font-family: Lato, 'Helvetica Neue', Arial, sans-serif
 
   #fade
     position: fixed
+    z-index: -10
     top: 0
     bottom: 0
     width: 100%
@@ -90,12 +93,14 @@ span.pictos
 
 
 
-// login page
-
-#loginboxwrapper
+#loginboxwrapper, #player_wrapper
   position: fixed
   top: 50%
   left: 50%
+
+// login page
+
+#loginboxwrapper
   width: 300px
   height: 150px
   margin: -95px 0 0 -150px
@@ -122,6 +127,16 @@ span.pictos
       &:hover
         background: #111 url(/images/google_32.png) no-repeat 8px center
 
+
+// player
+#player_wrapper
+  width: 800px
+  height: 800px
+  margin: -400px 0 0 -400px
+
+  #player
+    #playing
+    #embed
 
 
 // app
@@ -150,7 +165,7 @@ header
     margin: 15px 20px
 
   #controls
-    width: 200px
+    width: 145px
     padding-top: 3px   // helps vertically center
     line-height: 70px
 
@@ -213,73 +228,69 @@ header
         a
           +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
-#panes, footer
-  width: 950px
-  margin-left: auto
-  margin-right: auto
 
-#panes
+#add
+  position: fixed
+  z-index: -1
+  top: 120px
+  bottom: 20px
+  left: 670px
+  padding: 25px
+  width: 425px
+  background: #bbb url(/images/add_bg.png)
+  +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+  border: 1px solid #ccc
+
+  h2
+    font-size: 24px
+    color: #222
+    padding-bottom: 7px
+    border-bottom: 1px dotted #666
+
+  p
+    font-size: 14px
+    margin-top: 10px
+
+  form
+    margin-top: 10px
+
+    input
+      margin-right: 10px
+
+
+#queue
   padding-top: 100px
+  margin-left: 200px
+  width: 475px
+  +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
 
-  #add
-    position: fixed
-    top: 120px
-    bottom: 20px
-    left: 50%
-    margin-left: -10px
-    padding: 25px
-    width: 425px
-    background: #bbb url(/images/add_bg.png)
-    +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
-    border: 1px solid #ccc
+  ul#songs
+    padding: 0 0px
 
-    h2
-      font-size: 24px
-      color: #222
-      padding-bottom: 7px
-      border-bottom: 1px dotted #666
+    li
+      +background-image(linear-gradient(#eee, #ddd))
+      height: 52px
+      border-top: 1px solid white
+      border-bottom: 1px solid #ccc
 
-    p
-      font-size: 14px
-      margin-top: 10px
+      .name, .submitter
+        padding: 20px
 
-    form
-      margin-top: 10px
+      .submitter
+        float: right
+        font-size: 12px
+        text-transform: uppercase
 
-      input
-        margin-right: 10px
+      img.cover
+        float: left
+        height: 32px
+        width: 32px
+        margin: 10px
 
-  #queue
-    width: 475px
-    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 5px)
-
-    ul#songs
-      padding: 0 0px
-
-      li
-        +background-image(linear-gradient(#eee, #ddd))
-        height: 52px
-        border-top: 1px solid white
-        border-bottom: 1px solid #ccc
-
-        .name, .submitter
-          padding: 20px
-
-        .submitter
-          float: right
-          font-size: 12px
+      .name
+        font-size: 14px
+        color: $secondary_a_dark
+        span.artist
           text-transform: uppercase
-
-        img.cover
-          float: left
-          height: 32px
-          width: 32px
-          margin: 10px
-
-        .name
-          font-size: 14px
-          color: $secondary_a_dark
-          span.artist
-            text-transform: uppercase
-          span.title
-            color: $primary_dark
+        span.title
+          color: $primary_dark

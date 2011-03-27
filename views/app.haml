@@ -15,19 +15,17 @@
 
   #playing
 
-#panes
-  #queue
-    %ul#songs
-  #add
-    %h2 Pandora Credentials
-    %p Enter your pandora username and password so we can grab your stations.
-    %form#pandora_credentials
-      %input(type='text' name='pandora_username' placeholder='Email')
-      %input(type='password' name='pandora_password' placeholder='Password')
-      %button Save
+#add
 
-    /
-      %h2
-        %span.pictos +
-        Add music
-        %p
+#queue
+  %ul#songs
+
+:javascript
+  WEB_SOCKET_SWF_LOCATION = 'http://localhost:8080/socket.io/lib/vendor/web-socket-js/WebSocketMain.swf';
+%script(src='//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js')
+%script(src='/javascripts/underscore.js')
+%script(src='/javascripts/backbone.js')
+%script(src='http://localhost:8080/socket.io/socket.io.js')
+%script(src='/javascripts/jquery.mapkey.js')
+%script(src='/javascripts/handlebars-0.9.0.pre.4.js')
+%script(src='/application.js')
