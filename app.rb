@@ -166,9 +166,6 @@ helpers do
   def authenticated?
     session[:user_id]
   end
-
-  def notify_clients
-  end
 end
 
 # setup google apps authentication for manymoon.com through omniauth
@@ -271,11 +268,12 @@ get '/app/pandora/stations' do
 end
 
 get '/app/pandora/stations/:station_id/songs' do
-  station = @user.pandora_client.stations.first { |s| s.id == params[:station_id] }
-  songs = station.next_playlist
+  station = @user.pandora_client.stations.find { |s| s.id == params[:station_id] }
+  puts station.name
+  songs = station.next_playlist + station.next_playlist   # grab 8 songs
 
   # add songs to db
-  station.next_playlist.map do |pandora_song|
+  songs.map do |pandora_song|
     song = Song.from_pandora_song(pandora_song)
     song.user = User[session[:user_id]]
     song.save

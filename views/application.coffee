@@ -31,7 +31,7 @@ jQuery(document).ready ($) ->
   class SongView extends Backbone.View
     tagName:  'li'
     template: Handlebars.compile '''
-      <div class="submitter">{{user/name}}</div>
+      <div class="submitter">{{user/first_name}} {{user/last_name}}</div>
       <img class="cover" src="{{cover_url}}" />
       <div class="name">
         <span class="artist">{{artist}}</span>:
@@ -98,7 +98,7 @@ jQuery(document).ready ($) ->
       _.bindAll this, 'render'
 
     template: Handlebars.compile '''
-      <h2>Services</h2>
+      <h2>Sources</h2>
       <p>
         <a href="#!/pandora/stations">
           <img src="/images/pandora.png" />
@@ -114,7 +114,8 @@ jQuery(document).ready ($) ->
     el: $('#add')
 
     events:
-      'click button' : 'save'
+      'click button'   : 'save'
+      'submit form'    : 'save'
 
     initialize: ->
       _.bindAll this, 'render', 'save'
@@ -127,7 +128,7 @@ jQuery(document).ready ($) ->
       </div>
       <h2>Pandora Credentials</h2>
       <p>Enter your pandora username and password so we can grab your stations.</p>
-      <form id="pandora_credentials">
+      <form id="pandora_credentials" action="/app/pandora/credentials" method="post">
         <input type="text" name="pandora_username" placeholder="Email" />
         <input type="password" name="pandora_password" placeholder="Password" />
         <button>Save</button>
@@ -136,11 +137,13 @@ jQuery(document).ready ($) ->
 
     render: ->
       $(@el).html @template
+      this.delegateEvents()   # TODO: all pre-initted views can't share #add is the issue here
       this
 
-    save: ->
+    save: (event) ->
       $.post '/app/pandora/credentials', this.$('#pandora_credentials').serialize(), =>
-        window.location.hash = '!/pandora/stations'
+        window.workspace.pandoraStations()
+      event.preventDefault()
       false
 
   class PandoraStationsView extends Backbone.View
@@ -161,15 +164,23 @@ jQuery(document).ready ($) ->
       {{^stations}}
       <p><em>You have no stations. Login to Pandora to add some.</em></p>
       {{/stations}}
-      <a href="#!/" class="button" id="pandora_logout">Log out of Pandora</a>
+      <a href="#" class="button" id="pandora_logout">Log out of Pandora</a>
     '''
 
+    events:
+      'click #pandora_logout': 'logout'
+
     initialize: ->
-      _.bindAll this, 'render'
+      _.bindAll this, 'render', 'logout'
 
     render: ->
       $(@el).html @template
         stations: @collection.toJSON()
+      this.delegateEvents()  # TODO: fix
+
+    logout: ->
+      $.post '/app/pandora/credentials/clear', ->
+        window.location.hash = "!/"
 
 
   class PandoraSongsView extends Backbone.View
@@ -216,6 +227,9 @@ jQuery(document).ready ($) ->
       song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
       $.post '/app/queue',
         'song_id[]': song_ids
+      @model.songs.fetch   # get more songs, TODO: this is whack, bind the collection properly
+        success: => this.render()
+        error:   -> window.location.hash = '!/pandora/stations'
       event.preventDefault()
 
     getMore: (event) ->
@@ -248,6 +262,22 @@ jQuery(document).ready ($) ->
       @queue.fetch()
       @stationList.fetch()
 
+      # player buttons. TODO: move to view class
+      $('a#forward').click (event) ->
+        $.post '/player/skip'
+        event.preventDefault()
+
+      # notification button. TODO: move to a view class
+      @notify = (window.webkitNotifications?.checkPermission() == 0)
+      $('a#settings').click (event) =>
+        if window.webkitNotifications?
+          if window.webkitNotifications.checkPermission() == 0
+            @notify = true
+          else
+            window.webkitNotifications.requestPermission =>
+              @notify = (window.webkitNotifications.checkPermission() == 0)
+        event.preventDefault()
+
     skip: (jukebox) ->
       @jukebox.set jukebox              # update current song
       promoted_song = @queue.at(0)
@@ -255,6 +285,13 @@ jQuery(document).ready ($) ->
         @queue.remove(promoted_song)    # remove top song in queue
       else
         @queue.fetch()                  # refetch in case of error
+
+      if @notify
+        song = jukebox.current
+        notification = window.webkitNotifications.createNotification(song.cover_url, song.artist, song.title)
+        notification.ondisplay = ->
+          setTimeout (-> notification.cancel()), 3000
+        notification.show()
 
     index: ->
       window.location.hash = '!/'

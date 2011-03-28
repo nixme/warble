@@ -164,7 +164,7 @@ span.pictos
     #artist
       font-size: 48px
       color: #444
-      padding: 5px 0
+      padding: 10px 0
 
     #title
       font-size: 36px
@@ -218,6 +218,12 @@ header
       margin-right: 7px
       cursor: pointer
 
+      &:hover
+        +background-image(linear-gradient($primary, darken($primary, 20%)))
+        +box-shadow(rgba(0, 0, 0, 0.4) 0 0 3px)
+        +transition
+        color: white
+
   #playing
     width: 600px
 
@@ -226,6 +232,7 @@ header
       height: 64px
       width: 64px
       margin-right: 20px
+      border: 1px solid #444
 
     #artist, #title
       +text-shadow(#000 1px 1px 1px)
@@ -281,6 +288,8 @@ header
     +text-shadow(#DDD 0 1px 1px)
 
   .breadcrumbs
+    padding-bottom: 5px
+    border-bottom: 1px dotted #666
     a
       color: #333
     .current
@@ -291,7 +300,6 @@ header
     font-size: 24px
     color: #111
     padding-bottom: 7px
-    border-bottom: 1px dotted #666
     +text-shadow(#CCC 0 1px 1px)
 
   p
@@ -361,6 +369,8 @@ ul#songs
       text-transform: uppercase
 
     img.cover
+      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+      border: 1px solid #EEE
       float: left
       height: 32px
       width: 32px
