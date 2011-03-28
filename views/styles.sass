@@ -87,7 +87,7 @@ h1
   font-family: 'Crushed', Arial, serif
   font-weight: normal
   color: $secondary_a
-  text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.4)
+  +text-shadow(rgba(0, 0, 0, 0.4) 0px 1px 5px)
 
   .pictos
     color: $primary
@@ -98,7 +98,7 @@ span.pictos
 
 
 
-#loginboxwrapper, #player_wrapper
+#loginboxwrapper
   position: fixed
   top: 50%
   left: 50%
@@ -107,8 +107,7 @@ span.pictos
 
 #loginboxwrapper
   width: 300px
-  height: 150px
-  margin: -95px 0 0 -150px
+  margin: 0 0 0 -150px
 
   #loginbox
     +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
@@ -135,13 +134,42 @@ span.pictos
 
 // player
 #player_wrapper
+  position: fixed   // with body relative, this is a pain
+  top: 50%
+  left: 50%
   width: 800px
-  height: 800px
-  margin: -400px 0 0 -400px
+  margin-top: -135px
+  margin-left: -400px
 
   #player
-    #playing
-    #embed
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
+    +border-radius(10px)
+    +background-image(linear-gradient(white, #bbb))
+    height: 120px
+    padding: 75px
+
+    &:after
+      content: ' '
+      clear: both
+
+    img#cover
+      float: left
+      height: 120px
+      width: 120px
+      margin-right: 20px
+
+    #artist, #title
+      +text-shadow(#FFF 1px 1px 1px)
+
+    #artist
+      font-size: 48px
+      color: #444
+      padding: 5px 0
+
+    #title
+      font-size: 36px
+      color: #555
+
 
 
 // app
@@ -200,7 +228,7 @@ header
       margin-right: 20px
 
     #artist, #title
-      +text-shadow
+      +text-shadow(#000 1px 1px 1px)
 
     #artist
       font-size: 30px
@@ -236,12 +264,13 @@ header
 
 #add
   position: fixed
-  z-index: -1
-  top: 120px
+  z-index: -2
+  top: 100px
   bottom: 20px
   left: 750px
   padding: 25px
   width: 350px
+  overflow: auto
   background: #bbb url(/images/add_bg.png)
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
   border: 1px solid #ccc
@@ -249,13 +278,21 @@ header
   *:not(.button):not(h2)
     font-family: 'Helvetica Neue', Arial, sans-serif
     font-size: 13px
-    +text-shadow(#EEE, 0, 1px, 1px)
+    +text-shadow(#DDD 0 1px 1px)
+
+  .breadcrumbs
+    a
+      color: #333
+    .current
+      font-weight: bold
+      color: $secondary_b_darkest
 
   h2
     font-size: 24px
-    color: #222
+    color: #111
     padding-bottom: 7px
     border-bottom: 1px dotted #666
+    +text-shadow(#CCC 0 1px 1px)
 
   p
     font-size: 14px
@@ -263,7 +300,7 @@ header
   p, ul, form
     margin-top: 10px
 
-  ul, form
+  ul, form, .breadcrumbs
     margin-bottom: 15px
 
   form
@@ -293,39 +330,54 @@ header
       background: darken($secondary_a_dark, 10%)
 
 
-#queue
-  padding-top: 100px
-  margin-left: 200px
+#queue, ul#songs
   width: 550px
+
+#queue
+  position: fixed
+  top: 100px
+  left: 200px
+  bottom: 0
+  background: #DDD
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
+  z-index: -1   // below ul#songs, above #add
 
-  ul#songs
-    padding: 0 0px
+ul#songs
+  margin-left: 200px
+  padding: 100px 0 0 0
 
-    li
-      +background-image(linear-gradient(#eee, #ddd))
-      height: 52px
-      border-top: 1px solid white
-      border-bottom: 1px solid #ccc
+  li
+    +background-image(linear-gradient(#eee, #ddd))
+    height: 52px
+    border-top: 1px solid white
+    border-bottom: 1px solid #ccc
 
-      .name, .submitter
-        padding: 20px
+    .name, .submitter
+      padding: 20px
 
-      .submitter
-        float: right
-        font-size: 12px
+    .submitter
+      float: right
+      font-size: 12px
+      text-transform: uppercase
+
+    img.cover
+      float: left
+      height: 32px
+      width: 32px
+      margin: 10px
+
+    .name
+      font-size: 14px
+      color: $secondary_a_dark
+      span.artist
         text-transform: uppercase
+      span.title
+        color: $primary_dark
 
-      img.cover
-        float: left
-        height: 32px
-        width: 32px
-        margin: 10px
-
-      .name
-        font-size: 14px
-        color: $secondary_a_dark
-        span.artist
-          text-transform: uppercase
-        span.title
-          color: $primary_dark
+  &:after
+    // TODO: helvetica neue with text-shadow here
+    content: 'Add more songs\00a0\00a0\2192'
+    display: block
+    border-top: 1px solid white
+    padding: 20px 0
+    text-align: center

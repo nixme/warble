@@ -6,6 +6,7 @@ require 'pandora/client'
 require 'json'
 
 PUBSUB_CHANNEL = 'Jukebox:player'
+$redis = Redis.new
 
 configure do
   Ohm.connect
@@ -17,8 +18,6 @@ configure do
 
   set :haml, :format => :html5
   set :sass, Compass.sass_engine_options
-
-  redis = Redis.new
 end
 
 enable :logging
@@ -86,9 +85,24 @@ class Song < Ohm::Model
   attribute :cover_url
   attribute :url          # url if appropriate for source
   attribute :local_path   # path if downloaded
+  attribute :pandora_id   # id for pandora songs
   reference :user, User   # user who added the song
   set :lovers, User       # users who liked the song
   set :haters, User       # users who disliked the song
+
+  index :pandora_id
+
+  def self.from_pandora_song(pandora_song)
+    Song.new({
+      source:     'pandora',
+      title:      pandora_song.title,
+      artist:     pandora_song.artist,
+      album:      pandora_song.album,
+      cover_url:  pandora_song.art_url,
+      url:        pandora_song.audio_url,
+      pandora_id: pandora_song.music_id
+    })
+  end
 
   def to_hash
     super.merge :source     => source,
@@ -98,6 +112,7 @@ class Song < Ohm::Model
                 :cover_url  => cover_url,
                 :url        => url,
                 :local_path => local_path,
+                :pandora_id => pandora_id,
                 :user       => user,
                 :lovers     => lovers.all,
                 :haters     => haters.all
@@ -116,6 +131,35 @@ class Jukebox < Ohm::Model
   def self.app    # TODO: hack for the meantime until multiple jukebox support
     self.all.first || self.create
   end
+
+  def skip!
+    if upcoming.empty?
+      self.current = nil
+    else
+      played << self.current if self.current   # add current song to played list
+      self.current = upcoming.shift            # pull next song from queue
+    end
+
+    save
+
+    # notify clients
+    $redis.publish(PUBSUB_CHANNEL, {
+      event:   'skip',
+      jukebox: Jukebox.app   # TODO: send removing song and client should validate, if wrong, refetch whole queue
+    }.to_json)
+  end
+
+  def add_song(song)                  # TODO: ensure transactional
+    upcoming << song                  # add song to end of queue
+
+    # notify clients of new song
+    $redis.publish(PUBSUB_CHANNEL, {
+      event: 'add',
+      song:   song
+    }.to_json)
+
+    skip! if self.current.nil?        # pick next song if nothing playing
+  end
 end
 
 helpers do
@@ -124,7 +168,6 @@ helpers do
   end
 
   def notify_clients
-    redis.publish(PUBSUB_CHANNEL, Jukebox.app.to_json)
   end
 end
 
@@ -183,14 +226,8 @@ get '/player' do
   haml :player
 end
 
-post '/player/next' do   # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
-  jukebox = Jukebox.app
-  next_song = jukebox.upcoming.shift
-  jukebox.played << jukebox.current
-  jukebox.current = next_song
-  jukebox.save
-
-  notify_clients
+post '/player/skip' do   # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
+  Jukebox.app.skip!
   200
 end
 
@@ -235,22 +272,23 @@ end
 
 get '/app/pandora/stations/:station_id/songs' do
   station = @user.pandora_client.stations.first { |s| s.id == params[:station_id] }
-  station.next_playlist.map do |song|
-    {
-      title:          song.title,
-      artist:         song.artist,
-      album:          song.album,
-      id:             song.music_id,
-      audio_url:      song.audio_url,
-      artist_id:      song.artist_id,
-      art_url:        song.art_url,
-      artist_art_url: song.artist_art_url
-    }
+  songs = station.next_playlist
+
+  # add songs to db
+  station.next_playlist.map do |pandora_song|
+    song = Song.from_pandora_song(pandora_song)
+    song.user = User[session[:user_id]]
+    song.save
+    song
   end.to_json
 end
 
-get '/app/current' do
+get '/app/jukebox' do   # TODO: remove this once application.coffee refactored
   Jukebox.app.to_json
+end
+
+get '/app/current' do
+  Jukebox.app.current.to_json
 end
 
 get '/app/queue' do
@@ -258,10 +296,14 @@ get '/app/queue' do
 end
 
 post '/app/queue' do
-  @song = Song.new(params[:song])
-  @song.user = @user
-  @song.save
-
-  notify_clients
-  200
+  # TODO: allow inserting at top of queue
+  song_ids = params[:song_id]
+  if params[:song_id]
+    song_ids.each do |song_id|
+      Jukebox.app.add_song(Song[song_id])
+    end
+    200
+  else
+    500
+  end
 end

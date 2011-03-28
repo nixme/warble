@@ -3,7 +3,7 @@
 jQuery(document).ready ($) ->
 
   class Jukebox extends Backbone.Model
-    url: '/app/current'
+    url: '/app/jukebox'
 
   class PandoraStation extends Backbone.Model
     initialize: ->
@@ -40,19 +40,25 @@ jQuery(document).ready ($) ->
     '''
 
     initialize: ->
-      _.bindAll this, 'render'
+      _.bindAll this, 'render', 'remove'
       @model.bind 'change', @render
+      @model.view = this
 
     render: ->
       $(@el).html @template(@model.toJSON())
       this
 
+    remove: ->
+      $(@el).remove()
+
   class QueueView extends Backbone.View
-    el: $('#queue ul')
+    el: $('ul#songs')
 
     initialize: ->
-      _.bindAll this, 'addSong', 'addAll'
+      _.bindAll this, 'addSong', 'addAll', 'removeSong'
       @collection.bind 'refresh', @addAll
+      @collection.bind 'add', @addSong
+      @collection.bind 'remove', @removeSong
 
     addSong: (song) ->
       view = new SongView { model: song }
@@ -60,6 +66,9 @@ jQuery(document).ready ($) ->
 
     addAll: ->
       @collection.each @addSong
+
+    removeSong: (song) ->
+      song.view.remove()
 
   class CurrentSongView extends Backbone.View
     el: $('#playing')
@@ -73,6 +82,8 @@ jQuery(document).ready ($) ->
         <img id="cover" src="{{cover_url}}" />
         <div id="artist">{{artist}}</div>
         <div id="title">{{title}}</div>
+      {{^}}
+        <div id="artist">No songs in queue</div>
       {{/current}}
     '''
 
@@ -109,6 +120,11 @@ jQuery(document).ready ($) ->
       _.bindAll this, 'render', 'save'
 
     template: Handlebars.compile '''
+      <div class="breadcrumbs">
+        <a href="#!/">Sources</a>
+        &raquo;
+        <span class="current">Pandora</span>
+      </div>
       <h2>Pandora Credentials</h2>
       <p>Enter your pandora username and password so we can grab your stations.</p>
       <form id="pandora_credentials">
@@ -116,7 +132,6 @@ jQuery(document).ready ($) ->
         <input type="password" name="pandora_password" placeholder="Password" />
         <button>Save</button>
       </form>
-      <a href="#!/" class="back">Back to Services</a>
     '''
 
     render: ->
@@ -132,6 +147,11 @@ jQuery(document).ready ($) ->
     el: $('#add')
 
     template: Handlebars.compile '''
+      <div class="breadcrumbs">
+        <a href="#!/">Sources</a>
+        &raquo;
+        <span class="current">Pandora</span>
+      </div>
       <h2>Your Pandora Stations</h2>
       <ul id="pandora_stations">
       {{#stations}}
@@ -141,7 +161,6 @@ jQuery(document).ready ($) ->
       {{^stations}}
       <p><em>You have no stations. Login to Pandora to add some.</em></p>
       {{/stations}}
-      <a href="#!/" class="button">Back to Services</a>
       <a href="#!/" class="button" id="pandora_logout">Log out of Pandora</a>
     '''
 
@@ -156,6 +175,13 @@ jQuery(document).ready ($) ->
   class PandoraSongsView extends Backbone.View
     el: $('#add')
     template: Handlebars.compile '''
+      <div class="breadcrumbs">
+        <a href="#!/">Sources</a>
+        &raquo;
+        <a href="#!/pandora/stations">Pandora</a>
+        &raquo;
+        <span class="current">{{name}}</span>
+      </div>
       <h2>Station: {{name}}</h2>
       <ul id="pandora_songs">
       {{#songs}}
@@ -169,17 +195,17 @@ jQuery(document).ready ($) ->
       {{/songs}}
       </ul>
       <a href="#" class="button" id="add_songs">Add Selected Songs</a>
+      <a href="#" class="button" id="get_more" style="display:none">Get More Songs</a>
       <a href="#" class="button" id="select_all">Select All</a>
-      <br />
-      <a href="#!/pandora/stations" class="button">Back to Stations</a>
     '''
 
     events:
       'click #add_songs':  'addSongs'
+      'click #get_more':   'getMore'
       'click #select_all': 'selectAll'
 
     initialize: ->
-      _.bindAll this, 'render', 'addSongs', 'selectAll'
+      _.bindAll this, 'render', 'addSongs', 'getMore', 'selectAll'
 
     render: ->
       $(@el).html @template
@@ -187,7 +213,12 @@ jQuery(document).ready ($) ->
         songs: @model.songs.toJSON()
 
     addSongs: (event) ->
-      _.each this.$('input:checkbox').map(-> @attr('data-id')).get(), (id) ->
+      song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
+      $.post '/app/queue',
+        'song_id[]': song_ids
+      event.preventDefault()
+
+    getMore: (event) ->
       event.preventDefault()
 
     selectAll: (event) ->
@@ -203,7 +234,7 @@ jQuery(document).ready ($) ->
 
     initialize: ->
       # initialize app components
-      @jukebox = new Jukebox
+      @jukebox = new Jukebox   # TODO: switch to a single song model instead of full jukebox state
       @queue = new SongList
       @stationList = new PandoraStationList
       @currentSongView ||= new CurrentSongView { model: @jukebox }
@@ -216,6 +247,14 @@ jQuery(document).ready ($) ->
       @jukebox.fetch()
       @queue.fetch()
       @stationList.fetch()
+
+    skip: (jukebox) ->
+      @jukebox.set jukebox              # update current song
+      promoted_song = @queue.at(0)
+      if promoted_song?
+        @queue.remove(promoted_song)    # remove top song in queue
+      else
+        @queue.fetch()                  # refetch in case of error
 
     index: ->
       window.location.hash = '!/'
@@ -230,6 +269,10 @@ jQuery(document).ready ($) ->
 
     pandoraSongs: (id) ->
       station = @stationList.get(id)
+      if not station?   # can happen on page load directly to here
+        @stationList.fetch()
+        station = @stationList.get(id)
+
       if station?
         station.songs.fetch
           success: -> (new PandoraSongsView { model: station }).render()
@@ -247,8 +290,13 @@ jQuery(document).ready ($) ->
     port: 8080
     rememberTransport: false
   socket.connect()
-  socket.on 'message', (data) ->
-    window.jukebox.refresh data
+  socket.on 'message', (raw_data) ->
+    data = JSON.parse(raw_data)
+    switch data.event
+      when 'add'
+        window.workspace.queue.add data.song
+      when 'skip'
+        window.workspace.skip data.jukebox
 
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
