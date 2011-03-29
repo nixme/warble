@@ -323,7 +323,7 @@ jQuery(document).ready ($) ->
 
 
 
-  socket = new io.Socket 'localhost',
+  socket = new io.Socket null,
     port: 8080
     rememberTransport: false
   socket.connect()

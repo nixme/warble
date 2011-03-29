@@ -36,7 +36,7 @@ jQuery(document).ready ($) ->
 
   window.song.fetch()   # load current song to play
 
-  socket = new io.Socket 'localhost',
+  socket = new io.Socket null,
     port: 8080
     rememberTransport: false
   socket.connect()
