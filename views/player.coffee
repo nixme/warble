@@ -9,7 +9,7 @@ jQuery(document).ready ($) ->
 
     template: Handlebars.compile '''
       {{#current}}
-        <audio src="{{url}}" autoplay />
+        <audio src="{{url}}" type="audio/mp3" autoplay />
         <img id="cover" src="{{cover_url}}" />
         <div id="artist">{{artist}}</div>
         <div id="title">{{title}}</div>
@@ -24,6 +24,7 @@ jQuery(document).ready ($) ->
 
     render: ->
       $(@el).html @template current: @model.toJSON()
+      this.$('audio').bind 'canplay', -> this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
       this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
     finished: ->
