@@ -6,3 +6,20 @@
 - if someone adds a ton of songs, they shouldn't dominate the queue
 - slightly longer notification
 - if a pandora song has no cover_url use the artist cover
+- likes/hearts -- add to notification too, reset notification timer if hovered
+
+- More Services:
+ - Rdio
+ - Grooveshark
+ - Youtube
+ - Random web urls
+ - Upload local files
+
+Check out the following:
+ - pithos (python reimplementation of pianobar): http://bazaar.launchpad.net/~kevin-mehall/pithos/trunk/files/head:/pithos/pandora/
+ - smoothcarp (python) for grooveshark: https://github.com/aheadley/smoothcarp
+ - grooveshark unofficial API lib: https://github.com/sosedoff/grooveshark
+ - remora grooveshark lib, actually streams: https://github.com/danopia/remora
+ - nTunes (nodejs) for iTunes: https://github.com/TooTallNate/nTunes/tree/master/lib
+ - dukejour rails app for iTunes: https://github.com/prohax/dukejour
+ - https://github.com/antimatter15/player   for reading local mp3's, etc.
