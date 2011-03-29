@@ -27,6 +27,12 @@ $secondary_b_darkest:  #123034
 
 $default-transition-duration: 0.2s
 
+@-webkit-keyframes spin
+  0%
+    -webkit-transform: rotate(0deg)
+  100%
+    -webkit-transform: rotate(360deg)
+
 
 // general styles
 
@@ -269,14 +275,29 @@ header
           +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
 
-#add
+#add, #spinner
   position: fixed
-  z-index: -2
   top: 100px
   bottom: 20px
   left: 750px
   padding: 25px
   width: 350px
+
+#spinner
+  display: none
+  background: rgba(0, 0, 0, 0.3)
+  border-right: 2px solid #777
+
+  img
+    float: right
+    margin: -15px -15px 0 0
+    -webkit-animation-name: spin
+    -webkit-animation-duration: 1s
+    -webkit-animation-iteration-count: infinite
+    -webkit-animation-timing-function: linear
+
+#add
+  z-index: -3
   overflow: auto
   background: #bbb url(/images/add_bg.png)
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)

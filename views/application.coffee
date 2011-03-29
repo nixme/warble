@@ -224,12 +224,16 @@ jQuery(document).ready ($) ->
         songs: @model.songs.toJSON()
 
     addSongs: (event) ->
+      window.workspace.showSpinner()
       song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
       $.post '/app/queue',
         'song_id[]': song_ids
       @model.songs.fetch   # get more songs, TODO: this is whack, bind the collection properly
-        success: => this.render()
-        error:   -> window.location.hash = '!/pandora/stations'
+        success: =>
+          this.render()
+          window.workspace.hideSpinner()
+        error: ->
+          window.location.hash = '!/pandora/stations'
       event.preventDefault()
 
     getMore: (event) ->
@@ -293,6 +297,10 @@ jQuery(document).ready ($) ->
           setTimeout (-> notification.cancel()), 5000
         notification.show()
 
+    # TODO: move to the proper single #app view
+    showSpinner: -> $('#spinner').fadeIn()
+    hideSpinner: -> $('#spinner').fadeOut()
+
     index: ->
       window.location.hash = '!/'
 
@@ -300,20 +308,29 @@ jQuery(document).ready ($) ->
       @serviceChooserView.render()
 
     pandoraStations: ->
+      this.showSpinner()
       @stationList.fetch
-        success: => @pandoraStationsView.render()
-        error:   => @pandoraAuthView.render()
+        success: =>
+          @pandoraStationsView.render()
+          this.hideSpinner()
+        error: =>
+          @pandoraAuthView.render()
+          this.hideSpinner()
 
     pandoraSongs: (id) ->
       station = @stationList.get(id)
-      if not station?   # can happen on page load directly to here
+      if not station?   # can happen on page load directly to here, TODO: doesn't work
         @stationList.fetch()
         station = @stationList.get(id)
 
       if station?
+        this.showSpinner()
         station.songs.fetch
-          success: -> (new PandoraSongsView { model: station }).render()
-          error:   -> window.location.hash = '!/pandora/stations'
+          success: =>
+            (new PandoraSongsView { model: station }).render()
+            this.hideSpinner()
+          error: =>
+            window.location.hash = '!/pandora/stations'
       else  # redirect back to station list
         window.location.hash = '!/pandora/stations'
 
