@@ -4,7 +4,6 @@
 - run multiple backends so multiuser not slow
 - crossfade
 - if someone adds a ton of songs, they shouldn't dominate the queue
-- slightly longer notification
 - if a pandora song has no cover_url use the artist cover
 - likes/hearts -- add to notification too, reset notification timer if hovered
 

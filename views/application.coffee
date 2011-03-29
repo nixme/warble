@@ -290,7 +290,7 @@ jQuery(document).ready ($) ->
         song = jukebox.current
         notification = window.webkitNotifications.createNotification(song.cover_url, song.artist, song.title)
         notification.ondisplay = ->
-          setTimeout (-> notification.cancel()), 3000
+          setTimeout (-> notification.cancel()), 5000
         notification.show()
 
     index: ->
