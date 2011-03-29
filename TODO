@@ -1,0 +1,8 @@
+- error at app.rb:273 when retrieving from pandora api
+- cover art doesn't load sometimes, need backup image or try again stuff
+- favicon
+- run multiple backends so multiuser not slow
+- crossfade
+- if someone adds a ton of songs, they shouldn't dominate the queue
+- slightly longer notification
+- if a pandora song has no cover_url use the artist cover
