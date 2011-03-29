@@ -98,7 +98,7 @@ class Song < Ohm::Model
       title:      pandora_song.title,
       artist:     pandora_song.artist,
       album:      pandora_song.album,
-      cover_url:  pandora_song.art_url,
+      cover_url:  pandora_song.art_url || pandora_song.artist_art_url,
       url:        pandora_song.audio_url,
       pandora_id: pandora_song.music_id
     })
