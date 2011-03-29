@@ -269,8 +269,7 @@ end
 
 get '/app/pandora/stations/:station_id/songs' do
   station = @user.pandora_client.stations.find { |s| s.id == params[:station_id] }
-  puts station.name
-  songs = station.next_playlist + station.next_playlist   # grab 8 songs
+  songs = station.next_playlist   # grab 4 songs
 
   # add songs to db
   songs.map do |pandora_song|
