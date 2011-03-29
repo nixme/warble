@@ -268,16 +268,20 @@ get '/app/pandora/stations' do
 end
 
 get '/app/pandora/stations/:station_id/songs' do
-  station = @user.pandora_client.stations.find { |s| s.id == params[:station_id] }
-  songs = station.next_playlist   # grab 4 songs
+  begin
+    station = @user.pandora_client.stations.find { |s| s.id == params[:station_id] }
+    songs = station.next_playlist   # grab 4 songs
 
-  # add songs to db
-  songs.map do |pandora_song|
-    song = Song.from_pandora_song(pandora_song)
-    song.user = User[session[:user_id]]
-    song.save
-    song
-  end.to_json
+    # add songs to db
+    songs.map do |pandora_song|
+      song = Song.from_pandora_song(pandora_song)
+      song.user = User[session[:user_id]]
+      song.save
+      song
+    end.to_json
+  rescue   # assuming end of playlist here but should check for the right exception
+    403
+  end
 end
 
 get '/app/jukebox' do   # TODO: remove this once application.coffee refactored
