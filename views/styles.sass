@@ -194,6 +194,7 @@ header
     display: block
     background: url(/images/stripe.png) repeat-x
     height: 4px
+    +box-shadow(rgba(0, 0, 0, 0.7) 0 1px 7px)
 
   #controls, #playing
     display: inline-block
@@ -238,19 +239,19 @@ header
       height: 64px
       width: 64px
       margin-right: 20px
-      border: 1px solid #444
+      border: 1px solid #555
+      +box-shadow(black 1px 1px 4px)
 
     #artist, #title
-      +text-shadow(#000 1px 1px 1px)
+      +text-shadow(black 1px 1px 2px)
+      color: #EEE
 
     #artist
       font-size: 30px
-      color: white
       padding: 5px 0
 
     #title
       font-size: 20px
-      color: #bbb
 
   #info
     float: right
@@ -278,7 +279,7 @@ header
 #add, #spinner
   position: fixed
   top: 100px
-  bottom: 20px
+  bottom: 0
   left: 750px
   padding: 25px
   width: 350px
