@@ -216,20 +216,20 @@ header
       width: 40px
       +background-image(linear-gradient(#ccc, #777))
       +border-radius(20px)
-      +box-shadow(rgba(255, 255, 255, 0.4) 0 0 3px)
+      +box-shadow(black 0 0 2px)
       text-align: center
       letter-spacing: -3px   // helps center the icon
       line-height: 25px
       font-size: 25px
       color: #222
+      +text-shadow(#CCC 0 1px 1px)
       margin-right: 7px
       cursor: pointer
 
       &:hover
         +background-image(linear-gradient($primary, darken($primary, 20%)))
-        +box-shadow(rgba(0, 0, 0, 0.4) 0 0 3px)
-        +transition
         color: white
+        +text-shadow(#222 0 -1px 1px)
 
   #playing
     width: 600px

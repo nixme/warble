@@ -357,4 +357,3 @@ jQuery(document).ready ($) ->
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
     console.log 'Enter key pressed'
-
