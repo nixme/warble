@@ -4,6 +4,11 @@
 @import 'compass'
 @import 'compass/reset'
 
+@mixin lato
+  font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif
+  font-weight: 300
+
+
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $primary:              #F90022
 $secondary_a:          #FF7A00
@@ -41,7 +46,7 @@ body
   color: #555
   position: relative
   z-index: -9
-  font-family: Lato, 'Helvetica Neue', Arial, sans-serif
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
 
   // gradient fade over background
   &:before
@@ -64,7 +69,6 @@ input
 
 input, button, .button
   border: 0
-  font-family: 'Helvetica Neue', Arial, sans-serif
   font-weight: 500
 
 button, .button
@@ -165,6 +169,7 @@ span.pictos
       margin-right: 20px
 
     #artist, #title
+      +lato
       +text-shadow(#FFF 1px 1px 1px)
 
     #artist
@@ -243,6 +248,7 @@ header
       +box-shadow(black 1px 1px 4px)
 
     #artist, #title
+      +lato
       +text-shadow(black 1px 1px 2px)
       color: #EEE
 
@@ -276,6 +282,20 @@ header
           +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
 
+// single song view global properties
+.artist, .title
+  font-size: 13px
+  +ellipsis
+
+.artist
+  padding: 2px 0
+
+.title
+  font-weight: bold
+  padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
+
+
+
 #add, #spinner
   position: fixed
   top: 100px
@@ -305,7 +325,6 @@ header
   border: 1px solid #ccc
 
   *:not(.button):not(h2)
-    font-family: 'Helvetica Neue', Arial, sans-serif
     font-size: 13px
     +text-shadow(#DDD 0 1px 1px)
 
@@ -319,6 +338,7 @@ header
       color: $secondary_b_darkest
 
   h2
+    +lato
     font-size: 24px
     color: #111
     padding-bottom: 7px
@@ -362,7 +382,6 @@ header
 
         .pandora_song
           color: #444
-          font-size: 13px
 
           img    // TODO: this is copied from the queue li's, consolidate them
             float: left
@@ -371,16 +390,6 @@ header
             margin-right: 10px
             border: 1px solid #EEE
             +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-
-          .artist, .title
-            +ellipsis    // TODO: apply globally to all artist/title
-
-          .artist
-            padding: 2px 0
-
-          .title
-            font-weight: bold
-            padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
 
         input:checked + .pandora_song   // darker titles for selected songs
           color: black
@@ -417,17 +426,17 @@ ul#songs
 
   li
     +background-image(linear-gradient(#eee, #ddd))
-    height: 52px
+    height: 62px
     border-top: 1px solid white
     border-bottom: 1px solid #ccc
 
-    .name, .submitter
-      padding: 20px
-
     .submitter
       float: right
+      margin: 25px 15px
       font-size: 12px
       text-transform: uppercase
+      color: #444
+      +text-shadow(white 0 1px 1px)
 
     img.cover
       +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
@@ -435,15 +444,15 @@ ul#songs
       float: left
       height: 32px
       width: 32px
-      margin: 10px
+      margin: 15px
 
     .name
-      font-size: 14px
-      color: $secondary_a_dark
-      span.artist
-        text-transform: uppercase
-      span.title
-        color: $primary_dark
+      margin-top: 15px
+
+      .artist, .title
+        font-size: 14px
+        color: $secondary_b_darkest
+        +text-shadow(white 0 1px 1px)
 
   &:after
     // TODO: helvetica neue with text-shadow here
@@ -451,7 +460,6 @@ ul#songs
     display: block
     border-top: 1px solid white
     padding: 20px 0
-    font-family: 'Helvetica Neue', Arial, sans-serif
     font-weight: bold
     font-size: 12px
     text-align: center
