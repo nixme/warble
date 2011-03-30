@@ -199,8 +199,11 @@ jQuery(document).ready ($) ->
         <li>
           <label>
             <input type="checkbox" data-id="{{id}}" />
-            <span class="artist">{{artist}}</span>:
-            <span class="title">{{title}}</span>
+            <div class="pandora_song">
+              <img src="{{cover_url}}" />
+              <div class="artist">{{artist}}</div>
+              <div class="title">{{title}}</div>
+            </div>
           </label>
         </li>
       {{/songs}}

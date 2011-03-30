@@ -349,16 +349,55 @@ header
         color: darken($secondary_a_dark, 15%)
         font-size: 18px
 
+  ul#pandora_songs
+    li
+      padding: 10px 0
+
+      label
+        input
+          float: right
+          margin-top: 9px
+          width: 14px    // largest browser checkboxes
+          height: 14px
+
+        .pandora_song
+          color: #444
+          font-size: 13px
+
+          img    // TODO: this is copied from the queue li's, consolidate them
+            float: left
+            height: 32px
+            width: 32px
+            margin-right: 10px
+            border: 1px solid #EEE
+            +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+          .artist, .title
+            +ellipsis    // TODO: apply globally to all artist/title
+
+          .artist
+            padding: 2px 0
+
+          .title
+            font-weight: bold
+            padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
+
+        input:checked + .pandora_song   // darker titles for selected songs
+          color: black
+
   a.button
     font-size: 13px
     background: $secondary_a_dark
     color: white
     padding: 5px 12px 6px
-    margin-right: 10px
+    margin-right: 10px   // TODO: necessary?
 
     &:hover
       background: darken($secondary_a_dark, 10%)
 
+    &#select_all
+      float: right
+      margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
 
 #queue, ul#songs
   width: 550px
@@ -408,7 +447,7 @@ ul#songs
 
   &:after
     // TODO: helvetica neue with text-shadow here
-    content: 'Hey you!\00a0\00a0 Add some songs over there\00a0\00a0\2192'
+    content: 'Hey you!\00a0\00a0 Add some songs from there\00a0\00a0\2192'
     display: block
     border-top: 1px solid white
     padding: 20px 0
