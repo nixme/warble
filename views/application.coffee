@@ -351,6 +351,8 @@ jQuery(document).ready ($) ->
         window.workspace.queue.add data.song
       when 'skip'
         window.workspace.skip data.jukebox
+      when 'reload'
+        window.location.reload true
 
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search

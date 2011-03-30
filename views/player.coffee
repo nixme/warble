@@ -45,3 +45,5 @@ jQuery(document).ready ($) ->
     switch data.event
       when 'skip'
         window.song.set data.jukebox.current
+      when 'reload'
+        window.location.reload true
