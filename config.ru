@@ -1,9 +1,4 @@
-require 'rubygems'
-require 'bundler'
+# This file is used by Rack-based servers to start the application.
 
-Bundler.require
-
-require './app'
-
-use Rack::Reloader, 0 if development?
-run Sinatra::Application
+require ::File.expand_path('../config/environment',  __FILE__)
+run Warble::Application
