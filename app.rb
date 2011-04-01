@@ -4,6 +4,7 @@ require 'openid/store/filesystem'
 require 'securerandom'
 require 'pandora/client'
 require 'json'
+require 'addressable/uri'
 
 PUBSUB_CHANNEL = 'Jukebox:player'
 $redis = Redis.new
@@ -86,6 +87,7 @@ class Song < Ohm::Model
   attribute :url          # url if appropriate for source
   attribute :local_path   # path if downloaded
   attribute :pandora_id   # id for pandora songs
+  attribute :youtube_id   # TODO combine with pandora id?
   reference :user, User   # user who added the song
   set :lovers, User       # users who liked the song
   set :haters, User       # users who disliked the song
@@ -104,6 +106,21 @@ class Song < Ohm::Model
     })
   end
 
+  # TODO fix this up to use api to get video metadata
+  def self.from_youtube_url(youtube_url)
+    query = Addressable::URI::parse(youtube_url).query_values
+    Song.new({
+      source:     'youtube',
+      title:      'YouTube Video',
+      artist:     'YouTube Artist',
+      album:      'YouTube Album',
+      cover_url:  '',
+      url:        youtube_url,
+      youtube_id: query['v'],
+      pandora_id: ''
+    })
+  end
+
   def to_hash
     super.merge :source     => source,
                 :title      => title,
@@ -113,6 +130,7 @@ class Song < Ohm::Model
                 :url        => url,
                 :local_path => local_path,
                 :pandora_id => pandora_id,
+                :youtube_id => youtube_id,
                 :user       => user,
                 :lovers     => lovers.all,
                 :haters     => haters.all
@@ -307,4 +325,14 @@ post '/app/queue' do
   else
     500
   end
+end
+
+post '/app/queue_youtube' do
+  youtube_url = params[:youtube_url]
+  song = Song.from_youtube_url(youtube_url)
+  song.user = @user
+  song.save
+
+  Jukebox.app.add_song(song)
+  200
 end

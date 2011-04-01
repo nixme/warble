@@ -103,6 +103,9 @@ jQuery(document).ready ($) ->
         <a href="#!/pandora/stations">
           <img src="/images/pandora.png" />
         </a>
+        <a href="#!/youtube/url">
+          <img src="/images/youtube.png" />
+        </a>
       </p>
     '''
 
@@ -246,12 +249,52 @@ jQuery(document).ready ($) ->
       this.$('input:checkbox').attr('checked', true)
       event.preventDefault()
 
+
+  class YoutubeURLView extends Backbone.View
+    el: $('#add')
+
+    template: Handlebars.compile '''
+      <div class="breadcrumbs">
+        <a href="#!/">Sources</a>
+        &raquo;
+        <span class="current">YouTube</span>
+      </div>
+      <h2>Enter a YouTube URL</h2>
+      <input type="text" id="youtube_url"/>
+      <a href="#" class="button" id="add_url">Add URL</a>
+    '''
+    events:
+      'click #add_url':  'addURL'
+
+    initialize: ->
+      _.bindAll this, 'render', 'addURL'
+
+    render: ->
+      $(@el).html @template
+      this.delegateEvents()  # TODO: fix
+
+    addURL: (event) ->
+      window.workspace.showSpinner()
+      url = this.$('#youtube_url').val()
+      $.ajax '/app/queue_youtube',
+        type: 'POST'
+        data:
+          youtube_url: url
+        success: =>
+          window.workspace.hideSpinner()
+          @render()
+        error: ->
+          window.location.hash = '!/youtube/url'
+      event.preventDefault()
+        
+
   class WorkspaceController extends Backbone.Controller
     routes:
       ''                       : 'index'
       '!/'                     : 'home'
       '!/pandora/stations'     : 'pandoraStations'
       '!/pandora/stations/:id' : 'pandoraSongs'
+      '!/youtube/url'          : 'youtubeURL'
 
     initialize: ->
       # initialize app components
@@ -263,6 +306,7 @@ jQuery(document).ready ($) ->
       @serviceChooserView ||= new ServiceChooserView
       @pandoraAuthView ||= new PandoraCredentialsView
       @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
+      @youtubeURLView ||= new YoutubeURLView
 
       # load data
       @jukebox.fetch()
@@ -336,6 +380,9 @@ jQuery(document).ready ($) ->
             window.location.hash = '!/pandora/stations'
       else  # redirect back to station list
         window.location.hash = '!/pandora/stations'
+
+    youtubeURL: ->
+      @youtubeURLView.render()
 
 
   window.workspace = new WorkspaceController
