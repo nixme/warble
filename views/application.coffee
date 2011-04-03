@@ -265,6 +265,9 @@ jQuery(document).ready ($) ->
       <div id="youtube_search_results"></div>
     '''
     searchResTemplate: Handlebars.compile '''
+      {{#if hasPrev}}
+        <a href="#" class="paging">Previous</a>
+      {{/if}}
       {{#feed}}
         <ul>
         {{#each entry}}
@@ -272,43 +275,78 @@ jQuery(document).ready ($) ->
         {{/each}}
         </ul>
       {{/feed}}
+      {{#if hasNext}}
+        <a href="#" class="paging">Next</a>
+      {{/if}}
     '''
+
     events:
       'click #youtube_search': 'search'
       'keypress input': 'handleEnter'
-      'click #youtube_search_results a' : 'queueVideo'
+      'click #youtube_search_results a.entry' : 'queueVideo'
+      'click #youtube_search_results a.paging' : 'handlePage'
 
     initialize: ->
       _.bindAll this, 'render', 'search'
 
       window.youtubeSearchHandler = @handleSearchResults
       window.Handlebars.registerHelper 'youtubeSearchEntry', (entry) ->
-        return '<li><a href="#"><img src="' + entry.media$group.media$thumbnail[0].url + '" class="thumbnail"/>' +
+        return '<li><a href="#" class="entry"><img src="' + entry.media$group.media$thumbnail[0].url + '" class="thumbnail"/>' +
                  '<span class="title">' + entry.title.$t + '</span><span class="author">' + entry.author[0].name.$t + '</span></a></li>'
+
+      @searchInfo =
+        data: null
+        q: ''
+        startIndex: 1
+        pageSize: 25
 
     render: ->
       $(@el).html @template
+      $('#youtube_query').focus()
       this.delegateEvents()  # TODO: fix
 
     handleEnter: (event) =>
       if event.which == 13
         @search event
 
+    handlePage: (event) =>
+      if $(event.target).text() == 'Next' 
+        @searchInfo.startIndex = @searchInfo.startIndex + @searchInfo.pageSize + 1 
+      else 
+        @searchInfo.startIndex = @searchInfo.startIndex - @searchInfo.pageSize - 1
+      @search event
+
     search: (event) ->
       window.workspace.showSpinner()
-      q = this.$('#youtube_query').val()
+      q = $('#youtube_query').val()
+
+      # reset the search start-index if it's a new search
+      if @searchInfo.q != q
+        @searchInfo.startIndex = 1
+        @searchInfo.q = q
+      
       s = document.createElement('script')
       s.type = 'text/javascript'
-      s.src = 'http://gdata.youtube.com/feeds/api/videos?alt=json-in-script&format=5&callback=youtubeSearchHandler&q=' + encodeURIComponent(q)
+      s.src = 'http://gdata.youtube.com/feeds/api/videos?alt=json-in-script&format=5&callback=youtubeSearchHandler&max-results=' + @searchInfo.pageSize + 
+                '&start-index=' + @searchInfo.startIndex + '&q=' + encodeURIComponent(q)
       $(document).append s
       event.preventDefault()
+
+    handleSearchResults: (data) =>
+      @searchInfo.data = data
+      $('#youtube_search_results').html @searchResTemplate 
+        feed: data.feed
+        hasPrev: @searchInfo.startIndex > 1
+        hasNext: (@searchInfo.startIndex + data.feed.openSearch$itemsPerPage.$t) < data.feed.openSearch$totalResults.$t
+      $('#add').scrollTop 0
+      window.workspace.hideSpinner()
 
     queueVideo: (event) ->
       t = $(event.target)
       if t[0].tagName != 'li' 
         t = t.parents('li').first()
       i = t.index()
-      entry = @searchData.feed.entry[i]
+      entry = @searchInfo.data.feed.entry[i]
       vidId = entry.id.$t.substring(entry.id.$t.lastIndexOf('/')+1)
       
       $.ajax '/app/queue_youtube',
@@ -323,11 +361,6 @@ jQuery(document).ready ($) ->
         error: ->
           window.location.hash = '!/youtube/search'
       event.preventDefault()
-
-    handleSearchResults: (data) =>
-      @searchData = data
-      $('#youtube_search_results').html @searchResTemplate feed: data.feed
-      window.workspace.hideSpinner()
         
 
   class WorkspaceController extends Backbone.Controller
