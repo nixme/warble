@@ -141,13 +141,14 @@ span.pictos
       &:hover
         background: #111 url(/images/google_32.png) no-repeat 8px center
 
+// youtube player
 #ytplayer_wrapper
   height: 100%
   width: 100%
 
-#ytplayer_wrapper.stowed
-  position: absolute
-  left: -10000px
+  &.stowed
+    position: absolute
+    left: -10000px
 
 // player
 #player_wrapper
@@ -400,6 +401,28 @@ header
 
         input:checked + .pandora_song   // darker titles for selected songs
           color: black
+
+  #youtube_search_results
+    li
+      margin-bottom: 5px
+
+      &:after
+        content: '.'
+        clear: both
+        display: block
+        height: 0
+        visibility: hidden
+
+      img
+        float: left
+        height: 60px
+        width: 60px
+        margin-right: 10px
+        border: 1px solid #EEE
+        +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+      .title
+        display: block
 
   a.button
     font-size: 13px

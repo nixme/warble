@@ -282,8 +282,8 @@ jQuery(document).ready ($) ->
 
       window.youtubeSearchHandler = @handleSearchResults
       window.Handlebars.registerHelper 'youtubeSearchEntry', (entry) ->
-        return '<li><a href="#"><img src="' + entry.media$group.media$thumbnail[0].url + '" class="thumbnail" style="height:60px;width:60px;"/>' +
-                 '<span class="title">' + entry.title.$t + '</span><br/><span class="author">' + entry.author[0].name.$t + '</span></a></li>'
+        return '<li><a href="#"><img src="' + entry.media$group.media$thumbnail[0].url + '" class="thumbnail"/>' +
+                 '<span class="title">' + entry.title.$t + '</span><span class="author">' + entry.author[0].name.$t + '</span></a></li>'
 
     render: ->
       $(@el).html @template
@@ -299,7 +299,10 @@ jQuery(document).ready ($) ->
       event.preventDefault()
 
     queueVideo: (event) ->
-      i = $(event.target).index()
+      t = $(event.target)
+      if t[0].tagName != 'li' 
+        t = t.parents('li').first()
+      i = t.index()
       entry = @searchData.feed.entry[i]
       vidId = entry.id.$t.substring(entry.id.$t.lastIndexOf('/')+1)
       
