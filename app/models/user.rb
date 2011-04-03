@@ -39,7 +39,7 @@ class User < Ohm::Model
   end
 
   def pandora_client
-    @pandora ||= Warble::Pandora::Client.new(pandora_username, pandora_password)
+    @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
   end
 
   def to_hash
