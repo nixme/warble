@@ -1,10 +1,7 @@
 Barista.configure do |c|
-  # read coffeescripts from app/scripts
-  c.root = Rails.root.join('app', 'scripts')
-
-  # output javascript to public/javascripts
+  # read from app/scripts and output to public/javascripts
+  c.root        = Rails.root.join('app', 'scripts')
   c.output_root = Rails.root.join('public', 'javascripts')
 
-  # don't wrap files in closures
-  c.no_wrap!
+  c.bare!   # don't wrap files in closures
 end

@@ -23,12 +23,6 @@ helpers do
   end
 end
 
-# setup google apps authentication for manymoon.com through omniauth
-use OmniAuth::Builder do
-  provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :domain => 'manymoon.com'
-  provider :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET']
-end
-
 post '/auth/google_apps/callback' do
   user = User.find_or_create_by_google_auth(request.env['omniauth.auth'])
   session[:user_id] = user.id
@@ -61,14 +55,6 @@ get '/' do
     haml :login
   end
 end
-
-get '/styles.css' do
-  content_type 'text/css', :charset => 'utf-8'
-  sass :styles
-end
-
-get '/application.js' do coffee :application; end
-get '/player.js'      do coffee :player;      end
 
 
 # SERVER PLAYER

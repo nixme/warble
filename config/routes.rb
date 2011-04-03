@@ -1,4 +1,20 @@
 Warble::Application.routes.draw do
+
+  # interface
+  root :to => 'interface#application'
+  match 'player' => 'interface#player'
+
+  # authentication
+  match 'login'                   => 'sessions#new',     :as => :login
+  match 'logout'                  => 'sessions#destroy', :as => :logout   # TODO: should be a DELETE (or POST at least)
+  match 'auth/:provider/callback' => 'sessions#create'
+  # TODO: more resource friendly?
+
+  # API endpoints
+  namespace :pandora do
+    resources :stations
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

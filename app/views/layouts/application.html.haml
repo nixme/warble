@@ -7,6 +7,14 @@
     %title Warble @ Midnight
 
     %link(rel='icon' type='image/png' href='/images/favicon.png')
-    %link(href='/styles.css' rel='stylesheet' type='text/css')
+    = include_stylesheets :common, :media => 'all'
 
-  %body{ :lang => 'en' }= yield
+  %body{ :lang => 'en' }
+    = yield
+
+    :javascript
+      WEB_SOCKET_SWF_LOCATION = 'http://#{request.host}:8080/socket.io/lib/vendor/web-socket-js/WebSocketMain.swf';
+    = javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'
+    = javascript_include_tag "http://#{request.host}:8080/socket.io/socket.io.js"
+    = include_javascripts :common
+    = content_for :scripts
