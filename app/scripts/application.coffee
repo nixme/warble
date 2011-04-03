@@ -3,17 +3,17 @@
 jQuery(document).ready ($) ->
 
   class Jukebox extends Backbone.Model
-    url: '/app/jukebox'
+    url: '/jukebox'
 
   class PandoraStation extends Backbone.Model
     initialize: ->
       @songs = new PandoraSongList
-      @songs.url = "/app/pandora/stations/#{@id}/songs"
+      @songs.url = "/pandora/stations/#{@id}/songs"
       @songs.station = this
 
   class PandoraStationList extends Backbone.Collection
     model: PandoraStation
-    url: '/app/pandora/stations'
+    url: '/pandora/stations'
 
   class PandoraSong extends Backbone.Model
 
@@ -25,7 +25,7 @@ jQuery(document).ready ($) ->
 
   class SongList extends Backbone.Collection
     model: Song
-    url: '/app/queue'
+    url: '/jukebox/songs'
 
 
   class SongView extends Backbone.View
@@ -179,7 +179,7 @@ jQuery(document).ready ($) ->
       this.delegateEvents()  # TODO: fix
 
     logout: ->
-      $.post '/app/pandora/credentials/clear', ->
+      $.post '/pandora/credentials', _method: 'delete', ->
         window.location.hash = "!/"
 
 
@@ -229,7 +229,7 @@ jQuery(document).ready ($) ->
     addSongs: (event) ->
       window.workspace.showSpinner()
       song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
-      $.post '/app/queue',
+      $.post '/jukebox/songs',
         'song_id[]': song_ids
       @model.songs.fetch   # get more songs, TODO: this is whack, bind the collection properly
         success: =>
@@ -271,7 +271,7 @@ jQuery(document).ready ($) ->
 
       # player buttons. TODO: move to view class
       $('a#forward').click (event) ->
-        $.post '/player/skip'
+        $.post '/jukebox/skip'
         event.preventDefault()
 
       # notification button. TODO: move to a view class

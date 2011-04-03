@@ -1,0 +1,24 @@
+%header
+  #info
+    %h1
+      %span.pictos m
+      Warble
+    #profile
+      %span#toolbar
+        %a#settings(href='#' title='Settings') y
+        %a#logout(href='/logout' title='Logout') -
+
+  #controls
+    %a#play(href='#') 4
+    %a#forward(href='#') 7
+
+  #playing
+
+#add
+#spinner
+  %img(src='/images/spinner.png')
+#queue
+%ul#songs
+
+- content_for :scripts do
+  = include_javascripts :application

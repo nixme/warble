@@ -1,0 +1,31 @@
+# jammit configuration
+#   for more info: http://documentcloud.github.com/jammit/#configuration
+
+package_assets:      on
+embed_assets:        on
+compress_assets:     on
+gzip_assets:         on
+package_path:        assets
+
+template_function:   Handlebars.compile
+template_extension:  html.mustache
+
+# TODO: switch to uglify minifier after next jammit release
+javascript_compressor: closure
+compressor_options:
+  compilation_level: SIMPLE_OPTIMIZATIONS
+
+javascripts:
+  common:
+    - public/javascripts/vendor/underscore.js
+    - public/javascripts/vendor/backbone.js
+    - public/javascripts/vendor/handlebars-0.9.0.pre.4.js
+    - public/javascripts/vendor/jquery.mapkey.js
+  application:
+    - public/javascripts/application.js
+  player:
+    - public/javascripts/player.js
+
+stylesheets:
+  common:
+    - public/stylesheets/styles.css

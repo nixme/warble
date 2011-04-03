@@ -1,1 +1,7 @@
 .sass-cache
+.bundle
+log/*.log
+tmp/
+public/stylesheets
+public/javascripts/*.js
+config/redis.yml
