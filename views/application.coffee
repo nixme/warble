@@ -275,6 +275,7 @@ jQuery(document).ready ($) ->
     '''
     events:
       'click #youtube_search': 'search'
+      'keypress input': 'handleEnter'
       'click #youtube_search_results a' : 'queueVideo'
 
     initialize: ->
@@ -288,6 +289,10 @@ jQuery(document).ready ($) ->
     render: ->
       $(@el).html @template
       this.delegateEvents()  # TODO: fix
+
+    handleEnter: (event) =>
+      if event.which == 13
+        @search event
 
     search: (event) ->
       window.workspace.showSpinner()
