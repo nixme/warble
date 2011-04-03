@@ -67,7 +67,7 @@ jQuery(document).ready ($) ->
       # make sure the slow-ass widget has loaded
       if !@player
         window.setTimeout () =>
-          this.render()
+          @render()
         , 500
       else
         c = @model.toJSON()

@@ -107,16 +107,16 @@ class Song < Ohm::Model
   end
 
   # TODO fix this up to use api to get video metadata
-  def self.from_youtube_url(youtube_url)
-    query = Addressable::URI::parse(youtube_url).query_values
+  def self.from_youtube_params(params)
+    #query = Addressable::URI::parse(youtube_url).query_values
     Song.new({
       source:     'youtube',
-      title:      'YouTube Video',
-      artist:     'YouTube Artist',
-      album:      'YouTube Album',
-      cover_url:  '',
-      url:        youtube_url,
-      youtube_id: query['v'],
+      title:      params[:title],
+      artist:     params[:author],
+      album:      '',
+      cover_url:  params[:thumbnail],
+      url:        '',
+      youtube_id: params[:youtube_id],
       pandora_id: ''
     })
   end
@@ -328,8 +328,7 @@ post '/app/queue' do
 end
 
 post '/app/queue_youtube' do
-  youtube_url = params[:youtube_url]
-  song = Song.from_youtube_url(youtube_url)
+  song = Song.from_youtube_params(params)
   song.user = @user
   song.save
 

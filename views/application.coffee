@@ -103,7 +103,7 @@ jQuery(document).ready ($) ->
         <a href="#!/pandora/stations">
           <img src="/images/pandora.png" />
         </a>
-        <a href="#!/youtube/url">
+        <a href="#!/youtube/search">
           <img src="/images/youtube.png" />
         </a>
       </p>
@@ -250,7 +250,7 @@ jQuery(document).ready ($) ->
       event.preventDefault()
 
 
-  class YoutubeURLView extends Backbone.View
+  class YoutubeSearchView extends Backbone.View
     el: $('#add')
 
     template: Handlebars.compile '''
@@ -259,33 +259,67 @@ jQuery(document).ready ($) ->
         &raquo;
         <span class="current">YouTube</span>
       </div>
-      <h2>Enter a YouTube URL</h2>
-      <input type="text" id="youtube_url"/>
-      <a href="#" class="button" id="add_url">Add URL</a>
+      <h2>Perform a YouTube search</h2>
+      <input type="text" id="youtube_query"/>
+      <a href="#" class="button" id="youtube_search">Search</a>
+      <div id="youtube_search_results"></div>
+    '''
+    searchResTemplate: Handlebars.compile '''
+      {{#feed}}
+        <ul>
+        {{#each entry}}
+          {{{youtubeSearchEntry this}}}
+        {{/each}}
+        </ul>
+      {{/feed}}
     '''
     events:
-      'click #add_url':  'addURL'
+      'click #youtube_search': 'search'
+      'click #youtube_search_results a' : 'queueVideo'
 
     initialize: ->
-      _.bindAll this, 'render', 'addURL'
+      _.bindAll this, 'render', 'search'
+
+      window.youtubeSearchHandler = @handleSearchResults
+      window.Handlebars.registerHelper 'youtubeSearchEntry', (entry) ->
+        return '<li><a href="#"><img src="' + entry.media$group.media$thumbnail[0].url + '" class="thumbnail" style="height:60px;width:60px;"/>' +
+                 '<span class="title">' + entry.title.$t + '</span><br/><span class="author">' + entry.author[0].name.$t + '</span></a></li>'
 
     render: ->
       $(@el).html @template
       this.delegateEvents()  # TODO: fix
 
-    addURL: (event) ->
+    search: (event) ->
       window.workspace.showSpinner()
-      url = this.$('#youtube_url').val()
+      q = this.$('#youtube_query').val()
+      s = document.createElement('script')
+      s.type = 'text/javascript'
+      s.src = 'http://gdata.youtube.com/feeds/api/videos?alt=json-in-script&format=5&callback=youtubeSearchHandler&q=' + encodeURIComponent(q)
+      $(document).append s
+      event.preventDefault()
+
+    queueVideo: (event) ->
+      i = $(event.target).index()
+      entry = @searchData.feed.entry[i]
+      vidId = entry.id.$t.substring(entry.id.$t.lastIndexOf('/')+1)
+      
       $.ajax '/app/queue_youtube',
         type: 'POST'
         data:
-          youtube_url: url
+          youtube_id: vidId
+          title: entry.title.$t
+          author: entry.author[0].name.$t
+          thumbnail: entry.media$group.media$thumbnail[0].url
         success: =>
           window.workspace.hideSpinner()
-          @render()
         error: ->
-          window.location.hash = '!/youtube/url'
+          window.location.hash = '!/youtube/search'
       event.preventDefault()
+
+    handleSearchResults: (data) =>
+      @searchData = data
+      $('#youtube_search_results').html @searchResTemplate feed: data.feed
+      window.workspace.hideSpinner()
         
 
   class WorkspaceController extends Backbone.Controller
@@ -294,7 +328,7 @@ jQuery(document).ready ($) ->
       '!/'                     : 'home'
       '!/pandora/stations'     : 'pandoraStations'
       '!/pandora/stations/:id' : 'pandoraSongs'
-      '!/youtube/url'          : 'youtubeURL'
+      '!/youtube/search'       : 'youtubeSearch'
 
     initialize: ->
       # initialize app components
@@ -306,7 +340,7 @@ jQuery(document).ready ($) ->
       @serviceChooserView ||= new ServiceChooserView
       @pandoraAuthView ||= new PandoraCredentialsView
       @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
-      @youtubeURLView ||= new YoutubeURLView
+      @youtubeSearchView ||= new YoutubeSearchView
 
       # load data
       @jukebox.fetch()
@@ -381,8 +415,8 @@ jQuery(document).ready ($) ->
       else  # redirect back to station list
         window.location.hash = '!/pandora/stations'
 
-    youtubeURL: ->
-      @youtubeURLView.render()
+    youtubeSearch: ->
+      @youtubeSearchView.render()
 
 
   window.workspace = new WorkspaceController
