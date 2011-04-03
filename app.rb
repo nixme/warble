@@ -5,29 +5,10 @@ require 'securerandom'
 require 'pandora/client'
 require 'json'
 
-PUBSUB_CHANNEL = 'Jukebox:player'
-$redis = Redis.new
-
-configure do
-  Ohm.connect
-end
-
 enable :logging
 enable :sessions
 enable :method_override
 
-
-helpers do
-  def authenticated?
-    session[:user_id]
-  end
-end
-
-post '/auth/google_apps/callback' do
-  user = User.find_or_create_by_google_auth(request.env['omniauth.auth'])
-  session[:user_id] = user.id
-  redirect to('/')
-end
 
 post '/auth/facebook/callback' do
   # assume user is already logged-in. this is to get their profile photo only
@@ -41,28 +22,8 @@ get '/auth/failure' do
   'Uh oh... something went wrong authenticating you'
 end
 
-# TODO: should be a DELETE (or POST at least)
-get '/logout' do
-  session.clear
-  redirect to('/')
-end
-
-get '/' do
-  if authenticated?
-    @user = User[session[:user_id]]
-    haml :app
-  else
-    haml :login
-  end
-end
-
 
 # SERVER PLAYER
-
-# TODO: protect this somehow?
-get '/player' do
-  haml :player
-end
 
 post '/player/skip' do   # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
   Jukebox.app.skip!

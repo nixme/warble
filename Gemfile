@@ -3,8 +3,9 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.5'
 
 # datastore
-gem 'redis'
-gem 'ohm'
+gem 'hiredis'                         # ruby bindings for fast redis C lib
+gem 'redis'                           # ruby redis interface
+gem 'ohm'                             # simple ORM on redis
 
 # async processing
 gem 'resque'

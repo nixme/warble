@@ -22,7 +22,7 @@ class Jukebox < Ohm::Model
     save
 
     # notify clients
-    $redis.publish(PUBSUB_CHANNEL, {
+    Ohm.redis.publish(Warble::Application.config.pubsub_channel, {
       event:   'skip',
       jukebox: Jukebox.app   # TODO: send removing song and client should validate, if wrong, refetch whole queue
     }.to_json)
@@ -32,7 +32,7 @@ class Jukebox < Ohm::Model
     upcoming << song                  # add song to end of queue
 
     # notify clients of new song
-    $redis.publish(PUBSUB_CHANNEL, {
+    Ohm.redis.publish(Warble::Application.config.pubsub_channel, {
       event: 'add',
       song:   song
     }.to_json)
