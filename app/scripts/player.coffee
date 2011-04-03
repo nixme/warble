@@ -1,7 +1,7 @@
 jQuery(document).ready ($) ->
 
-  class Song extends Backbone.Model
-    url: '/app/current'
+  class Jukebox extends Backbone.Model
+    url: '/jukebox'
 
 
   class PlayerView extends Backbone.View
@@ -23,7 +23,7 @@ jQuery(document).ready ($) ->
       @model.bind 'change', @render
 
     render: ->
-      $(@el).html @template current: @model.toJSON()
+      $(@el).html @template current: @model.get('current')
       this.$('audio').bind 'canplay', -> this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
       this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
@@ -31,10 +31,10 @@ jQuery(document).ready ($) ->
       $.post '/player/skip'
 
 
-  window.song = new Song
-  window.player = new PlayerView model: window.song
+  window.jukebox = new Jukebox
+  window.player = new PlayerView model: window.jukebox
 
-  window.song.fetch()   # load current song to play
+  window.jukebox.fetch()   # load current song to play
 
   socket = new io.Socket null,
     port: 8080
@@ -44,6 +44,6 @@ jQuery(document).ready ($) ->
     data = JSON.parse(raw_data)
     switch data.event
       when 'skip'
-        window.song.set data.jukebox.current
+        window.jukebox.set data.jukebox
       when 'reload'
         window.location.reload true

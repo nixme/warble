@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery    # CSRF protection filters
+  # TODO: re-enable CSRF protection after fixing ajax to push the token
+  #protect_from_forgery    # CSRF protection filters
 
   def authenticate_user!
     unless current_user
