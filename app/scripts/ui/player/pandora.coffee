@@ -16,4 +16,4 @@ class PandoraPlayerView extends Backbone.View
       this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
   finished: ->
-    $.post '/player/skip'
+    $.post '/jukebox/skip'

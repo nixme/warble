@@ -35,4 +35,4 @@ class YoutubePlayerView extends Backbone.View
         this.$('#ytplayer').css('visibility', 'hidden')
 
   finished: ->
-    $.post '/player/skip'
+    $.post '/jukebox/skip'
