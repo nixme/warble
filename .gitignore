@@ -3,5 +3,5 @@
 log/*.log
 tmp/
 public/stylesheets
-public/javascripts/*.js
+public/javascripts
 config/redis.yml

@@ -8,6 +8,7 @@ gzip_assets:         on
 package_path:        assets
 
 template_function:   Handlebars.compile
+template_namespace:  window.templates
 template_extension:  html.mustache
 
 # TODO: switch to uglify minifier after next jammit release
@@ -22,8 +23,14 @@ javascripts:
     - public/javascripts/vendor/handlebars-0.9.0.pre.4.js
     - public/javascripts/vendor/jquery.mapkey.js
   application:
+    - app/views/application/*.mustache
+    - public/javascripts/models/*.js
+    - public/javascripts/ui/application/*.js
     - public/javascripts/application.js
   player:
+    - app/views/player/*.mustache
+    - public/javascripts/models/jukebox.js
+    - public/javascripts/ui/player/*.js
     - public/javascripts/player.js
 
 stylesheets:

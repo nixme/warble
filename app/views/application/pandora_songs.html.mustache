@@ -1,0 +1,25 @@
+<div class="breadcrumbs">
+  <a href="#!/">Sources</a>
+  &raquo;
+  <a href="#!/pandora/stations">Pandora</a>
+  &raquo;
+  <span class="current">{{name}}</span>
+</div>
+<h2>Station: {{name}}</h2>
+<ul id="pandora_songs">
+  {{#songs}}
+  <li>
+    <label>
+      <input type="checkbox" data-id="{{id}}" />
+      <div class="pandora_song">
+        <img src="{{cover_url}}" />
+        <div class="artist">{{artist}}</div>
+        <div class="title">{{title}}</div>
+      </div>
+    </label>
+  </li>
+  {{/songs}}
+</ul>
+<a href="#" class="button" id="add_songs">Add Selected Songs</a>
+<a href="#" class="button" id="get_more" style="display:none">Get More Songs</a>
+<a href="#" class="button" id="select_all">Select All</a>

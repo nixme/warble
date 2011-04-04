@@ -1,0 +1,19 @@
+<div class="breadcrumbs">
+  <a href="#!/">Sources</a>
+  &raquo;
+  <span class="current">Pandora</span>
+</div>
+
+<h2>Your Pandora Stations</h2>
+
+<ul id="pandora_stations">
+  {{#stations}}
+  <li><a href="#!/pandora/stations/{{id}}">{{name}}</a></li>
+  {{/stations}}
+</ul>
+
+{{^stations}}
+<p><em>You have no stations. Login to Pandora to add some.</em></p>
+{{/stations}}
+
+<a href="#" class="button" id="pandora_logout">Log out of Pandora</a>
