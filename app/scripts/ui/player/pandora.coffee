@@ -7,7 +7,7 @@ class PandoraPlayerView extends Backbone.View
     @model.bind 'change', @render
 
   render: ->
-    if @model.current_song().source != 'pandora'
+    if @model.current_song()?.source != 'pandora'
       # need to kill the current player in case of skip
       $(@el).html ''
     else

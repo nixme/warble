@@ -28,7 +28,7 @@ class YoutubePlayerView extends Backbone.View
       window.setTimeout (=> this.render()), 500
     else
       @player.stopVideo() if @player.stopVideo
-      if @model.current_song().source == 'youtube'
+      if @model.current_song()?.source == 'youtube'
         this.$('#ytplayer').css('visibility', 'visible')
         @player.loadVideoById @model.current_song().youtube_id
       else
