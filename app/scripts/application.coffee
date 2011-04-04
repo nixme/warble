@@ -5,6 +5,7 @@ jQuery(document).ready ($) ->
       '!/'                     : 'home'
       '!/pandora/stations'     : 'pandoraStations'
       '!/pandora/stations/:id' : 'pandoraSongs'
+      '!/youtube'              : 'youtube'
 
     initialize: ->
       # initialize app components
@@ -16,6 +17,7 @@ jQuery(document).ready ($) ->
       @serviceChooserView ||= new ServiceChooserView
       @pandoraAuthView ||= new PandoraCredentialsView
       @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
+      @youtubeSearchView ||= new YoutubeSearchView
 
       # load data
       @jukebox.fetch()
@@ -90,6 +92,8 @@ jQuery(document).ready ($) ->
       else  # redirect back to station list
         window.location.hash = '!/pandora/stations'
 
+    youtube: ->
+      @youtubeSearchView.render()
 
   window.workspace = new WorkspaceController
   Backbone.history.start()

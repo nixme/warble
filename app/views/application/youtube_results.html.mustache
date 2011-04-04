@@ -1,0 +1,19 @@
+{{#if hasPrev}}
+  <a href="#" class="paging">Previous</a>
+{{/if}}
+
+<ul>
+{{#results}}
+  <li>
+    <a href="#" class="entry" data-id="{{index}}">
+      <img src="{{thumbnail}}" class="thumbnail" />
+      <span class="title">{{title}}</span>
+      <span class="author">{{author}}</span>
+    </a>
+  </li>
+{{/results}}
+</ul>
+
+{{#if hasNext}}
+  <a href="#" class="paging">Next</a>
+{{/if}}

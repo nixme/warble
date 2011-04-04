@@ -5,3 +5,5 @@ tmp/
 public/stylesheets
 public/javascripts
 config/redis.yml
+*.swp
+.rvmrc

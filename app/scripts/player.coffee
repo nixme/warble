@@ -1,6 +1,7 @@
 jQuery(document).ready ($) ->
   window.jukebox = new Jukebox
-  window.player = new PlayerView model: window.jukebox
+  window.pandoraPlayer = new PandoraPlayerView model: window.jukebox
+  window.youtubePlayer = new YoutubePlayerView model: window.jukebox
 
   window.jukebox.fetch()   # load current song to play
 
