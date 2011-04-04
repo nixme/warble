@@ -38,6 +38,12 @@ class User < Ohm::Model
     pandora_username && pandora_password
   end
 
+  def clear_pandora_credentials!
+    self.pandora_username = nil
+    self.pandora_password = nil
+    save
+  end
+
   def pandora_client
     @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
   end

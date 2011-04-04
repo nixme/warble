@@ -15,7 +15,8 @@ class PandoraCredentialsView extends Backbone.View
     this
 
   save: (event) ->
-    $.post '/app/pandora/credentials', this.$('#pandora_credentials').serialize(), =>
+    # TODO: generalize the method shim
+    $.post '/pandora/credentials', this.$('#pandora_credentials').serialize() + '&_method=PUT', =>
       window.workspace.pandoraStations()
     event.preventDefault()
     false

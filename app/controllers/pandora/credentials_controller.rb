@@ -11,8 +11,7 @@ class Pandora::CredentialsController < Pandora::BaseController
   end
 
   def destroy
-    @user.pandora_username = nil   # TODO: move to model
-    @user.pandora_password = nil
+    current_user.clear_pandora_credentials!
     head :ok  # TODO: correct http code?
   end
 end
