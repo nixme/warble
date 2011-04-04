@@ -342,7 +342,7 @@ header
       font-weight: bold
       color: $secondary_b_darkest
 
-  h2
+  h2, ul#sources a
     +lato
     font-size: 24px
     color: #111
@@ -361,6 +361,19 @@ header
   form
     input
       margin-right: 10px
+
+  ul#sources
+    li
+      height: 64px
+      padding: 10px
+
+      img
+        float: left
+        margin-right: 15px
+
+      a
+        position: relative
+        top: 18px
 
   ul#pandora_stations
     li
@@ -400,34 +413,26 @@ header
           color: black
 
   #youtube_query
-    width: 230px
+    width: 220px
+
+  #youtube_search
+    margin-left: 15px
 
   #youtube_search_results
-    .paging
-      display: block
-      text-align: center
-      margin: 10px 0
+    li  // TODO: combine with pandora_songs list
+      height: 48px
+      padding: 10px 0
 
-    li
-      margin-bottom: 5px
-
-      &:after
-        content: '.'
-        clear: both
-        display: block
-        height: 0
-        visibility: hidden
-
-      img
+      img   // TODO: compied from pandora_songs list, consolidate them
         float: left
-        height: 60px
-        width: 60px
+        height: 48px
+        width: 48px
         margin-right: 10px
         border: 1px solid #EEE
         +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
 
       .title
-        display: block
+        margin-top: 10px
 
   a.button
     font-size: 13px
@@ -439,7 +444,7 @@ header
     &:hover
       background: darken($secondary_a_dark, 10%)
 
-    &#select_all
+    &#select_all, &#next_results
       float: right
       margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
 

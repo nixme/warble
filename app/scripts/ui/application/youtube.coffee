@@ -6,10 +6,11 @@ class YoutubeSearchView extends Backbone.View
   searchResultsTemplate: -> window.templates['youtube_results']
 
   events:
-    'click #youtube_search'                  : 'search'
-    'keypress input'                         : 'handleEnter'
-    'click #youtube_search_results a.entry'  : 'queueVideo'
-    'click #youtube_search_results a.paging' : 'movePage'
+    'click #youtube_search'    : 'search'
+    'keypress input'           : 'handleEnter'
+    'click a.entry'            : 'queueVideo'
+    'click a#previous_results' : 'previousPage'
+    'click a#next_results'     : 'nextPage'
 
   initialize: ->
     _.bindAll this, 'render', 'search', 'handleEnter', 'queueVideo', 'movePage'
@@ -29,11 +30,12 @@ class YoutubeSearchView extends Backbone.View
     if event.which == 13
       this.search event
 
-  movePage: (event) ->
-    if $(event.target).text() == 'Next'
-      @startIndex += @pageSize + 1
-    else
-      @startIndex -= @pageSize + 1
+  previousPage: (event) ->
+    @startIndex -= @pageSize + 1
+    this.search event
+
+  nextPage: (event) ->
+    @startIndex += @pageSize + 1
     this.search event
 
   search: (event) ->
