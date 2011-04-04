@@ -135,11 +135,11 @@ span.pictos
         font-size: 66px
 
     button
-      padding: 13px 14px 14px 51px
-      background: #333 url(/images/google_32.png) no-repeat 8px center
+      padding: 13px 10px 14px 45px
+      background: #333 url(/images/facebook_32.png) no-repeat 8px center
 
       &:hover
-        background: #111 url(/images/google_32.png) no-repeat 8px center
+        background: #111 url(/images/facebook_32.png) no-repeat 8px center
 
 // youtube player
 #ytplayer_wrapper
@@ -470,17 +470,23 @@ ul#songs
     border-top: 1px solid white
     border-bottom: 1px solid #ccc
 
+    img
+      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+      border: 1px solid #EEE
+
     .submitter
       float: right
-      margin: 25px 15px
-      font-size: 12px
+      margin: 17px 15px
+      font-size: 12px   // TODO: remove these text styles if we never put names
       text-transform: uppercase
       color: #444
       +text-shadow(white 0 1px 1px)
 
+      img
+        height: 24px
+        width: 24px
+
     img.cover
-      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-      border: 1px solid #EEE
       float: left
       height: 32px
       width: 32px
