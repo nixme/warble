@@ -3,6 +3,7 @@
 - crossfade
 - if someone adds a ton of songs, they shouldn't dominate the queue
 - likes/hearts -- add to notification too, reset notification timer if hovered
+- if connection reconnects, fetch everything from scratch in case we missed deltas while sleeping
 
 - More Services:
  - Rdio
