@@ -14,6 +14,7 @@ Warble::Application.routes.draw do
   resource :jukebox, :only => :show do    # TODO: change to resources for multiple jukeboxes
     get  'player', :on => :member
     post 'skip',   :on => :member
+    get  'search', :on => :member
     resources :songs, :only => [ :index, :create ]
   end
   namespace :pandora do

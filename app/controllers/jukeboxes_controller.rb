@@ -14,4 +14,10 @@ class JukeboxesController < ApplicationController
     Jukebox.app.skip!
     head :ok
   end
+
+  # TODO: move to more appropriate controller?
+  def search
+    results = Sunspot.search(Song) { keywords params[:query] }.results
+    respond_with results
+  end
 end

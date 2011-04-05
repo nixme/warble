@@ -13,6 +13,18 @@ class Song < Ohm::Model
 
   index :external_id
 
+  Sunspot.setup(self) do  # fields for full-text search
+    text :title
+    text :artist
+    text :album
+  end
+
+  def create              # override creates for indexing
+    song = super
+    Sunspot.index!(song) if song
+    song
+  end
+
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = find(:external_id => pandora_song.music_id).first
       song.incr :hits

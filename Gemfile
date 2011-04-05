@@ -6,6 +6,7 @@ gem 'rails', '3.0.5'
 gem 'hiredis'                         # ruby bindings for fast redis C lib
 gem 'redis'                           # ruby redis interface
 gem 'ohm'                             # simple ORM on redis
+gem 'sunspot_rails'                   # search through Solr
 
 # async processing
 gem 'resque', :require => 'resque/server'

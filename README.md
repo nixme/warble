@@ -33,6 +33,6 @@ OS X 10.6 instructions. Install the following:
 8. rvm gemset...
 
 9. To run: start redis, `coffee server.coffee`, `thin start`,
-   `COUNT=2 QUEUE=* rake resque:workers`
+   `COUNT=2 QUEUE=* rake resque:workers`, `rake sunspot:solr:start`
 
 10. Browse to <http://localhost:3000>

@@ -8,3 +8,4 @@ config/redis.yml
 *.swp
 .rvmrc
 public/songs
+solr
