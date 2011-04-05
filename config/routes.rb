@@ -22,4 +22,7 @@ Warble::Application.routes.draw do
       resources :songs, :only => :index
     end
   end
+
+  # resque admin interface
+  mount Resque::Server.new, :at => '/resque'
 end

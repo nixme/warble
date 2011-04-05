@@ -7,7 +7,7 @@ The intelligent office jukebox...
 Installation
 ------------
 
-OS X 10.6 only. Install the following:
+OS X 10.6 instructions. Install the following:
 
 1. [Xcode](http://developer.apple.com/tools/xcode/).
 2. [homebrew](http://mxcl.github.com/homebrew/).
@@ -32,6 +32,7 @@ OS X 10.6 only. Install the following:
 
 8. rvm gemset...
 
-9. To run: start redis, `cofee server.coffee` and `thin start`
+9. To run: start redis, `coffee server.coffee`, `thin start`,
+   `COUNT=2 QUEUE=* rake resque:workers`
 
 10. Browse to <http://localhost:3000>

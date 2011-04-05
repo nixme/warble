@@ -7,3 +7,4 @@ public/javascripts
 config/redis.yml
 *.swp
 .rvmrc
+public/songs

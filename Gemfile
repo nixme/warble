@@ -8,7 +8,8 @@ gem 'redis'                           # ruby redis interface
 gem 'ohm'                             # simple ORM on redis
 
 # async processing
-gem 'resque'
+gem 'resque', :require => 'resque/server'
+gem 'curb'                            # libcurl ruby bindings
 
 # auth
 gem 'omniauth'

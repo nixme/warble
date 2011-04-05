@@ -28,7 +28,8 @@ class Jukebox < Ohm::Model
     }.to_json)
   end
 
-  def add_song(song)                  # TODO: ensure transactional
+  def add_song(song, user)            # TODO: ensure transactional
+    song.lovers << user               # assume user adding to queue loves it
     upcoming << song                  # add song to end of queue
 
     # notify clients of new song

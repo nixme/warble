@@ -11,14 +11,12 @@ class SongsController < ApplicationController
     song_ids = params[:song_id]
     if song_ids
       song_ids.each do |song_id|
-        Jukebox.app.add_song(Song[song_id])
+        Jukebox.app.add_song(Song[song_id], current_user)
       end
       head :created
     elsif params[:youtube]
-      song = Song.from_youtube_params(params[:youtube])
-      song.user = current_user
-      song.save
-      Jukebox.app.add_song(song)
+      song = Song.find_or_create_from_youtube_params(params[:youtube], current_user)
+      Jukebox.app.add_song(song, current_user)
       head :created
     else
       head 500

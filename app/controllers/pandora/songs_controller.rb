@@ -6,17 +6,14 @@ class Pandora::SongsController < Pandora::BaseController
       station = current_user.pandora_client.stations.find { |s| s.id == params[:station_id] }
       pandora_songs = station.next_playlist   # grab 4 songs
 
-      # add songs to db
+      # convert pandora API objects to our song objects
       songs = pandora_songs.map do |pandora_song|
-        song = Song.from_pandora_song(pandora_song)
-        song.user = current_user
-        song.save
-        song
+        Song.find_or_create_from_pandora_song(pandora_song, current_user)
       end
+
       respond_with songs
     rescue   # assuming end of playlist here but should check for the right exception
       head 403
     end
   end
-
 end
