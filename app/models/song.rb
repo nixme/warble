@@ -8,6 +8,7 @@ class Song < Ohm::Model
   attribute :external_id  # external (youtube, pandora) id
   reference :user, User   # user who found the song (not necessarily added it)
   counter   :hits         # number of times this song was processed
+  counter   :plays        # number of times this song was played
   set :lovers, User       # users who liked the song
   set :haters, User       # users who disliked the song
 
@@ -21,7 +22,10 @@ class Song < Ohm::Model
 
   def create              # override creates for indexing
     song = super
-    Sunspot.index!(song) if song
+    if song
+      song.incr :hits     # new songs are considered processed once
+      Sunspot.index!(song)
+    end
     song
   end
 

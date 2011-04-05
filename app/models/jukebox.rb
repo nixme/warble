@@ -29,6 +29,7 @@ class Jukebox < Ohm::Model
   end
 
   def add_song(song, user)            # TODO: ensure transactional
+    song.incr :plays
     song.lovers << user               # assume user adding to queue loves it
     upcoming << song                  # add song to end of queue
 
