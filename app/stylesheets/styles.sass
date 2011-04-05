@@ -176,6 +176,7 @@ span.pictos
     #artist, #title
       +lato
       +text-shadow(#FFF 1px 1px 1px)
+      +ellipsis
 
     #artist
       font-size: 48px
@@ -185,6 +186,7 @@ span.pictos
     #title
       font-size: 36px
       color: #555
+      padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
 
 
 
@@ -255,6 +257,7 @@ header
     #artist, #title
       +lato
       +text-shadow(black 1px 1px 2px)
+      +ellipsis
       color: #EEE
 
     #artist
@@ -263,6 +266,8 @@ header
 
     #title
       font-size: 20px
+      padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
+
 
   #info
     float: right
