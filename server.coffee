@@ -14,7 +14,7 @@ redis = require('redis')
 server = http.createServer (req, res) ->
   res.writeHead 200, { 'Content-Type': 'text/html' }
   res.end 'Nothing to see here...'
-server.listen 8080
+server.listen 8765
 
 # attach socket.io server
 socket = io.listen server

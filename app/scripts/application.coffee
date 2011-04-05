@@ -101,7 +101,7 @@ jQuery(document).ready ($) ->
 
 
   socket = new io.Socket null,
-    port: 8080
+    port: 8765
     rememberTransport: false
   socket.connect()
   socket.on 'message', (raw_data) ->

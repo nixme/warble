@@ -6,7 +6,7 @@ jQuery(document).ready ($) ->
   window.jukebox.fetch()   # load current song to play
 
   socket = new io.Socket null,
-    port: 8080
+    port: 8765
     rememberTransport: false
   socket.connect()
   socket.on 'message', (raw_data) ->
