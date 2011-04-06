@@ -24,7 +24,7 @@ class Song < Ohm::Model
     song = super
     if song
       song.incr :hits     # new songs are considered processed once
-      Sunspot.index!(song)
+      Resque.enqueue(::IndexSong, song.id)   # send for async indexing
     end
     song
   end
