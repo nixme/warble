@@ -1,5 +1,7 @@
 <div class="submitter">
-  <img src="{{user/photo_url}}" />
+  {{#lovers}}
+  <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
+  {{/lovers}}
 </div>
 
 <img class="cover" src="{{cover_url}}" />
