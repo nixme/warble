@@ -17,7 +17,11 @@ class JukeboxesController < ApplicationController
 
   # TODO: move to more appropriate controller?
   def search
-    results = Sunspot.search(Song) { keywords params[:query] }.results
+    if params[:query].blank?
+      results = []
+    else
+      results = Sunspot.search(Song) { keywords params[:query] }.results
+    end
     respond_with results
   end
 end

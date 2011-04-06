@@ -392,7 +392,7 @@ header
         color: darken($secondary_a_dark, 15%)
         font-size: 18px
 
-  ul#pandora_songs
+  ul#pandora_songs, ul#search_results
     li
       padding: 10px 0
 
@@ -403,24 +403,25 @@ header
           width: 14px    // largest browser checkboxes
           height: 14px
 
-        .pandora_song
-          color: #444
-
-          img    // TODO: this is copied from the queue li's, consolidate them
-            float: left
-            height: 32px
-            width: 32px
-            margin-right: 10px
-            border: 1px solid #EEE
-            +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-
-        input:checked + .pandora_song   // darker titles for selected songs
+        input:checked + .song   // darker titles for selected songs
           color: black
 
-  #youtube_query
+      .song
+        color: #444
+
+        img    // TODO: this is copied from the queue li's, consolidate them
+          float: left
+          height: 32px
+          width: 32px
+          margin-right: 10px
+          border: 1px solid #EEE
+          +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+
+  #youtube_query, #search_query     // TODO: combine
     width: 220px
 
-  #youtube_search
+  #youtube_search, #library_search  // TODO: combine
     margin-left: 15px
 
   #youtube_search_results

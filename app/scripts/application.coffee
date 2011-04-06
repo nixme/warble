@@ -3,6 +3,7 @@ jQuery(document).ready ($) ->
     routes:
       ''                       : 'index'
       '!/'                     : 'home'
+      '!/search/:query'        : 'search'
       '!/pandora/stations'     : 'pandoraStations'
       '!/pandora/stations/:id' : 'pandoraSongs'
       '!/youtube'              : 'youtube'
@@ -11,6 +12,7 @@ jQuery(document).ready ($) ->
       # initialize app components
       @jukebox = new Jukebox   # TODO: switch to a single song model instead of full jukebox state
       @queue = new SongList
+      @searchView = new SearchView
       @stationList = new PandoraStationList
       @currentSongView ||= new CurrentSongView { model: @jukebox }
       @queueView ||= new QueueView { collection: @queue }
@@ -64,6 +66,11 @@ jQuery(document).ready ($) ->
 
     home: ->
       @serviceChooserView.render()
+
+    search: (query) ->
+      #if query?
+        # TODO: fill in
+      @searchView.render()
 
     pandoraStations: ->
       this.showSpinner()
