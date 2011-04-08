@@ -11,6 +11,7 @@ class QueueView extends Backbone.View
     $(@el).append view.render().el
 
   addAll: ->
+    $(@el).html ''
     @collection.each @addSong
 
   removeSong: (song) ->

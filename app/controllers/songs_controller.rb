@@ -3,11 +3,10 @@ class SongsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Jukebox.app.upcoming.all
+    respond_with Jukebox.app.upcoming.zrange(0, -1).map(&Song)
   end
 
   def create
-    # TODO: allow inserting at top of queue
     song_ids = params[:song_id]
     if song_ids
       song_ids.each do |song_id|

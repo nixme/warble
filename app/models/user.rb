@@ -7,6 +7,8 @@ class User < Ohm::Model
   attribute :photo_url
   attribute :pandora_username
   attribute :pandora_password
+  attribute :num_songs_queued_today
+  attribute :date_last_queued
 
   index :facebook_id
 

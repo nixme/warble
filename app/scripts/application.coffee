@@ -114,8 +114,8 @@ jQuery(document).ready ($) ->
   socket.on 'message', (raw_data) ->
     data = JSON.parse(raw_data)
     switch data.event
-      when 'add'
-        window.workspace.queue.add data.song
+      when 'refresh'
+        window.workspace.queue.refresh data.songs
       when 'skip'
         window.workspace.skip data.jukebox
       when 'reload'
