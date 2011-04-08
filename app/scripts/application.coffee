@@ -115,7 +115,8 @@ jQuery(document).ready ($) ->
     data = JSON.parse(raw_data)
     switch data.event
       when 'add'
-        window.workspace.queue.add data.song
+        window.workspace.queue.refresh _.map data.songs, (song) ->
+          new Song(song)
       when 'skip'
         window.workspace.skip data.jukebox
       when 'reload'
