@@ -319,11 +319,11 @@ header
 #spinner
   display: none
   background: rgba(0, 0, 0, 0.3)
-  border-right: 2px solid #777
+  width: 353px  // 3px over #add's width for its border
 
   img
     float: right
-    margin: -15px -15px 0 0
+    margin: -15px -10px 0 0
     -webkit-animation-name: spin
     -webkit-animation-duration: 1s
     -webkit-animation-iteration-count: infinite
@@ -334,7 +334,15 @@ header
   overflow: auto
   background: #bbb url(/images/add_bg.png)
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
-  border: 1px solid #ccc
+  border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
+
+  &::-webkit-scrollbar
+    width: 6px
+  &::-webkit-scrollbar-track
+    margin: 10px
+  &::-webkit-scrollbar-thumb
+    background: rgba(0, 0, 0, 0.5)
+    -webkit-border-radius: 3px
 
   *:not(.button):not(h2)
     font-size: 13px
