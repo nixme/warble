@@ -22,6 +22,7 @@ javascripts:
     - public/javascripts/vendor/backbone.js
     - public/javascripts/vendor/handlebars-0.9.0.pre.4.js
     - public/javascripts/vendor/jquery.mapkey.js
+    - public/javascripts/vendor/tooltip.js
   application:
     - app/views/application/*.mustache
     - public/javascripts/models/*.js

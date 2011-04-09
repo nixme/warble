@@ -9,6 +9,10 @@ class SongView extends Backbone.View
 
   render: ->
     $(@el).html @template()(@model.toJSON())
+    this.$('.submitter img[title]').tooltip
+      effect:   'fade'
+      position: 'bottom right'
+      offset:   [5, -26]
     this
 
   remove: ->
