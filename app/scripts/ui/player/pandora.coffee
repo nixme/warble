@@ -7,10 +7,10 @@ class PandoraPlayerView extends Backbone.View
     @model.bind 'change', @render
 
   render: ->
-    if @model.current_song()?.source != 'pandora'
+    if @model.current_song()?.source == 'youtube'
       # need to kill the current player in case of skip
       $(@el).html ''
-    else
+    else   # pandora or hypem
       $(@el).html this.template() current: @model.current_song()
       this.$('audio').bind 'canplay', -> this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
       this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it

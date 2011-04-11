@@ -4,6 +4,12 @@
 - if someone adds a ton of songs, they shouldn't dominate the queue
 - likes/hearts -- add to notification too, reset notification timer if hovered
 - if connection reconnects, fetch everything from scratch in case we missed deltas while sleeping
+- if queue refreshes while hovering on tooltip, the tooltip doesn't dissapear on mouseleave
+- switch from Curb to Patron
+- use these icons for services: http://www.alexpeattie.com/projects/justvector_icons/#license
+- for hypem songs, after download, update artist and title from id3tag if better than existing
+- if the player can't play a song, it should signal which marks the song as bad and puts in a review queue
+- maybe for hypem songs that didn't meta properly, throw in queue for re-retrieival?
 
 - More Services:
  - Rdio

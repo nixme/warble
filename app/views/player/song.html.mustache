@@ -1,6 +1,8 @@
 {{#current}}
   <audio src="{{url}}" type="audio/mp3" autoplay />
+  {{#cover_url}}
   <img id="cover" src="{{cover_url}}" />
+  {{/cover_url}}
   <div id="artist">{{artist}}</div>
   <div id="title">{{title}}</div>
 {{^}}

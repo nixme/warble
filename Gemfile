@@ -26,6 +26,9 @@ gem 'jammit'                          # asset packaging
 
 # misc
 gem 'crypt19'                         # for pandora encryption
+gem 'nokogiri'                        # HTML parsing
+gem 'patron'                          # libcurl (HTTP) ruby bindings
+gem 'therubyracer'                    # embedded V8 engine, used for scraping
 
 
 group :development do

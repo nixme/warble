@@ -1,25 +1,35 @@
 jQuery(document).ready ($) ->
   class WorkspaceController extends Backbone.Controller
     routes:
-      ''                       : 'index'
-      '!/'                     : 'home'
-      '!/search/:query'        : 'search'
-      '!/pandora/stations'     : 'pandoraStations'
-      '!/pandora/stations/:id' : 'pandoraSongs'
-      '!/youtube'              : 'youtube'
+      ''                            : 'index'
+      '!/'                          : 'home'
+      '!/search/:query'             : 'search'
+      '!/pandora/stations'          : 'pandoraStations'
+      '!/pandora/stations/:id'      : 'pandoraSongs'
+      '!/youtube'                   : 'youtube'
+      '!/hype'                      : 'hypeChooser'
+      '!/hype/latest/:page'         : 'hypeLatest'
+      '!/hype/popular/3days/:page'  : 'hypePopular3Days'
+      '!/hype/popular/week/:page'   : 'hypePopularWeek'
+      '!/hype/:user/:page'          : 'hypeUser'
 
     initialize: ->
-      # initialize app components
-      @jukebox = new Jukebox   # TODO: switch to a single song model instead of full jukebox state
-      @queue = new SongList
-      @searchView = new SearchView
+      # initialize models/collections
+      @jukebox     = new Jukebox   # TODO: switch to a single song model instead of full jukebox state
+      @queue       = new SongList
+      @searchView  = new SearchView
       @stationList = new PandoraStationList
-      @currentSongView ||= new CurrentSongView { model: @jukebox }
-      @queueView ||= new QueueView { collection: @queue }
-      @serviceChooserView ||= new ServiceChooserView
-      @pandoraAuthView ||= new PandoraCredentialsView
-      @pandoraStationsView ||= new PandoraStationsView { collection: @stationList }
-      @youtubeSearchView ||= new YoutubeSearchView
+      @hypeSongs   = new HypeSongList
+
+      # initialize views
+      @currentSongView     = new CurrentSongView model: @jukebox
+      @queueView           = new QueueView collection: @queue
+      @serviceChooserView  = new ServiceChooserView
+      @pandoraAuthView     = new PandoraCredentialsView
+      @pandoraStationsView = new PandoraStationsView collection: @stationList
+      @youtubeSearchView   = new YoutubeSearchView
+      @hypeChooserView     = new HypeFeedsView
+      @hypeSongsView       = new HypeSongsView collection: @hypeSongs
 
       # load data
       @jukebox.fetch()
@@ -101,6 +111,37 @@ jQuery(document).ready ($) ->
 
     youtube: ->
       @youtubeSearchView.render()
+
+    hypeChooser: ->
+      @hypeChooserView.render()
+
+
+    # TODO: dry up these hype view flows
+
+    hypeLatest: (page = 1) ->
+      this.showSpinner()
+      @hypeSongs.feed = 'Latest'
+      @hypeSongs.url = "/hype?feed=latest&page=#{encodeURIComponent(page)}"
+      @hypeSongs.fetch()
+
+    hypePopular3Days: (page = 1) ->
+      this.showSpinner()
+      @hypeSongs.feed = 'Popular - Last 3 Days'
+      @hypeSongs.url = "/hype?feed=popular&time=3days&page=#{encodeURIComponent(page)}"
+      @hypeSongs.fetch()
+
+    hypePopularWeek: (page = 1) ->
+      this.showSpinner()
+      @hypeSongs.feed = 'Popular - Last Week'
+      @hypeSongs.url = "/hype?feed=popular&time=week&page=#{encodeURIComponent(page)}"
+      @hypeSongs.fetch()
+
+    hypeUser: (user, page = 1) ->
+      this.showSpinner()
+      @hypeSongs.feed = "#{user}'s Songs"
+      @hypeSongs.url = "/hype?username=#{encodeURIComponent(user)}&page=#{encodeURIComponent(page)}"
+      @hypeSongs.fetch()
+
 
   window.workspace = new WorkspaceController
   Backbone.history.start()

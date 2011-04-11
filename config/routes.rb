@@ -24,6 +24,8 @@ Warble::Application.routes.draw do
     end
   end
 
+  match 'hype' => 'hype#index'
+
   # resque admin interface
   mount Resque::Server.new, :at => '/resque'
 end

@@ -1,4 +1,4 @@
-class ArchivePandoraSong
+class ArchiveSong
   @queue = :download
 
   def self.perform(song_id)
