@@ -198,10 +198,11 @@ header, footer
 
 header
   //+background-image(linear-gradient(#333, #111))
-  background: url(/images/bar_bg.png) repeat-x
+  +background-image(linear-gradient(#333, #111))
   +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
   width: 100%
   height: 100px
+  z-index: 1
 
   &:before
     content: ' '
@@ -219,9 +220,13 @@ header
     margin: 15px 20px
 
   #controls
-    width: 145px
-    padding-top: 3px   // helps vertically center
     line-height: 70px
+    right: 50%
+    margin-right: -480px
+    padding-top: 3px   // helps vertically center
+    position: fixed
+    width: 100px
+    z-index: 1
 
     a
       display: inline-block
@@ -246,7 +251,16 @@ header
         +text-shadow(#222 0 -1px 1px)
 
   #playing
-    width: 600px
+    position: fixed
+    right: 50%
+    top: -11px
+    width: 524px
+    z-index: -1
+    margin-right: -480px
+    padding: 12px
+    border: 1px solid rgba(150, 150, 150, 0.1)
+    +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+    +background-image(linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)))
 
     img#cover
       float: left
@@ -272,7 +286,9 @@ header
 
 
   #info
-    float: right
+    left: 50%
+    margin-left: -480px
+    position: fixed
 
     h1
       font-size: 36px
@@ -282,7 +298,7 @@ header
 
     #profile
       margin-top: 10px
-      text-align: right
+      text-align: left
       color: #ccc
       font-size: 14px
 
@@ -312,9 +328,10 @@ header
   position: fixed
   top: 100px
   bottom: 0
-  left: 750px
+  left: 50%
+  margin-left: -480px
   padding: 25px
-  width: 350px
+  width: 354px
 
 #spinner
   display: none
@@ -334,7 +351,7 @@ header
   overflow: auto
   background: #bbb url(/images/add_bg.png)
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
-  border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
+  border-right: 7px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
 
   &::-webkit-scrollbar
     width: 6px
@@ -468,17 +485,20 @@ header
   width: 550px
 
 #queue
-  position: fixed
-  top: 100px
-  left: 200px
-  bottom: 0
   background: #DDD
+  bottom: 0
+  margin-right: -480px
+  position: fixed
+  right: 50%
+  top: 100px
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
   z-index: -1   // below ul#songs, above #add
 
 ul#songs
-  margin-left: 200px
+  margin-right: -480px
   padding: 100px 0 0 0
+  position: absolute
+  right: 50%
 
   li
     +background-image(linear-gradient(#eee, #ddd))
