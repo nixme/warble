@@ -1,9 +1,17 @@
 {{#current}}
-  {{#cover_url}}
-  <img id="cover" src="{{cover_url}}" />
-  {{/cover_url}}
-  <div id="artist">{{artist}}</div>
-  <div id="title">{{title}}</div>
+  <div class="song_info">
+    {{#cover_url}}
+      <img id="cover" src="{{cover_url}}" />
+    {{/cover_url}}
+    <div id="artist">{{artist}}</div>
+    <div id="title">{{title}}</div>
+  </div>
+
+  <div class="submitter">
+  {{#lovers}}
+    <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
+  {{/lovers}}
+</div>
 {{^}}
   <div id="artist">No songs in queue</div>
 {{/current}}
