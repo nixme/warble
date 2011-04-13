@@ -8,4 +8,8 @@ class CurrentSongView extends Backbone.View
 
   render: ->
     $(@el).html this.template()(@model.toJSON())
+    this.$('.submitter img[title]').tooltip  # TODO: dry up with SongView
+      effect:   'fade'
+      position: 'bottom right'
+      offset:   [5, -34]
     this
