@@ -118,6 +118,7 @@ GEM
       oa-oauth (= 0.2.0)
       oa-openid (= 0.2.0)
     open4 (1.0.1)
+    patron (0.4.11)
     polyglot (0.3.1)
     pr_geohash (1.0.0)
     pyu-ruby-sasl (0.0.3.2)
@@ -170,6 +171,7 @@ GEM
     sunspot_rails (1.2.1)
       nokogiri
       sunspot (= 1.2.1)
+    therubyracer (0.8.1)
     thin (1.2.11)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -197,11 +199,14 @@ DEPENDENCIES
   haml (= 3.1.0.alpha.147)
   hiredis
   jammit
+  nokogiri
   ohm
   omniauth
+  patron
   rails (= 3.0.5)
   redis
   resque
   sass (= 3.1.0.alpha.252)
   sunspot_rails
+  therubyracer
   thin

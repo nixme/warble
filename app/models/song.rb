@@ -44,7 +44,7 @@ class Song < Ohm::Model
         external_id: pandora_song.music_id,
         user:        submitter
       })
-      Resque.enqueue(::ArchivePandoraSong, song.id)  # send for async download
+      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
       song
     end
   end
@@ -62,6 +62,25 @@ class Song < Ohm::Model
         external_id: params[:youtube_id],
         user:        submitter
       })
+    end
+  end
+
+
+  def self.find_or_create_from_hype_song(hype_song, submitter)
+    if song = find(:external_id => hype_song.id).first
+      song.incr :hits
+      song
+    else
+      song = Song.create({
+        source:      'hypem',
+        title:       hype_song.title,
+        artist:      hype_song.artist,
+        url:         hype_song.url,
+        external_id: hype_song.id,
+        user:        submitter
+      })
+      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
+      song
     end
   end
 

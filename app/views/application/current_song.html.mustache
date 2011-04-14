@@ -1,5 +1,13 @@
 {{#current}}
+  <div class="submitter">
+  {{#lovers}}
+    <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
+  {{/lovers}}
+  </div>
+
+  {{#if cover_url}}
   <img id="cover" src="{{cover_url}}" />
+  {{/if}}
   <div id="artist">{{artist}}</div>
   <div id="title">{{title}}</div>
 {{^}}

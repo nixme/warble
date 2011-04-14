@@ -1,0 +1,29 @@
+<div class="breadcrumbs">
+  <a href="#!/">Sources</a>
+  &raquo;
+  <a href="#!/hype">The Hype Machine</a>
+  &raquo;
+  <span class="current">{{feed}}</span>
+</div>
+
+<h2>{{feed}}</h2>
+
+<ul id="search_results">
+  {{#songs}}
+  <li>
+    <a href="#" class="result" data-id="{{id}}">
+      <div class="song">
+        <div class="artist">{{artist}}</div>
+        <div class="title">{{title}}</div>
+      </div>
+    </a>
+  </li>
+  {{/songs}}
+</ul>
+
+{{#if hasNext}}
+  <a href="#" class="paging button" id="next_results">
+    Next
+    <span class="pictos">]</span>
+  </a>
+{{/if}}

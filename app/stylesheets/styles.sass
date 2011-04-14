@@ -257,18 +257,30 @@ header
     width: 524px
     z-index: -1
     margin-right: -480px
-    padding: 12px
+    padding: 12px 106px 12px 12px
     border: 1px solid rgba(150, 150, 150, 0.1)
     +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
     +background-image(linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)))
+    width: 430px
+
+    img
+      border: 1px solid #666
+      +box-shadow(black 1px 1px 5px)
+
+    .submitter
+      float: right
+      margin: 17px 15px
+
+      img
+        height: 32px
+        width: 32px
+        margin-right: 5px
 
     img#cover
       float: left
       height: 64px
       width: 64px
       margin-right: 20px
-      border: 1px solid #555
-      +box-shadow(black 1px 1px 4px)
 
     #artist, #title
       +lato
@@ -283,7 +295,6 @@ header
     #title
       font-size: 20px
       padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
-
 
   #info
     left: 50%
@@ -336,7 +347,7 @@ header
 #spinner
   display: none
   background: rgba(0, 0, 0, 0.3)
-  width: 353px  // 3px over #add's width for its border
+  width: 360px  // 3px over #add's width for its border + 7px right-border on #add
 
   img
     float: right
@@ -448,7 +459,7 @@ header
   #youtube_query, #search_query     // TODO: combine
     width: 220px
 
-  #youtube_search, #library_search  // TODO: combine
+  #youtube_search, #library_search, #username_search  // TODO: combine
     margin-left: 15px
 
   #youtube_search_results
@@ -538,7 +549,7 @@ ul#songs
 
   &:after
     // TODO: helvetica neue with text-shadow here
-    content: 'Hey you!\00a0\00a0 Add some songs from there\00a0\00a0\2192'
+    content: '\2190\00a0\00a0Hey you!\00a0\00a0 Add some songs from there'
     display: block
     border-top: 1px solid white
     padding: 20px 0
