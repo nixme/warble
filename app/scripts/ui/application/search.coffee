@@ -12,7 +12,7 @@ class SearchView extends Backbone.View
     _.bindAll this, 'render', 'search', 'handleEnter', 'queueVideo'
     @collection = new SearchList
     @collection.bind 'all', @render
-    @el = $('#add')
+    @el = $('#add .content')
 
   render: ->
     $(@el).html @template()

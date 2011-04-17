@@ -6,8 +6,8 @@ class PandoraStationsView extends Backbone.View
 
   initialize: ->
     _.bindAll this, 'render', 'logout'
-    @el = $('#add')
-
+    @el = $('#add .content')
+      
   render: ->
     $(@el).html @template()
       stations: @collection.toJSON()

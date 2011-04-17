@@ -7,7 +7,7 @@ class HypeFeedsView extends Backbone.View
 
   initialize: ->
     _.bindAll this, 'render', 'usernameSearch', 'handleEnter'
-    @el = $('#add')
+    @el = $('#add .content')
 
   render: ->
     $(@el).html @template()

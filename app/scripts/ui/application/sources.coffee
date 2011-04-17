@@ -1,7 +1,7 @@
 class ServiceChooserView extends Backbone.View
   initialize: ->
     _.bindAll this, 'render'
-    @el = $('#add')
+    @el = $('#add .content')
 
   template: -> window.templates['sources']
 

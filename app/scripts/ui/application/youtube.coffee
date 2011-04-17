@@ -14,7 +14,7 @@ class YoutubeSearchView extends Backbone.View
 
   initialize: ->
     _.bindAll this, 'render', 'search', 'handleEnter', 'queueVideo', 'movePage'
-    @el = $('#add')
+    @el = $('#add .content')
 
     @searchData = null
     @query      = ''

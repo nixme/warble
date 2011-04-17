@@ -5,7 +5,7 @@ class PandoraCredentialsView extends Backbone.View
 
   initialize: ->
     _.bindAll this, 'render', 'save'
-    @el = $('#add')
+    @el = $('#add .content')
 
   template: -> window.templates['pandora_credentials']
 

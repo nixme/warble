@@ -8,7 +8,7 @@ class PandoraSongsView extends Backbone.View
 
   initialize: ->
     _.bindAll this, 'render', 'addSongs', 'getMore', 'selectAll'
-    @el = $('#add')
+    @el = $('#add .content')
 
   render: ->
     $(@el).html @template()

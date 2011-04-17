@@ -8,7 +8,7 @@ class HypeSongsView extends Backbone.View
   initialize: ->
     _.bindAll this, 'render', 'queueSong'
     @collection.bind 'all', @render
-    @el = $('#add')
+    @el = $('#add .content')
 
   render: ->
     $(@el).html @template()
