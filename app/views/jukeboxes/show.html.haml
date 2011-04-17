@@ -1,8 +1,7 @@
 %header
   #info
     %h1
-      %span.pictos m
-      Warble
+      = image_tag "logo.png"
     #profile
       %span#toolbar
         %a#settings(href='#' title='Settings') y
@@ -13,12 +12,13 @@
     %a#forward(href='#') 7
 
   #playing
-
+    .content
 #add
-#spinner
-  %img(src='/images/spinner.png')
-#queue
-%ul#songs
+  .content
+  .spinner
+    %img(src='/images/spinner.png')
+#queue  
+  %ul#songs
 
 - content_for :scripts do
   = include_javascripts :application
