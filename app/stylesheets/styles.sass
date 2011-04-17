@@ -7,13 +7,13 @@
 @import '_tooltips'
 
 @mixin lato
-  font-family: Lato, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
   font-weight: 300
 
 
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $primary:              #F90022
-$secondary_a:          #FF7A00
+$secondary_a:          #FDBE09
 $secondary_b:          #02B4CD
 $complementary:        #39EB00
 
@@ -42,27 +42,37 @@ $default-transition-duration: 0.2s
 
 
 // general styles
-
-body
-  background: $secondary_b_darkest url(/images/primary_bg.png) fixed
+         
+html
+  margin: 0px
+  padding: 0px
+  background-color: #333
   color: #555
-  position: relative
   z-index: -9
-  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
-
+  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif  
+  font-size: 16px                                                             
+  
+body    
+  
+  height: 100%
   // gradient fade over background
   &:before
     content: ' '
-    position: fixed
     z-index: -10
     top: 0
     bottom: 0
     width: 100%
-    +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
+    // +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
 
 a
   text-decoration: none
-  +link-colors(#333, $primary, $primary, #333, #333)
+  // +link-colors(#333, $primary, $primary, #333, #333)
+
+.flex 
+  position: relative 
+  height: 100%
+  width: 100% 
+  display: block
 
 input
   padding: 10px
@@ -76,20 +86,19 @@ input, button, .button
 button, .button
   display: inline-block
   position: relative
-  padding: 8px 14px 9px
-  color: white
-  background: #222
-  +border-radius(5px)
-  +box-shadow(rgba(0, 0, 0, 0.5) 0 1px 3px)
-  +text-shadow(rgba(0, 0, 0, 0.25) 0 -1px 1px)
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25)
-  font-size: 18px
+  padding: 1ex 2ex
+  color: #111
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#E4E4E4), color-stop(.05, #F4F4F4))  
+  +border-radius(2px)
+  +text-shadow(rgba(255, 255, 255, 0.25) 0 1px 1px)
+  box-shadow: rgba(0, 0, 0, .15) 1px 1px 4px
+  border: 1px solid rgba(0, 0, 0, .35)
+  font-size: 14px
   line-height: 1
   cursor: pointer
 
   &:hover
-    background: #111
-    color: white
+    background: darken($secondary_a, 2)
     +transition
 
   &:active
@@ -111,8 +120,8 @@ span.pictos
 
 
 #loginboxwrapper
-  position: fixed
-  top: 50%
+  position: absolute
+  top: 30%
   left: 50%
 
 // login page
@@ -190,42 +199,23 @@ span.pictos
       color: #555
       padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
 
-
-
-// app
-header, footer
-  position: fixed
-
 header
   //+background-image(linear-gradient(#333, #111))
-  +background-image(linear-gradient(#333, #111))
+  +background-image(linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.4)))
   +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
   width: 100%
   height: 100px
   z-index: 1
 
-  &:before
-    content: ' '
-    display: block
-    background: url(/images/stripe.png) repeat-x
-    height: 4px
-    +box-shadow(rgba(0, 0, 0, 0.7) 0 1px 7px)
-
   #controls, #playing
-    display: inline-block
     vertical-align: top
+    float: left
     height: 70px
-
-  #controls, #playing, #info
-    margin: 15px 20px
 
   #controls
     line-height: 70px
-    right: 50%
-    margin-right: -480px
     padding-top: 3px   // helps vertically center
-    position: fixed
-    width: 100px
+    width: 100px    
     z-index: 1
 
     a
@@ -250,18 +240,17 @@ header
         color: white
         +text-shadow(#222 0 -1px 1px)
 
-  #playing
-    position: fixed
-    right: 50%
-    top: -11px
-    width: 524px
+  #playing   
+    float: right
+    width: 35%  
+    height: 100%  
     z-index: -1
-    margin-right: -480px
-    padding: 12px 106px 12px 12px
     border: 1px solid rgba(150, 150, 150, 0.1)
     +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
     +background-image(linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)))
-    width: 430px
+    
+    .content
+      padding: 12px
 
     img
       border: 1px solid #666
@@ -297,10 +286,9 @@ header
       padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
 
   #info
-    left: 50%
-    margin-left: -480px
-    position: fixed
-
+    width: 100px  
+    display: inline-block
+   
     h1
       font-size: 36px
 
@@ -333,47 +321,52 @@ header
   font-weight: bold
   padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
 
-
-
-#add, #spinner
-  position: fixed
-  top: 100px
-  bottom: 0
-  left: 50%
-  margin-left: -480px
-  padding: 25px
-  width: 354px
-
-#spinner
-  display: none
-  background: rgba(0, 0, 0, 0.3)
-  width: 360px  // 3px over #add's width for its border + 7px right-border on #add
-
+ 
+.spinner
+  position: absolute   
+  left: 0px
+  top: 0px
+  display: none 
+  background: rgba(0, 0, 0, 0.5)
+  width: 100%
+  height: 100% 
+  
   img
-    float: right
-    margin: -15px -10px 0 0
+    margin: 30% 45%
     -webkit-animation-name: spin
     -webkit-animation-duration: 1s
     -webkit-animation-iteration-count: infinite
     -webkit-animation-timing-function: linear
+    
+#add, #queue
+  height: 700px!important
+    
 
 #add
+  float: left
+  width: 65%  
+  height: 100%
+  
+  .content 
+    padding: 25px
+
+  position: relative
   z-index: -3
   overflow: auto
-  background: #bbb url(/images/add_bg.png)
+  background: #ddd
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
-  border-right: 7px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
 
-  &::-webkit-scrollbar
+  &::-webkit-scrollbar  
     width: 6px
   &::-webkit-scrollbar-track
-    margin: 10px
-  &::-webkit-scrollbar-thumb
-    background: rgba(0, 0, 0, 0.5)
+    padding: 12px
+    background: rgba(0, 0, 0, 0.3)
+  &::-webkit-scrollbar-thumb   
+    background: rgba(0, 0, 0, 0.3)
     -webkit-border-radius: 3px
 
   *:not(.button):not(h2)
-    font-size: 13px
+    font-size: 15px
     +text-shadow(#DDD 0 1px 1px)
 
   .breadcrumbs
@@ -383,17 +376,16 @@ header
       color: #333
     .current
       font-weight: bold
-      color: $secondary_b_darkest
 
   h2, ul#sources a
-    +lato
+    // +lato
     font-size: 24px
     color: #111
     padding-bottom: 7px
     +text-shadow(#CCC 0 1px 1px)
 
   p
-    font-size: 14px
+    font-size: 16px
 
   p, ul, form
     margin-top: 10px
@@ -420,15 +412,8 @@ header
 
   ul#pandora_stations
     li
-      font-weight: bold
-      padding: 10px
-
-      &:before
-        @extend span.pictos
-        margin-right: 7px
-        content: 'm'
-        color: darken($secondary_a_dark, 15%)
-        font-size: 18px
+      // font-weight: bold
+      padding: 10px 0px
 
   ul#pandora_songs, ul#search_results
     li
@@ -464,13 +449,14 @@ header
 
   #youtube_search_results
     li  // TODO: combine with pandora_songs list
-      height: 48px
+      height: 72px
       padding: 10px 0
+      float: left
+      width: 50%
 
       img   // TODO: compied from pandora_songs list, consolidate them
-        float: left
-        height: 48px
-        width: 48px
+        float: left  
+        width: 100px
         margin-right: 10px
         border: 1px solid #EEE
         +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
@@ -479,38 +465,22 @@ header
         margin-top: 10px
 
   a.button
-    font-size: 13px
-    background: $secondary_a_dark
-    color: white
-    padding: 5px 12px 6px
-    margin-right: 10px   // TODO: necessary?
-
-    &:hover
-      background: darken($secondary_a_dark, 10%)
-
     &#select_all, &#next_results
       float: right
       margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
 
-#queue, ul#songs
-  width: 550px
+#queue
+  float: left
+  width: 35%
+  height: 100%
+  
 
 #queue
   background: #DDD
-  bottom: 0
-  margin-right: -480px
-  position: fixed
-  right: 50%
-  top: 100px
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
   z-index: -1   // below ul#songs, above #add
 
 ul#songs
-  margin-right: -480px
-  padding: 100px 0 0 0
-  position: absolute
-  right: 50%
-
   li
     +background-image(linear-gradient(#eee, #ddd))
     height: 62px
@@ -559,3 +529,10 @@ ul#songs
     text-transform: uppercase
     color: #AFAFAF
     +text-shadow(white 0 1px 0px)
+
+
+.clear 
+  width: 100%
+  height: 0px 
+  display: block
+  clear: both
