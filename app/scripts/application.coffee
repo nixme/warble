@@ -1,4 +1,4 @@
-jQuery(document).ready ($) ->
+jQuery(document).ready ($) ->     
   class WorkspaceController extends Backbone.Controller
     routes:
       ''                            : 'index'
@@ -52,6 +52,12 @@ jQuery(document).ready ($) ->
               @notify = (window.webkitNotifications.checkPermission() == 0)
         event.preventDefault()
 
+    entitle: (title) ->
+      if title
+        document.title = "#{title} - warble"
+      else
+        document.title = "warble"
+        
     skip: (jukebox) ->
       @jukebox.set jukebox              # update current song
       promoted_song = @queue.at(0)
@@ -68,31 +74,49 @@ jQuery(document).ready ($) ->
         notification.show()
 
     # TODO: move to the proper single #app view
-    showSpinner: -> $('#spinner').fadeIn()
-    hideSpinner: -> $('#spinner').fadeOut()
+    showSpinner: -> 
+      console.warn "This command is no longer supported."
+    hideSpinner: -> 
+      console.warn "This command is no longer supported."
+      
+    show_spinner_for: (view) -> 
+      if view.el.next('.spinner')
+        view.el.next('.spinner').show()
+      else
+        console.warn "No spinner configured for view."
+        console.log view.inspect  
+    hide_spinner_for: (view) ->
+      if view.el.next('.spinner')
+        view.el.next('.spinner').fadeOut()
+        
 
     index: ->
+      @entitle()
       window.location.hash = '!/'
 
-    home: ->
+    home: ->  
       @serviceChooserView.render()
 
     search: (query) ->
+      @entitle "Search"
       #if query?
         # TODO: fill in
       @searchView.render()
 
-    pandoraStations: ->
-      this.showSpinner()
+    pandoraStations: -> 
+      @entitle 'Pandora'
+      @show_spinner_for @pandoraStationsView
       @stationList.fetch
         success: =>
           @pandoraStationsView.render()
-          this.hideSpinner()
+#          this.hideSpinner()
+          @hide_spinner_for @pandoraStationsView
         error: =>
           @pandoraAuthView.render()
-          this.hideSpinner()
+          @hide_spinner_for @pandoraStationsView
 
-    pandoraSongs: (id) ->
+    pandoraSongs: (id) ->  
+      @entitle 'Pandora'
       station = @stationList.get(id)
       if not station?   # can happen on page load directly to here, TODO: doesn't work
         @stationList.fetch()
@@ -110,9 +134,11 @@ jQuery(document).ready ($) ->
         window.location.hash = '!/pandora/stations'
 
     youtube: ->
+      @entitle 'Pandora'
       @youtubeSearchView.render()
 
     hypeChooser: ->
+      @entitle 'HypeM'
       @hypeChooserView.render()
 
 
@@ -145,7 +171,7 @@ jQuery(document).ready ($) ->
 
   window.workspace = new WorkspaceController
   Backbone.history.start()
-
+  
 
 
   socket = new io.Socket null,
@@ -161,7 +187,7 @@ jQuery(document).ready ($) ->
         window.workspace.skip data.jukebox
       when 'reload'
         window.location.reload true
-
+    
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
     console.log 'Enter key pressed'
