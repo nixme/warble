@@ -1,4 +1,5 @@
 jQuery(document).ready ($) ->
+  document.title = "Warble Player"
   window.jukebox = new Jukebox
   window.pandoraPlayer = new PandoraPlayerView model: window.jukebox
   window.youtubePlayer = new YoutubePlayerView model: window.jukebox
