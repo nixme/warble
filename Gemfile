@@ -32,5 +32,6 @@ gem 'therubyracer'                    # embedded V8 engine, used for scraping
 
 
 group :development do
-  gem 'thin'
+  gem 'thin'                          # web server
+  gem 'capistrano'                    # deployment helpers
 end

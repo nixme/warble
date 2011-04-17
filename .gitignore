@@ -4,6 +4,7 @@ log/*.log
 tmp/
 public/stylesheets
 public/javascripts
+public/assets
 config/redis.yml
 *.swp
 .rvmrc
