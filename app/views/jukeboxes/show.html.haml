@@ -9,12 +9,18 @@
     %a#play(href='#') 4
     %a#forward(href='#') 7
 #add
-  .uibutton-toolbar
+  .uibutton-toolbar.top
     = link_to "Logout of Warble", :logout, class: 'uibutton confirm'
     .uibutton-group
       = link_to "Settings", "#settings", class: 'uibutton'
-      = link_to "Themes", "#themes", class: 'uibutton'
-      = link_to "Enable Notifications", "#themes", class: 'uibutton', id: 'enable_notifications'
+      =# link_to "Themes", "#themes", class: 'uibutton', id: 'themes'
+      %select.uibutton#themes
+        %option Theme: San Francisco
+        %option Theme: Pittsburgh
+        %option Theme: Point Reyes
+        %option Theme: Universe
+        
+      = link_to "Enable Notifications", "#notification", class: 'uibutton', id: 'enable_notifications'
   .content
   .spinner
     %img(src='/images/spinner.png')
@@ -23,4 +29,4 @@
 .clear
       
 - content_for :scripts do
-  = include_javascripts :application
+  = include_javascripts :application, :backstretch

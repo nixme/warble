@@ -4,6 +4,7 @@
 
 @import '_tooltips'
 @import '_fbutton'
+@import 'player'
 
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $primary:              #F90022
@@ -56,11 +57,13 @@ body
     top: 0
     bottom: 0
     width: 100%
-    // +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
 
 a
   text-decoration: none
-  // +link-colors(#333, $primary, $primary, #333, #333)
+  // +link-colors(#333, $primary, $primary, #333, #333)  
+  
+h2, h3, h4, h5
+  margin: 2ex 0ex
 
 .flex 
   position: relative 
@@ -68,10 +71,14 @@ a
   width: 100% 
   display: block
 
-input[type=text]
-  padding: 10px
-  font-size: 14px
-  color: #555
+input[type=text] 
+  -webkit-appearance: none
+  border: 1px solid #888
+  padding: 4px 
+  padding-bottom: 3px
+  font-size: 13px
+  color: #555  
+  margin: 0px
 
 button, .button
   @extend .uibutton
@@ -91,6 +98,19 @@ span.pictos
   font-family: 'Pictos'
   line-height: 0
 
+
+.dialog
+  width: 300px
+  margin: auto
+  position: absolute
+  top: 20%   
+  left: 20%
+  padding: 2ex
+  z-index: 200  
+  border: 6px solid rgba(255,255,255,.5)                     
+  +border-radius(6px)
+  +background-image(linear-gradient(rgba(225,225,225,.95), rgba(225,225,225,.8)))
+  +box-shadow(rgba(0, 0, 0, 0.97) 0 0 50px)
 
 
 #loginboxwrapper
@@ -124,54 +144,6 @@ span.pictos
       @extend .large
       @extend .confirm
       
-
-// youtube player
-#ytplayer_wrapper
-  height: 100%
-  width: 100%
-  position: fixed
-
-// pandora player
-#player_wrapper
-  position: fixed   // with body relative, this is a pain
-  top: 50%
-  left: 50%
-  width: 800px
-  margin-top: -135px
-  margin-left: -400px
-
-  #player
-    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
-    +border-radius(10px)
-    +background-image(linear-gradient(white, #bbb))
-    height: 120px
-    padding: 75px
-
-    &:after
-      content: ' '
-      clear: both
-
-    img#cover
-      float: left
-      height: 120px
-      width: 120px
-      margin-right: 20px
-
-    #artist, #title
-      
-      +text-shadow(#FFF 1px 1px 1px)
-      +ellipsis
-
-    #artist
-      font-size: 48px
-      color: #444
-      padding: 10px 0
-
-    #title
-      font-size: 36px
-      color: #555
-      padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
-
 .top_bar
   position: absolute
   bottom: 0px
@@ -198,7 +170,7 @@ header
       width: 40px
       +background-image(linear-gradient(#ccc, #777))
       +border-radius(25px)
-      +box-shadow(black 0 0 2px)
+      +box-shadow(black 0 0 20px)
       text-align: center
       letter-spacing: -3px   // helps center the icon
       line-height: 23px
@@ -207,7 +179,11 @@ header
       +text-shadow(#CCC 0 1px 1px)
       margin-right: 7px
       cursor: pointer
-      +transition
+      +transition 
+      
+      &:hover
+        +box-shadow(black 0 0 80px)
+        
 
 
   #playing   
@@ -296,9 +272,11 @@ header
   top: 0px
   overflow: hidden
   display: none 
-  background: rgba(0, 0, 0, 0.5)
+  +background-image(linear-gradient(rgba(0,0,0,.9), rgba(0,0,0,.7)))
   width: 100%
   height: 100% 
+  z-index: 10 
+  border-radius: 5px
   
   img
     margin: 20% 48%
@@ -350,7 +328,6 @@ header
 
   h2, ul#sources a
     color: rgba(0,0,0,.85)
-    padding-bottom: 7px
     font-weight: bold
     +text-shadow(rgba(255,255,255,.33) 0 1px 1px)
 
@@ -367,18 +344,19 @@ header
     input
       margin-right: 10px
 
-  ul#sources
-    li
-      height: 64px
-      padding: 10px
+  ul#sources  
+    margin-top: -15px
+    +column-count(2)
+    li           
+      padding: 25px
+      padding-left: 0px
+      border-bottom: 1px solid rgba(0,0,0,.15)
 
       img
         float: left
         margin-right: 15px
-
-      a
-        position: relative
-        top: 18px
+        height: 32px
+        margin-top: -8px
 
   ul#pandora_stations
     li
@@ -414,9 +392,6 @@ header
   #youtube_query, #search_query     // TODO: combine
     width: 220px
 
-  #youtube_search, #library_search, #username_search  // TODO: combine
-    margin-left: 15px
-
   #youtube_search_results
     li  // TODO: combine with pandora_songs list
       height: 72px
@@ -450,14 +425,14 @@ header
 
 ul#songs
   padding: 20px
-  li
-    +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
-    +background-image(linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.5)))
+  li 
     height: 62px
     border-top: 1px solid rgba(255,255,255,.8)
+    margin-bottom: 8px
     border-radius: 3px
     margin-bottom: 4px
-
+    +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
+    +background-image(linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.5)))
     img
       +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
       border: 1px solid #EEE

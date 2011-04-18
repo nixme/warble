@@ -17,14 +17,14 @@ class PandoraSongsView extends Backbone.View
     this.delegateEvents()   # TODO: all pre-initted views can't share #add is the issue here
 
   addSongs: (event) ->
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
     song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
     $.post '/jukebox/songs',
       'song_id[]': song_ids
     @model.songs.fetch   # get more songs, TODO: this is whack, bind the collection properly
       success: =>
         this.render()
-        window.workspace.hideSpinner()
+        window.workspace.hideSpinnerForView(this)
       error: ->
         window.location.hash = '!/pandora/stations'
     event.preventDefault()

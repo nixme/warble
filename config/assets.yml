@@ -18,14 +18,14 @@ compressor_options:
 
 javascripts:
   common:
-    - public/javascripts/vendor/jquery.backstretch.min.js
     - public/javascripts/vendor/underscore.js
     - public/javascripts/vendor/backbone.js
     - public/javascripts/vendor/handlebars-0.9.0.pre.4.js
     - public/javascripts/vendor/jquery.mapkey.js
     - public/javascripts/vendor/tooltip.js
-  login:
-    - public/javascripts/login.js
+  backstretch:
+    - public/javascripts/vendor/jquery.backstretch.min.js
+    - public/javascripts/backstretch.js
   application:
     - app/views/application/*.mustache
     - public/javascripts/models/*.js
@@ -40,3 +40,5 @@ javascripts:
 stylesheets:
   common:
     - public/stylesheets/styles.css
+  player:
+    - public/stylesheets/player.css

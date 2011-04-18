@@ -53,7 +53,13 @@ jQuery(document).ready ($) ->
       @notify = (window.webkitNotifications?.checkPermission() == 0)
 
       if @notify or window.webkitNotifications? is false
-        $('a#enable_notifications').hide()
+        $('a#enable_notifications').hide()   
+        
+      $('a#themes').click (event) =>
+        dialog = new DialogView {
+          model: new Dialog {title: "Hello", description: "There"}
+        }        
+        dialog.render()
 
       $('a#enable_notifications').click (event) =>
         if window.webkitNotifications?
@@ -63,6 +69,7 @@ jQuery(document).ready ($) ->
           else
             window.webkitNotifications.requestPermission =>
               @notify = (window.webkitNotifications.checkPermission() == 0)
+            $(event.currentTarget).hide()
 
         event.preventDefault()
 
@@ -87,19 +94,13 @@ jQuery(document).ready ($) ->
           setTimeout (-> notification.cancel()), 5000
         notification.show()
 
-    # TODO: move to the proper single #app view
-    showSpinner: -> 
-      console.warn "This command is no longer supported."
-    hideSpinner: -> 
-      console.warn "This command is no longer supported."
-      
-    show_spinner_for: (view) -> 
+    showSpinnerForView: (view) -> 
       if view.el.next('.spinner')
         view.el.next('.spinner').show()
       else
         console.warn "No spinner configured for view."
         console.log view.inspect  
-    hide_spinner_for: (view) ->
+    hideSpinnerForView: (view) ->
       if view.el.next('.spinner')
         view.el.next('.spinner').fadeOut()
         
@@ -119,14 +120,14 @@ jQuery(document).ready ($) ->
 
     pandoraStations: -> 
       @entitle 'Pandora'
-      @show_spinner_for @pandoraStationsView
+      @showSpinnerForView @pandoraStationsView
       @stationList.fetch
         success: =>
           @pandoraStationsView.render()
-          @hide_spinner_for @pandoraStationsView
+          @hideSpinnerForView @pandoraStationsView
         error: =>
           @pandoraAuthView.render()
-          @hide_spinner_for @pandoraStationsView
+          @hideSpinnerForView @pandoraStationsView
 
     pandoraSongs: (id) ->  
       @entitle 'Pandora'
@@ -136,11 +137,11 @@ jQuery(document).ready ($) ->
         station = @stationList.get(id)
 
       if station?
-        @showSpinner()
+        @showSpinnerForView(@pandoraStationsView) # QUESTION, is there a view heirarchy?
         station.songs.fetch
           success: =>
             (new PandoraSongsView { model: station }).render()
-            @hideSpinner()
+            @hideSpinnerForView(@pandoraStationsView)
           error: =>
             window.location.hash = '!/pandora/stations'
       else  # redirect back to station list
@@ -158,28 +159,40 @@ jQuery(document).ready ($) ->
     # TODO: dry up these hype view flows
 
     hypeLatest: (page = 1) ->
-      @showSpinner()
+      @showSpinnerForView(@hypeChooserView)
       @hypeSongs.feed = 'Latest'
       @hypeSongs.url = "/hype?feed=latest&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch({
+        success: =>
+          @hideSpinnerForView(@hypeChooserView)
+      })
 
     hypePopular3Days: (page = 1) ->
-      @showSpinner()
+      @showSpinnerForView(@hypeChooserView)
       @hypeSongs.feed = 'Popular - Last 3 Days'
       @hypeSongs.url = "/hype?feed=popular&time=3days&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch({
+        success: =>
+          @hideSpinnerForView(@hypeChooserView)
+      })
 
     hypePopularWeek: (page = 1) ->
-      @showSpinner()
+      @showSpinnerForView(@hypeChooserView)
       @hypeSongs.feed = 'Popular - Last Week'
       @hypeSongs.url = "/hype?feed=popular&time=week&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch({
+        success: =>
+          @hideSpinnerForView(@hypeChooserView)
+      })
 
     hypeUser: (user, page = 1) ->
-      @showSpinner()
+      @showSpinnerForView(@hypeChooserView)
       @hypeSongs.feed = "#{user}'s Songs"
       @hypeSongs.url = "/hype?username=#{encodeURIComponent(user)}&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch({
+        success: =>
+          @hideSpinnerForView(@hypeChooserView)
+      })
 
 
   window.workspace = new WorkspaceController
@@ -201,15 +214,6 @@ jQuery(document).ready ($) ->
       when 'reload'
         window.location.reload true
 
-  images = [
-      'reyes.jpg'
-      'brokeh.jpg'
-      'universe.jpg'
-      'pittsburgh.jpg'
-      'goldengate.jpg'
-    ]
-
-  $.backstretch("/images/#{images[Math.floor(Math.random() * ((images.length - 1) - 0 + 1) + 0)]}", {speed: 150});
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
     console.log 'Enter key pressed'

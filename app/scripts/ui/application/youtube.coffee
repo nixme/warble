@@ -39,7 +39,7 @@ class YoutubeSearchView extends Backbone.View
     this.search event
 
   search: (event) ->
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
     q = this.$('#youtube_query').val()
 
     # reset the search start-index if it's a new search
@@ -69,21 +69,21 @@ class YoutubeSearchView extends Backbone.View
         hasNext: (@startIndex + data.feed.openSearch$itemsPerPage.$t) < data.feed.openSearch$totalResults.$t
 
       $(@el).scrollTop 0
-      window.workspace.hideSpinner()
+      window.workspace.hideSpinnerForView(this)
 
     event.preventDefault()
 
   queueVideo: (event) ->
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
 
     $.ajax '/jukebox/songs',
       type: 'POST'
       data:
         youtube: @data[$(event.currentTarget).attr('data-id')]
       success: =>
-        window.workspace.hideSpinner()
+        window.workspace.hideSpinnerForView(this)
       error: ->
         window.location.hash = '!/'
-        window.workspace.hideSpinner()
+        window.workspace.hideSpinnerForView(this)
 
     event.preventDefault()

@@ -6,8 +6,16 @@ http://github.com/necolas/css3-facebook-buttons
 
 
 /* ------------------------------------------------------------------------------------------------------------- BUTTON */
+               
+.uibutton.search {
+  border-left:0px;
+}
 
-.uibutton { 
+.uibutton, select.uibutton {  
+    -webkit-user-select: none;
+    -webkit-appearance: none;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
     position: relative; 
     z-index: 1;
     overflow: visible; 
@@ -182,9 +190,14 @@ http://github.com/necolas/css3-facebook-buttons
 
 .uibutton-toolbar {
     padding: 6px;
-    background: rgba(255,255,255,.4);
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
+    background: rgba(255,255,255,.6);
+}                
+
+.uibutton-toolbar.top {
+  background: rgba(255,255,255,.4);
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px; 
+  border-bottom: 1px solid rgba(0,0,0,.2);
 }
 
 .uibutton-toolbar .uibutton,

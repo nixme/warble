@@ -14,15 +14,12 @@ class HypeSongsView extends Backbone.View
     $(@el).html @template()
       feed:  @collection.feed
       songs: @collection.toJSON()
-    window.workspace.hideSpinner()
     this.delegateEvents()  # TODO: fix
 
   queueSong: (event) ->
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
 
     song_id = $(event.currentTarget).attr('data-id')
     $.post '/jukebox/songs',
       'song_id[]': [song_id]
-
-    window.workspace.hideSpinner()
     event.preventDefault()

@@ -28,21 +28,21 @@ class SearchView extends Backbone.View
   search: (event) ->
     @collection.query = this.$('#search_query').val()
 
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
     @collection.fetch
-      success: -> window.workspace.hideSpinner()
+      success: -> window.workspace.hideSpinnerForView(this)
       error: ->
         window.location.hash = '!/'
-        window.workspace.hideSpinner()
+        window.workspace.hideSpinnerForView(this)
 
     event.preventDefault()
 
   queueVideo: (event) ->
-    window.workspace.showSpinner()
+    window.workspace.showSpinnerForView(this)
 
     song_id = $(event.currentTarget).attr('data-id')
     $.post '/jukebox/songs',
       'song_id[]': [song_id]
 
-    window.workspace.hideSpinner()
+    window.workspace.hideSpinnerForView(this)
     event.preventDefault()
