@@ -1,7 +1,10 @@
 #loginboxwrapper
   #loginbox
     %h1
-      %span.pictos m
-      Warble
+      = image_tag "logo_neue.png"
     %form(action='/auth/facebook' method='post')
       %button(type='submit') Login with Facebook
+
+- content_for :scripts do
+  = include_javascripts :login
+  

@@ -1,15 +1,9 @@
-@import url(http://fonts.googleapis.com/css?family=Crushed)
-@import url(http://fonts.googleapis.com/css?family=Lato:light)
 @import url(/stylesheets/pictos.css)
 @import 'compass'
 @import 'compass/reset'
 
 @import '_tooltips'
-
-@mixin lato
-  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
-  font-weight: 300
-
+@import '_fbutton'
 
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $primary:              #F90022
@@ -74,35 +68,15 @@ a
   width: 100% 
   display: block
 
-input
+input[type=text]
   padding: 10px
   font-size: 14px
   color: #555
 
-input, button, .button
-  border: 0
-  font-weight: 500
-
 button, .button
-  display: inline-block
-  position: relative
-  padding: 1ex 2ex
-  color: #111
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#E4E4E4), color-stop(.05, #F4F4F4))  
-  +border-radius(2px)
-  +text-shadow(rgba(255, 255, 255, 0.25) 0 1px 1px)
-  box-shadow: rgba(0, 0, 0, .15) 1px 1px 4px
-  border: 1px solid rgba(0, 0, 0, .35)
-  font-size: 14px
-  line-height: 1
-  cursor: pointer
+  @extend .uibutton
+  @extend .large
 
-  &:hover
-    background: darken($secondary_a, 2)
-    +transition
-
-  &:active
-    top: 1px
 
 h1
   font-family: 'Crushed', Arial, serif
@@ -133,7 +107,7 @@ span.pictos
   #loginbox
     +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
     +border-radius(10px)
-    +background-image(linear-gradient(white, #bbb))
+    background: rgba(255,255,255,.2)
     top: 40%
     padding: 30px
     text-align: center
@@ -146,11 +120,10 @@ span.pictos
         font-size: 66px
 
     button
-      padding: 13px 10px 14px 45px
-      background: #333 url(/images/facebook_32.png) no-repeat 8px center
-
-      &:hover
-        background: #111 url(/images/facebook_32.png) no-repeat 8px center
+      @extend .uibutton
+      @extend .large
+      @extend .confirm
+      
 
 // youtube player
 #ytplayer_wrapper
@@ -185,7 +158,7 @@ span.pictos
       margin-right: 20px
 
     #artist, #title
-      +lato
+      
       +text-shadow(#FFF 1px 1px 1px)
       +ellipsis
 
@@ -199,23 +172,23 @@ span.pictos
       color: #555
       padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
 
+.top_bar
+  position: absolute
+  bottom: 0px
+  width: 100%
+  border-bottom: 1px solid rgba(0,0,0,.5)
+  
 header
-  //+background-image(linear-gradient(#333, #111))
-  +background-image(linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.4)))
-  +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
   width: 100%
   height: 100px
   z-index: 1
-
-  #controls, #playing
-    vertical-align: top
-    float: left
-    height: 70px
+  margin-top: 1%
 
   #controls
-    line-height: 70px
-    padding-top: 3px   // helps vertically center
-    width: 100px    
+    float: right
+    width: 120px
+    margin-top: 28px
+    margin-right: 18px    
     z-index: 1
 
     a
@@ -224,30 +197,29 @@ header
       height: 40px
       width: 40px
       +background-image(linear-gradient(#ccc, #777))
-      +border-radius(20px)
+      +border-radius(25px)
       +box-shadow(black 0 0 2px)
       text-align: center
       letter-spacing: -3px   // helps center the icon
-      line-height: 25px
+      line-height: 23px
       font-size: 25px
       color: #222
       +text-shadow(#CCC 0 1px 1px)
       margin-right: 7px
       cursor: pointer
+      +transition
 
-      &:hover
-        +background-image(linear-gradient($primary, darken($primary, 20%)))
-        color: white
-        +text-shadow(#222 0 -1px 1px)
 
   #playing   
     float: right
-    width: 35%  
+    width: 34%
+    margin-right: 1%
+    border-radius: 6px  
     height: 100%  
     z-index: -1
-    border: 1px solid rgba(150, 150, 150, 0.1)
-    +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
-    +background-image(linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)))
+    +background-image(linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)))
+    +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
+    border: 1px solid #222
     
     .content
       padding: 12px
@@ -272,7 +244,6 @@ header
       margin-right: 20px
 
     #artist, #title
-      +lato
       +text-shadow(black 1px 1px 2px)
       +ellipsis
       color: #EEE
@@ -286,17 +257,14 @@ header
       padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
 
   #info
-    width: 100px  
-    display: inline-block
+    width: 25%  
+    float: left
    
     h1
-      font-size: 36px
-
-      .pictos
-        font-size: 50px
+      margin-top: 28px
+      margin-left: 24px
 
     #profile
-      margin-top: 10px
       text-align: left
       color: #ccc
       font-size: 14px
@@ -326,35 +294,38 @@ header
   position: absolute   
   left: 0px
   top: 0px
+  overflow: hidden
   display: none 
   background: rgba(0, 0, 0, 0.5)
   width: 100%
   height: 100% 
   
   img
-    margin: 30% 45%
+    margin: 20% 48%
     -webkit-animation-name: spin
     -webkit-animation-duration: 1s
     -webkit-animation-iteration-count: infinite
     -webkit-animation-timing-function: linear
     
 #add, #queue
-  height: 700px!important
+  min-height: 500px
+  border-radius: 6px
+  margin: 1%  
+  margin-right: 0px
     
 
 #add
-  float: left
-  width: 65%  
+  width: 63%
   height: 100%
+  position: relative
+  top: 2px
+  float: left  
+  overflow: auto
+  +background-image(linear-gradient(rgba(200,200,200,.9), rgba(200,200,200,.7)))
+  +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
   
   .content 
-    padding: 25px
-
-  position: relative
-  z-index: -3
-  overflow: auto
-  background: #ddd
-  +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+    padding: 15px
 
   &::-webkit-scrollbar  
     width: 6px
@@ -365,7 +336,7 @@ header
     background: rgba(0, 0, 0, 0.3)
     -webkit-border-radius: 3px
 
-  *:not(.button):not(h2)
+  *:not(.button, .uibutton):not(h2)
     font-size: 15px
     +text-shadow(#DDD 0 1px 1px)
 
@@ -378,11 +349,10 @@ header
       font-weight: bold
 
   h2, ul#sources a
-    // +lato
-    font-size: 24px
-    color: #111
+    color: rgba(0,0,0,.85)
     padding-bottom: 7px
-    +text-shadow(#CCC 0 1px 1px)
+    font-weight: bold
+    +text-shadow(rgba(255,255,255,.33) 0 1px 1px)
 
   p
     font-size: 16px
@@ -470,22 +440,23 @@ header
       margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
 
 #queue
+  +background-image(linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)))
+  border: 1px solid #222
   float: left
-  width: 35%
+  width: 34%
   height: 100%
-  
-
-#queue
-  background: #DDD
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
   z-index: -1   // below ul#songs, above #add
 
 ul#songs
+  padding: 20px
   li
-    +background-image(linear-gradient(#eee, #ddd))
+    +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
+    +background-image(linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.5)))
     height: 62px
-    border-top: 1px solid white
-    border-bottom: 1px solid #ccc
+    border-top: 1px solid rgba(255,255,255,.8)
+    border-radius: 3px
+    margin-bottom: 4px
 
     img
       +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
@@ -514,21 +485,17 @@ ul#songs
 
       .artist, .title
         font-size: 14px
-        color: $secondary_b_darkest
-        +text-shadow(white 0 1px 1px)
+        color: rgba(0,0,0,.8)
+        +text-shadow(rgba(255,255,255,.33) 0 1px 1px)
 
   &:after
-    // TODO: helvetica neue with text-shadow here
-    content: '\2190\00a0\00a0Hey you!\00a0\00a0 Add some songs from there'
+    content: '\2190\00a0\00a0 Add Songs from over there...'
     display: block
-    border-top: 1px solid white
-    padding: 20px 0
+    padding: 16px
     font-weight: bold
     font-size: 12px
-    text-align: center
-    text-transform: uppercase
-    color: #AFAFAF
-    +text-shadow(white 0 1px 0px)
+    color: rgba(255,255,255,.6)
+    +text-shadow(rgba(0,0,0,.5) 0 1px 0px)
 
 
 .clear 

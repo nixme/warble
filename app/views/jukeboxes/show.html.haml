@@ -1,24 +1,26 @@
 %header
   #info
     %h1
-      = image_tag "logo.png"
-    #profile
-      %span#toolbar
-        %a#settings(href='#' title='Settings') y
-        %a#logout(href='/logout' title='Logout') -
-
-  #controls
-    %a#play(href='#') 4
-    %a#forward(href='#') 7
+      = image_tag "logo_neue.png"
 
   #playing
     .content
+  #controls
+    %a#play(href='#') 4
+    %a#forward(href='#') 7
 #add
+  .uibutton-toolbar
+    = link_to "Logout of Warble", :logout, class: 'uibutton confirm'
+    .uibutton-group
+      = link_to "Settings", "#settings", class: 'uibutton'
+      = link_to "Themes", "#themes", class: 'uibutton'
+      = link_to "Enable Notifications", "#themes", class: 'uibutton', id: 'enable_notifications'
   .content
   .spinner
     %img(src='/images/spinner.png')
 #queue  
   %ul#songs
-
+.clear
+      
 - content_for :scripts do
   = include_javascripts :application
