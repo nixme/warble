@@ -1,3 +1,11 @@
+unless console?
+  console = {
+    log: (arg) ->
+      false
+    warn: (arg) ->
+      false
+  }
+  
 jQuery(document).ready ($) ->     
   class WorkspaceController extends Backbone.Controller
     routes:
@@ -43,13 +51,19 @@ jQuery(document).ready ($) ->
 
       # notification button. TODO: move to a view class
       @notify = (window.webkitNotifications?.checkPermission() == 0)
-      $('a#settings').click (event) =>
+
+      if @notify or window.webkitNotifications? is false
+        $('a#enable_notifications').hide()
+
+      $('a#enable_notifications').click (event) =>
         if window.webkitNotifications?
           if window.webkitNotifications.checkPermission() == 0
             @notify = true
+            $(event.currentTarget).hide()
           else
             window.webkitNotifications.requestPermission =>
               @notify = (window.webkitNotifications.checkPermission() == 0)
+
         event.preventDefault()
 
     entitle: (title) ->
@@ -109,7 +123,6 @@ jQuery(document).ready ($) ->
       @stationList.fetch
         success: =>
           @pandoraStationsView.render()
-#          this.hideSpinner()
           @hide_spinner_for @pandoraStationsView
         error: =>
           @pandoraAuthView.render()
@@ -123,11 +136,11 @@ jQuery(document).ready ($) ->
         station = @stationList.get(id)
 
       if station?
-        this.showSpinner()
+        @showSpinner()
         station.songs.fetch
           success: =>
             (new PandoraSongsView { model: station }).render()
-            this.hideSpinner()
+            @hideSpinner()
           error: =>
             window.location.hash = '!/pandora/stations'
       else  # redirect back to station list
@@ -145,25 +158,25 @@ jQuery(document).ready ($) ->
     # TODO: dry up these hype view flows
 
     hypeLatest: (page = 1) ->
-      this.showSpinner()
+      @showSpinner()
       @hypeSongs.feed = 'Latest'
       @hypeSongs.url = "/hype?feed=latest&page=#{encodeURIComponent(page)}"
       @hypeSongs.fetch()
 
     hypePopular3Days: (page = 1) ->
-      this.showSpinner()
+      @showSpinner()
       @hypeSongs.feed = 'Popular - Last 3 Days'
       @hypeSongs.url = "/hype?feed=popular&time=3days&page=#{encodeURIComponent(page)}"
       @hypeSongs.fetch()
 
     hypePopularWeek: (page = 1) ->
-      this.showSpinner()
+      @showSpinner()
       @hypeSongs.feed = 'Popular - Last Week'
       @hypeSongs.url = "/hype?feed=popular&time=week&page=#{encodeURIComponent(page)}"
       @hypeSongs.fetch()
 
     hypeUser: (user, page = 1) ->
-      this.showSpinner()
+      @showSpinner()
       @hypeSongs.feed = "#{user}'s Songs"
       @hypeSongs.url = "/hype?username=#{encodeURIComponent(user)}&page=#{encodeURIComponent(page)}"
       @hypeSongs.fetch()
@@ -187,7 +200,15 @@ jQuery(document).ready ($) ->
         window.workspace.skip data.jukebox
       when 'reload'
         window.location.reload true
-    
+
+  images = [
+      'reyes.jpg'
+      'brokeh.jpg'
+      'universe.png'
+      'pittsburgh.png'
+    ]
+
+  $.backstretch("/images/#{images[(Math.floor(Math.random() * (images.length - 1 + 0)) + 0)]}", {speed: 150});
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
     console.log 'Enter key pressed'
