@@ -60,6 +60,7 @@ namespace :deploy do
   desc 'Update symlinks for configuration files'
   task :symlink_config, :roles => :app, :except => { :no_release => true } do
     run "ln -nfs #{shared_path}/config/redis.yml #{release_path}/config/redis.yml"
+    run "ln -nfs #{shared_path}/config/sunspot.yml #{release_path}/config/sunspot.yml"
   end
 
   desc 'Refresh connected clients'
