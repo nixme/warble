@@ -1,4 +1,4 @@
-# Capistrano configuration for internal deployment at Manymoon
+# Capistrano configuration for internal deployment
 #
 # Expects target server to run Nginx + Phusion Passenger 3. Uses a system-wide
 # RVM installation and Bundler to auto-update dependencies. Please manually
@@ -59,10 +59,18 @@ namespace :deploy do
 
   desc 'Update symlinks for configuration files and directories'
   task :symlink_config, :roles => :app, :except => { :no_release => true } do
+    # datastore configurations
     run "ln -nfs #{shared_path}/config/redis.yml #{release_path}/config/redis.yml"
     run "ln -nfs #{shared_path}/config/sunspot.yml #{release_path}/config/sunspot.yml"
-    run "rm -rf #{release_path}/public/songs"
+
+    # archived songs directory
+    run "rm #{release_path}/public/songs/.gitkeep && rmdir #{release_path}/public/songs"
     run "ln -nfs #{shared_path}/songs #{release_path}/public/songs"
+  end
+
+  desc 'Symlink Resque admin assets directory'
+  task :symlink_resque_assets, :roles => :app, :except => { :no_release => true } do
+    run "cd #{release_path}; ln -nfs `bundle show resque`/lib/resque/server/public public/resque"
   end
 
   desc 'Refresh connected clients'
@@ -70,7 +78,8 @@ namespace :deploy do
     run "cd #{release_path}; rake clients:refresh RAILS_ENV=production"
   end
 
-  after 'deploy:update_code',     'deploy:upload_assets'
   after 'deploy:finalize_update', 'deploy:symlink_config'
+  after 'deploy:update_code',     'deploy:upload_assets'
+  after 'deploy:update_code',     'deploy:symlink_resque_assets'
   after 'deploy:restart',         'deploy:refresh_clients'
 end
