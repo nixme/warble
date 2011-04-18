@@ -1,0 +1,46 @@
+// youtube player
+#ytplayer_wrapper
+  height: 100%
+  width: 100%
+  position: fixed
+
+// pandora player
+#player_wrapper
+  position: fixed   // with body relative, this is a pain
+  top: 50%
+  left: 50%
+  width: 800px
+  margin-top: -135px
+  margin-left: -400px
+
+  #player
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
+    +border-radius(10px)
+    +background-image(linear-gradient(white, #bbb))
+    height: 120px
+    padding: 75px
+
+    &:after
+      content: ' '
+      clear: both
+
+    img#cover
+      float: left
+      height: 120px
+      width: 120px
+      margin-right: 20px
+
+    #artist, #title
+      
+      +text-shadow(#FFF 1px 1px 1px)
+      +ellipsis
+
+    #artist
+      font-size: 48px
+      color: #444
+      padding: 10px 0
+
+    #title
+      font-size: 36px
+      color: #555
+      padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
