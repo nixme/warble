@@ -204,11 +204,12 @@ jQuery(document).ready ($) ->
   images = [
       'reyes.jpg'
       'brokeh.jpg'
-      'universe.png'
-      'pittsburgh.png'
+      'universe.jpg'
+      'pittsburgh.jpg'
+      'goldengate.jpg'
     ]
 
-  $.backstretch("/images/#{images[(Math.floor(Math.random() * (images.length - 1 + 0)) + 0)]}", {speed: 150});
+  $.backstretch("/images/#{images[Math.floor(Math.random() * ((images.length - 1) - 0 + 1) + 0)]}", {speed: 150});
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search
     console.log 'Enter key pressed'
