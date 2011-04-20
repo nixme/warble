@@ -32,7 +32,6 @@ class Song < Ohm::Model
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = find(:external_id => pandora_song.music_id).first
       song.incr :hits
-      song.check_bad_download!(pandora_song.audio_url)
       song
     else   # first time seeing the song, so create it
       song = Song.create({
