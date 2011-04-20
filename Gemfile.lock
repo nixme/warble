@@ -52,7 +52,6 @@ GEM
       chunky_png (~> 1.1.0)
       sass (>= 3.1.0.alpha.249)
     crypt19 (1.2.1)
-    curb (0.7.12)
     daemons (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -209,7 +208,6 @@ DEPENDENCIES
   coffee-script
   compass (= 0.11.beta.5)
   crypt19
-  curb
   fancy-buttons (= 1.1.0.alpha.1)
   haml (= 3.1.0.alpha.147)
   hiredis

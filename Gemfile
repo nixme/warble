@@ -10,7 +10,6 @@ gem 'sunspot_rails'                   # search through Solr
 
 # async processing
 gem 'resque', :require => 'resque/server'
-gem 'curb'                            # libcurl ruby bindings
 
 # auth
 gem 'omniauth'
