@@ -1,13 +1,15 @@
 class Jukebox < Ohm::Model
   list      :played,   Song
   reference :current,  Song
+  attribute :volume
 
   def upcoming
     key[:upcoming]
   end
 
   def to_hash
-    super.merge :current => current
+    super.merge :current => current,
+                :volume  => volume.to_i
   end
 
   def self.app    # TODO: hack for the meantime until multiple jukebox support
@@ -54,5 +56,15 @@ class Jukebox < Ohm::Model
     }.to_json)
 
     skip! if self.current.nil?        # pick next song if nothing playing
+  end
+
+  def set_volume(volume)
+    self.volume = volume
+    save
+    
+    Ohm.redis.publish(Warble::Application.config.pubsub_channel, {
+      event: 'volume',
+      jukebox: Jukebox.app
+    }.to_json)
   end
 end

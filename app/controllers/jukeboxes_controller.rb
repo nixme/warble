@@ -15,6 +15,11 @@ class JukeboxesController < ApplicationController
     head :ok
   end
 
+  def volume
+    Jukebox.app.set_volume params[:value]
+    head :ok
+  end
+
   # TODO: move to more appropriate controller?
   def search
     if params[:query].blank?

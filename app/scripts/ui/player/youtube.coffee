@@ -1,8 +1,9 @@
 class YoutubePlayerView extends Backbone.View
   initialize: ->
-    _.bindAll this, 'render', 'finished'
+    _.bindAll this, 'render', 'volume', 'finished'
     @el = $('#ytplayer_wrapper')
-    @model.bind 'change', @render
+    @model.bind 'change:current', @render
+    @model.bind 'change:volume', @volume
 
     # youtube apis make you do this global function junk
     window.handleYoutubeStateChange = (state) =>
@@ -28,11 +29,21 @@ class YoutubePlayerView extends Backbone.View
       window.setTimeout (=> this.render()), 500
     else
       @player.stopVideo() if @player.stopVideo
+      if @pending_volume?
+        @player.setVolume @pending_volume
+        delete @pending_volume
       if @model.current_song()?.source == 'youtube'
         this.$('#ytplayer').css('visibility', 'visible')
         @player.loadVideoById @model.current_song().external_id
       else
         this.$('#ytplayer').css('visibility', 'hidden')
+
+  volume: ->
+    vol = @model.get 'volume'
+    if @player
+      @player.setVolume vol
+    else
+      @pending_volume = vol
 
   finished: ->
     $.post '/jukebox/skip'

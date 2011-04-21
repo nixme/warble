@@ -14,5 +14,7 @@ jQuery(document).ready ($) ->
     switch data.event
       when 'skip'
         window.jukebox.set data.jukebox
+      when 'volume'
+        window.jukebox.set data.jukebox
       when 'reload'
         window.location.reload true

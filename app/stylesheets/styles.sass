@@ -221,9 +221,8 @@ header
   #controls
     width: 145px
     padding-top: 3px   // helps vertically center
-    line-height: 70px
 
-    a
+    #play, #forward
       display: inline-block
       @extend span.pictos
       height: 40px
@@ -539,3 +538,13 @@ ul#songs
     text-transform: uppercase
     color: #AFAFAF
     +text-shadow(white 0 1px 0px)
+
+.ui-slider-horizontal
+  height: .4em
+  width: 87px
+
+.ui-slider
+  .ui-slider-handle
+    width: .8em
+    height: .8em
+  margin-top: 14px

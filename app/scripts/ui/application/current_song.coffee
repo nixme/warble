@@ -17,6 +17,9 @@ class CurrentSongView extends Backbone.View
 
     # update browser title with artist and song
     song = @model.current_song()
-    document.title = "#{song.artist}: #{song.title} \u2022 Warble"
+    if song
+      document.title = "#{song.artist}: #{song.title} \u2022 Warble"
+    else
+      document.title = 'Warble'
 
     this

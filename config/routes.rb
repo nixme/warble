@@ -15,6 +15,7 @@ Warble::Application.routes.draw do
     get  'player', :on => :member
     post 'skip',   :on => :member
     get  'search', :on => :member
+    put  'volume', :on => :member
     resources :songs, :only => [ :index, :create ]
   end
   namespace :pandora do

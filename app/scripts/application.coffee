@@ -41,6 +41,16 @@ jQuery(document).ready ($) ->
         $.post '/jukebox/skip'
         event.preventDefault()
 
+      # volume
+      $('#volume').slider
+        animate: true
+        value: $('#volume').data 'volume'
+        stop: (e, ui) ->
+          $.ajax '/jukebox/volume'
+            type: 'put'
+            data: 
+              value: ui.value
+
       # notification button. TODO: move to a view class
       @notify = (window.webkitNotifications?.checkPermission() == 0)
       $('a#settings').click (event) =>
@@ -159,6 +169,10 @@ jQuery(document).ready ($) ->
         window.workspace.queue.refresh data.songs
       when 'skip'
         window.workspace.skip data.jukebox
+      when 'volume'
+        # TODO don't change the value if this is the window that set it
+        # also, move this into a view or something
+        $('#volume').slider('value', data.jukebox.volume)
       when 'reload'
         window.location.reload true
 
