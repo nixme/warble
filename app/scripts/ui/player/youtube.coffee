@@ -28,7 +28,7 @@ class YoutubePlayerView extends Backbone.View
       # make sure the slow-ass widget has loaded first
       window.setTimeout (=> this.render()), 500
     else
-      @player.stopVideo() if @player.stopVideo
+      @player.pauseVideo()
       if @pending_volume?
         @player.setVolume @pending_volume
         delete @pending_volume
