@@ -50,6 +50,7 @@ namespace :deploy do
 
   desc 'Package and upload front-end assets'
   task :upload_assets, :roles => :app, :except => { :no_release => true } do
+    run_locally 'compass compile'
     run_locally 'rake barista:brew'
     run_locally 'jammit'
 
