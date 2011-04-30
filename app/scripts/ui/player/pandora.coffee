@@ -17,8 +17,9 @@ class PandoraPlayerView extends Backbone.View
       vol = @model.get('volume')
       @el.html this.template() 
         current: @model.current_song()
-        volume: (vol ? DEFAULT_VOLUME) / 100
-      this.$('audio').bind 'canplay', -> this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
+      this.$('audio').bind 'canplay', -> 
+        this.volume = (vol ? DEFAULT_VOLUME) / 100
+        this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
       this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
   volume: ->
