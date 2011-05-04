@@ -14,12 +14,23 @@ class SearchView extends Backbone.View
     @collection.bind 'all', @render
     @el = $('#add .content')
 
-  render: ->
-    $(@el).html @template()
-      query:   @collection.query
-      results: @collection.toJSON()
-    this.$('#search_query').focus()
-    this.delegateEvents()  # TODO: fix
+  render: ->   
+    el = $ @el  
+    if @collection.query       
+      re = new RegExp @collection.query, "gi"
+      strong = "<strong>#{@collection.query}</strong>"
+      el.html @template()
+          query:   @collection.query
+          results: @collection.toJSON()
+    else
+      el.html(
+          (@template()
+           query:   @collection.query
+           results: @collection.toJSON()
+          ))
+      
+    this.$('#search_query').focus()   
+    @delegateEvents()  # TODO: fix    
 
   handleEnter: (event) ->
     if event.which == 13
@@ -30,8 +41,8 @@ class SearchView extends Backbone.View
 
     window.workspace.showSpinnerForView(this)
     @collection.fetch
-      success: -> window.workspace.hideSpinnerForView(this)
-      error: ->
+      success: => window.workspace.hideSpinnerForView(this)
+      error: =>
         window.location.hash = '!/'
         window.workspace.hideSpinnerForView(this)
 

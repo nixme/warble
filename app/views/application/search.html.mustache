@@ -1,24 +1,28 @@
 <div class="breadcrumbs">
   <a href="#!/">Sources</a>
   &raquo;
-  <span class="current">Search</a>
+  <span class="current">Search Library</a>
 </div>
-
-<h2>Search Library</h2>
-
 <input type="text" id="search_query" value="{{query}}" />
 <a href="#" class="button" id="library_search">Search</a>
 
-<ul id="search_results">
+<table id="search_results" class='browser'>
+  <thead>
+  <tr>
+    <th>Cover</th> 
+    <th>Song</th>
+    <th>Artist</th>
+    <th>Album</th>
+    </tr>
+  </thead>    
+  <tbody>
   {{#results}}
-  <li>
-    <a href="#" class="result" data-id="{{id}}">
-      <div class="song">
-        <img src="{{cover_url}}" />
-        <div class="artist">{{artist}}</div>
-        <div class="title">{{title}}</div>
-      </div>
-    </a>
-  </li>
-  {{/results}}
-</ul>
+  <tr>
+    <td><img src="{{cover_url}}" /></td>
+    <td><a href="#" class="result" data-id="{{id}}">{{title}}</a></td>
+    <td>{{artist}}</td>
+    <td>{{album}}</td>
+  </tr>
+  {{/results}} 
+  </tbody>
+</table>

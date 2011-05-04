@@ -1,0 +1,26 @@
+<ul>
+{{#results}}
+  <li>
+    <a href="#" class="entry" data-id="{{index}}">
+      <img src="{{thumbnail}}" class="thumbnail" />
+      <div class="title">{{title}}</div>
+      <div class="author">{{author}}</div>
+    </a>
+  </li>
+{{/results}}
+</ul>
+
+{{#if hasPrev}}
+  <a href="#" class="paging button" id="previous_results">
+    <span class="pictos">[</span>
+    Previous
+  </a>
+{{/if}}
+
+{{#if hasNext}}
+  <a href="#" class="paging button" id="next_results">
+    Next
+    <span class="pictos">]</span>
+  </a>
+{{/if}}
+<div class='clear'></div>

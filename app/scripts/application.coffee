@@ -101,8 +101,11 @@ jQuery(document).ready ($) ->
         console.warn "No spinner configured for view."
         console.log view.inspect  
     hideSpinnerForView: (view) ->
-      if view.el.next('.spinner')
+      if view.el?.next('.spinner')
         view.el.next('.spinner').fadeOut()
+      # this sux.
+      else
+        $('.spinner').fadeOut()
         
 
     index: ->
