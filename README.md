@@ -71,27 +71,16 @@ You'll need a \*nix environment. Following are instructions for OS X 10.6:
    directory into the project. The next time you enter this directory, you'll
    get a warning about trusting the file. Make sure you accept!
 
-### Running the application server
+### Running the application
 
 1. Ensure Redis is running. If installed via homebrew, you can find the
    incantations to start it by running:
 
         $ brew info redis
 
-2. Start the node.js websocket relay:
+2. Start the web server, search server, background processes, and other
+   components with [Foreman](http://ddollar.github.com/foreman/):
 
-        $ coffee server.coffee
+        $ foreman start
 
-3. Start at least one background worker, adjust `COUNT` for more:
-
-        $ COUNT=1 QUEUE=* rake resque:workers
-
-4. Start the bundled Solr engine for full-text search:
-
-        $ rake sunspot:solr:start
-
-5. Start the ruby web server:
-
-        $ thin start
-
-Now browse to <http://localhost:3000/> and get warbling!
+Now browse to <http://localhost:5000/> and get warbling!

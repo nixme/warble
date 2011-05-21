@@ -31,6 +31,7 @@ gem 'therubyracer'                    # embedded V8 engine, used for scraping
 
 
 group :development do
+  gem 'foreman'                       # process launcher (Profile executor)
   gem 'thin'                          # web server
   gem 'capistrano'                    # deployment helpers
 end
