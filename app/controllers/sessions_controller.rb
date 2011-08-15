@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
   def update_with_facebook # TODO: implement and use
     # assume user is already logged-in. this is to get their profile photo only
     @user = User[session[:user_id]]
-    @user.photo_url = request.env['omniauth.auth']['user_info']['image']
+    @user.photo_url = request.env['omniauth.auth']['info']['image']
     @user.save
     redirect to('/')
   end

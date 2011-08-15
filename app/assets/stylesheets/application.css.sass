@@ -1,0 +1,550 @@
+@import url(http://fonts.googleapis.com/css?family=Crushed|Lato:300)
+// TODO: proper asset helper
+@import url(/assets/pictos.css)
+@import 'compass'
+@import 'compass/reset'
+
+@import '_tooltips'
+
+@mixin lato
+  font-family: Lato, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+  font-weight: 300
+
+
+// colors from http://colorschemedesigner.com/#5y321G6KNFMVG
+$primary:              #F90022
+$secondary_a:          #FF7A00
+$secondary_b:          #02B4CD
+$complementary:        #39EB00
+
+$primary_dark:         #840012
+$secondary_a_dark:     #884100
+$secondary_b_dark:     #00606D
+$complementary_dark:   #1E7D00
+
+$primary_bright:       #FE7588
+$secondary_a_bright:   #FFB775
+$secondary_b_bright:   #75EAFB
+$complementary_bright: #95FD74
+
+$secondary_b_brightest: #D0F6FB
+
+$secondary_b_darkest:  #123034
+
+
+$default-transition-duration: 0.2s
+
+@-webkit-keyframes spin
+  0%
+    -webkit-transform: rotate(0deg)
+  100%
+    -webkit-transform: rotate(360deg)
+
+
+// general styles
+
+body
+  background: $secondary_b_darkest image-url('/assets/primary_bg.png') fixed
+  color: #555
+  position: relative
+  z-index: -9
+  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+
+  // gradient fade over background
+  &:before
+    content: ' '
+    position: fixed
+    z-index: -10
+    top: 0
+    bottom: 0
+    width: 100%
+    +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
+
+a
+  text-decoration: none
+  +link-colors(#333, $primary, $primary, #333, #333)
+
+input
+  padding: 10px
+  font-size: 14px
+  color: #555
+
+input, button, .button
+  border: 0
+  font-weight: 500
+
+button, .button
+  display: inline-block
+  position: relative
+  padding: 8px 14px 9px
+  color: white
+  background: #222
+  +border-radius(5px)
+  +box-shadow(rgba(0, 0, 0, 0.5) 0 1px 3px)
+  +text-shadow(rgba(0, 0, 0, 0.25) 0 -1px 1px)
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25)
+  font-size: 18px
+  line-height: 1
+  cursor: pointer
+
+  &:hover
+    background: #111
+    color: white
+    +transition
+
+  &:active
+    top: 1px
+
+h1
+  font-family: 'Crushed', Arial, serif
+  font-weight: normal
+  color: $secondary_a
+  +text-shadow(rgba(0, 0, 0, 0.4) 0px 1px 5px)
+
+  .pictos
+    color: $primary
+
+span.pictos
+  font-family: 'Pictos'
+  line-height: 0
+
+
+
+#loginboxwrapper
+  position: fixed
+  top: 50%
+  left: 50%
+
+// login page
+
+#loginboxwrapper
+  width: 300px
+  margin: 0 0 0 -150px
+
+  #loginbox
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
+    +border-radius(10px)
+    +background-image(linear-gradient(white, #bbb))
+    top: 40%
+    padding: 30px
+    text-align: center
+
+    h1
+      margin-bottom: 25px
+      font-size: 48px
+
+      .pictos
+        font-size: 66px
+
+    button
+      padding: 13px 10px 14px 45px
+      background: #333 image-url('/assets/facebook_32.png') no-repeat 8px center
+
+      &:hover
+        background: #111 image-url('/assets/facebook_32.png') no-repeat 8px center
+
+// youtube player
+#ytplayer_wrapper
+  height: 100%
+  width: 100%
+  position: fixed
+
+// pandora player
+#player_wrapper
+  position: fixed   // with body relative, this is a pain
+  top: 50%
+  left: 50%
+  width: 800px
+  margin-top: -135px
+  margin-left: -400px
+
+  #player
+    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
+    +border-radius(10px)
+    +background-image(linear-gradient(white, #bbb))
+    height: 120px
+    padding: 75px
+
+    &:after
+      content: ' '
+      clear: both
+
+    img#cover
+      float: left
+      height: 120px
+      width: 120px
+      margin-right: 20px
+
+    #artist, #title
+      +lato
+      +text-shadow(#FFF 1px 1px 1px)
+      +ellipsis
+
+    #artist
+      font-size: 48px
+      color: #444
+      padding: 10px 0
+
+    #title
+      font-size: 36px
+      color: #555
+      padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
+
+
+
+// app
+header, footer
+  position: fixed
+
+header
+  //+background-image(linear-gradient(#333, #111))
+  background: image-url('/assets/bar_bg.png') repeat-x
+  +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
+  width: 100%
+  height: 100px
+
+  &:before
+    content: ' '
+    display: block
+    background: image-url('/assets/stripe.png') repeat-x
+    height: 4px
+    +box-shadow(rgba(0, 0, 0, 0.7) 0 1px 7px)
+
+  #controls, #playing
+    display: inline-block
+    vertical-align: top
+    height: 70px
+
+  #controls, #playing, #info
+    margin: 15px 20px
+
+  #controls
+    width: 145px
+    padding-top: 3px   // helps vertically center
+
+    #play, #forward
+      display: inline-block
+      @extend span.pictos
+      height: 40px
+      width: 40px
+      +background-image(linear-gradient(#ccc, #777))
+      +border-radius(20px)
+      +box-shadow(black 0 0 2px)
+      text-align: center
+      letter-spacing: -3px   // helps center the icon
+      line-height: 25px
+      font-size: 25px
+      color: #222
+      +text-shadow(#CCC 0 1px 1px)
+      margin-right: 7px
+      cursor: pointer
+
+      &:hover
+        +background-image(linear-gradient($primary, darken($primary, 20%)))
+        color: white
+        +text-shadow(#222 0 -1px 1px)
+
+  #playing
+    width: 545px
+
+    img
+      border: 1px solid #666
+      +box-shadow(black 1px 1px 5px)
+
+    .submitter
+      float: right
+      margin: 17px 15px
+
+      img
+        height: 32px
+        width: 32px
+        margin-right: 5px
+
+    img#cover
+      float: left
+      height: 64px
+      width: 64px
+      margin-right: 20px
+
+    #artist, #title
+      +lato
+      +text-shadow(black 1px 1px 2px)
+      +ellipsis
+      color: #EEE
+
+    #artist
+      font-size: 30px
+      padding: 5px 0
+
+    #title
+      font-size: 20px
+      padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
+
+
+  #info
+    float: right
+
+    h1
+      font-size: 36px
+
+      .pictos
+        font-size: 50px
+
+    #profile
+      margin-top: 10px
+      text-align: right
+      color: #ccc
+      font-size: 14px
+
+      #toolbar
+        @extend span.pictos
+        margin-left: 5px
+
+        a
+          +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
+
+
+// single song view global properties
+.artist, .title
+  font-size: 13px
+  +ellipsis
+
+.artist
+  padding: 2px 0
+
+.title
+  font-weight: bold
+  padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
+
+
+
+#add, #spinner
+  position: fixed
+  top: 100px
+  bottom: 0
+  left: 750px
+  padding: 25px
+  width: 350px
+
+#spinner
+  display: none
+  background: rgba(0, 0, 0, 0.3)
+  width: 353px  // 3px over #add's width for its border
+
+  img
+    float: right
+    margin: -15px -10px 0 0
+    -webkit-animation-name: spin
+    -webkit-animation-duration: 1s
+    -webkit-animation-iteration-count: infinite
+    -webkit-animation-timing-function: linear
+
+#add
+  z-index: -3
+  overflow: auto
+  background: #bbb image-url('/assets/add_bg.png')
+  +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+  border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
+
+  &::-webkit-scrollbar
+    width: 6px
+  &::-webkit-scrollbar-track
+    margin: 10px
+  &::-webkit-scrollbar-thumb
+    background: rgba(0, 0, 0, 0.5)
+    -webkit-border-radius: 3px
+
+  *:not(.button):not(h2)
+    font-size: 13px
+    +text-shadow(#DDD 0 1px 1px)
+
+  .breadcrumbs
+    padding-bottom: 5px
+    border-bottom: 1px dotted #888
+    a
+      color: #333
+    .current
+      font-weight: bold
+      color: $secondary_b_darkest
+
+  h2, ul#sources a
+    +lato
+    font-size: 24px
+    color: #111
+    padding-bottom: 7px
+    +text-shadow(#CCC 0 1px 1px)
+
+  p
+    font-size: 14px
+
+  p, ul, form
+    margin-top: 10px
+
+  ul, form, .breadcrumbs
+    margin-bottom: 15px
+
+  form
+    input
+      margin-right: 10px
+
+  ul#sources
+    li
+      height: 64px
+      padding: 10px
+
+      img
+        float: left
+        margin-right: 15px
+
+      a
+        position: relative
+        top: 18px
+
+  ul#pandora_stations
+    li
+      font-weight: bold
+      padding: 10px
+
+      &:before
+        @extend span.pictos
+        margin-right: 7px
+        content: 'm'
+        color: darken($secondary_a_dark, 15%)
+        font-size: 18px
+
+  ul#pandora_songs, ul#search_results
+    li
+      padding: 10px 0
+
+      label
+        input
+          float: right
+          margin-top: 9px
+          width: 14px    // largest browser checkboxes
+          height: 14px
+
+        input:checked + .song   // darker titles for selected songs
+          color: black
+
+      .song
+        color: #444
+
+        img    // TODO: this is copied from the queue li's, consolidate them
+          float: left
+          height: 32px
+          width: 32px
+          margin-right: 10px
+          border: 1px solid #EEE
+          +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+
+  #youtube_query, #search_query     // TODO: combine
+    width: 220px
+
+  #youtube_search, #library_search, #username_search  // TODO: combine
+    margin-left: 15px
+
+  #youtube_search_results
+    li  // TODO: combine with pandora_songs list
+      height: 48px
+      padding: 10px 0
+
+      img   // TODO: compied from pandora_songs list, consolidate them
+        float: left
+        height: 48px
+        width: 48px
+        margin-right: 10px
+        border: 1px solid #EEE
+        +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+      .title
+        margin-top: 10px
+
+  a.button
+    font-size: 13px
+    background: $secondary_a_dark
+    color: white
+    padding: 5px 12px 6px
+    margin-right: 10px   // TODO: necessary?
+
+    &:hover
+      background: darken($secondary_a_dark, 10%)
+
+    &#select_all, &#next_results
+      float: right
+      margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
+
+#queue, ul#songs
+  width: 550px
+
+#queue
+  position: fixed
+  top: 100px
+  left: 200px
+  bottom: 0
+  background: #DDD
+  +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
+  z-index: -1   // below ul#songs, above #add
+
+ul#songs
+  margin-left: 200px
+  padding: 100px 0 0 0
+
+  li
+    +background-image(linear-gradient(#eee, #ddd))
+    height: 62px
+    border-top: 1px solid white
+    border-bottom: 1px solid #ccc
+
+    img
+      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+      border: 1px solid #EEE
+
+    .submitter
+      float: right
+      margin: 17px 15px
+      font-size: 12px   // TODO: remove these text styles if we never put names
+      text-transform: uppercase
+      color: #444
+      +text-shadow(white 0 1px 1px)
+
+      img
+        height: 24px
+        width: 24px
+
+    img.cover
+      float: left
+      height: 32px
+      width: 32px
+      margin: 15px
+
+    .name
+      margin-top: 15px
+
+      .artist, .title
+        font-size: 14px
+        color: $secondary_b_darkest
+        +text-shadow(white 0 1px 1px)
+
+  &:after
+    // TODO: helvetica neue with text-shadow here
+    content: 'Hey you!\00a0\00a0 Add some songs from there\00a0\00a0\2192'
+    display: block
+    border-top: 1px solid white
+    padding: 20px 0
+    font-weight: bold
+    font-size: 12px
+    text-align: center
+    text-transform: uppercase
+    color: #AFAFAF
+    +text-shadow(white 0 1px 0px)
+
+.ui-slider-horizontal
+  height: .4em
+  width: 87px
+
+.ui-slider
+  .ui-slider-handle
+    width: .8em
+    height: .8em
+  margin-top: 14px

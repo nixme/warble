@@ -1,8 +1,9 @@
 require 'patron'
 require 'nokogiri'
-require 'v8'
+require 'execjs'
 
 # TODO:
+#  - replace V8 with execjs
 #  - error handling umm everywhere
 #  - getting a proper list takes 1+N page fetches
 #  - change to Typhoeus for parallel http requests?

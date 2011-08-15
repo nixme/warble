@@ -4,4 +4,4 @@
   #ytplayer
 
 - content_for :scripts do
-  = include_javascripts :player
+  = javascript_include_tag 'player', debug: Rails.env.development?

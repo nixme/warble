@@ -17,9 +17,9 @@
 
 #add
 #spinner
-  %img(src='/images/spinner.png')
+  = image_tag 'spinner.png'
 #queue
 %ul#songs
 
 - content_for :scripts do
-  = include_javascripts :application
+  = javascript_include_tag 'application', debug: Rails.env.development?

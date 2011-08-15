@@ -22,11 +22,11 @@ class User < Ohm::Model
     if user = find(:facebook_id => access_token['uid']).first
       user
     else   # no user found so create one!
-      user_info = access_token['user_info']
-      User.create :first_name  => user_info['first_name'],
-                  :last_name   => user_info['last_name'],
-                  :email       => user_info['email'],
-                  :photo_url   => user_info['image'],
+      info = access_token['info']
+      User.create :first_name  => info['first_name'],
+                  :last_name   => info['last_name'],
+                  :email       => info['email'],
+                  :photo_url   => info['image'],
                   :token       => SecureRandom.hex(10),
                   :facebook_id => access_token['uid']
     end
@@ -54,6 +54,6 @@ class User < Ohm::Model
     super.merge :first_name => first_name,
                 :last_name  => last_name,
                 :email      => email,
-                :photo_url  => photo_url,
+                :photo_url  => photo_url
   end
 end

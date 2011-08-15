@@ -50,9 +50,7 @@ namespace :deploy do
 
   desc 'Package and upload front-end assets'
   task :upload_assets, :roles => :app, :except => { :no_release => true } do
-    run_locally 'bundle exec compass compile'
-    run_locally 'bundle exec rake barista:brew'
-    run_locally 'bundle exec jammit'
+    run_locally 'bundle exec rake assets:precompile'
 
     top.upload File.join('public', 'assets'),
                File.join(release_path, 'public', 'assets')
