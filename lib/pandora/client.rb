@@ -5,7 +5,7 @@ require 'xmlrpc/client'
 
 module Pandora
   class Client < XMLRPC::Client
-    PROTOCOL_VERSION = 31
+    PROTOCOL_VERSION = 32
     HOST = 'www.pandora.com'
     RPC_PATH = "/radio/xmlrpc/v#{PROTOCOL_VERSION}?%s"
     USER_AGENT = "Warble/0.0.1"
