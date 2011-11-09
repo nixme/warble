@@ -5,7 +5,7 @@ require 'xmlrpc/client'
 
 module Pandora
   class Client < XMLRPC::Client
-    PROTOCOL_VERSION = 32
+    PROTOCOL_VERSION = 33
     HOST = 'www.pandora.com'
     RPC_PATH = "/radio/xmlrpc/v#{PROTOCOL_VERSION}?%s"
     USER_AGENT = "Warble/0.0.1"
@@ -13,7 +13,7 @@ module Pandora
     attr_accessor :stations
 
     def initialize(username, password)
-      super(HOST, RPC_PATH)
+      super(HOST, RPC_PATH, nil, nil, nil, nil, nil, true)
       @encryptor = Blowfish.encryptor
       @decryptor = Blowfish.decryptor
       login(username, password)
@@ -31,7 +31,7 @@ module Pandora
       end
 
       url_args = [ "rid=#{@rid}", "method=#{method.split('.').last}" ]
-      url_args << "listenerId=#{@listenerId}" if @listenerId
+      url_args << "lid=#{@listenerId}" if @listenerId
       @path = RPC_PATH % url_args.join('&')
 
       super(method, *args)
