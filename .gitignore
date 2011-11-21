@@ -1,12 +1,12 @@
 .sass-cache
 .bundle
 log/*.log
+bin/
 tmp/
-public/stylesheets
-public/javascripts
 public/assets
 config/redis.yml
 *.swp
-.rvmrc
 public/songs
 solr
+push/node_modules
+vendor/bundle

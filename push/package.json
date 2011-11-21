@@ -1,0 +1,17 @@
+{
+  "name": "warble-push",
+  "description": "Push components of the Warble jukebox server",
+  "version": "0.0.1",
+  "author": "Gopal Patel <nixme@stillhope.com>",
+  "engines": {
+    "node": ">= 0.6.2"
+  },
+  "dependencies": {
+    "coffee-script": "1.1.3",
+    "redis": "0.7.1",
+    "socket.io": "0.8.7"
+  },
+  "scripts": {
+    "start": "coffee server.coffee"
+  }
+}

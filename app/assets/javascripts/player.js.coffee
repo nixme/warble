@@ -18,10 +18,7 @@ jQuery(document).ready ($) ->
 
   window.jukebox.fetch()   # load current song to play
 
-  socket = new io.Socket null,
-    port: 8765
-    rememberTransport: false
-  socket.connect()
+  socket = io.connect("http://#{window.base_url}:8765")
   socket.on 'message', (raw_data) ->
     data = JSON.parse(raw_data)
     switch data.event

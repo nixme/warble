@@ -15,7 +15,7 @@
     = yield
 
     :javascript
-      WEB_SOCKET_SWF_LOCATION = 'http://#{request.host}:8765/socket.io/lib/vendor/web-socket-js/WebSocketMain.swf';
+      window.base_url = "#{request.host}";
     = javascript_include_tag "http://#{request.host}:8765/socket.io/socket.io.js"
     = javascript_include_tag 'handlebars.1.0.0.beta.3'
     = content_for :scripts
