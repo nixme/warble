@@ -15,8 +15,6 @@
 
     :javascript
       WEB_SOCKET_SWF_LOCATION = 'http://#{request.host}:8765/socket.io/lib/vendor/web-socket-js/WebSocketMain.swf';
-    = javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'
-    = javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js'
     = javascript_include_tag "http://#{request.host}:8765/socket.io/socket.io.js"
     = javascript_include_tag 'handlebars.1.0.0.beta.3'
     = content_for :scripts
