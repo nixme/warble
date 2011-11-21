@@ -17,4 +17,4 @@ class Warble.PandoraStationsView extends Backbone.View
 
   logout: ->
     $.post '/pandora/credentials', _method: 'delete', ->
-      window.location.hash = "!/"
+      window.workspace.navigate '/', true

@@ -7,7 +7,7 @@ class Warble.QueueView extends Backbone.View
     @collection.bind 'remove', @removeSong
 
   addSong: (song) ->
-    view = new SongView { model: song }
+    view = new Warble.SongView { model: song }
     $(@el).append view.render().el
 
   addAll: ->

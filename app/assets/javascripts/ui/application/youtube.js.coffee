@@ -86,7 +86,7 @@ class Warble.YoutubeSearchView extends Backbone.View
       success: =>
         window.workspace.hideSpinner()
       error: ->
-        window.location.hash = '!/'
+        window.workspace.navigate '/', true
         window.workspace.hideSpinner()
 
     event.preventDefault()

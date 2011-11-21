@@ -28,7 +28,7 @@ class Warble.PandoraSongsView extends Backbone.View
         this.render()
         window.workspace.hideSpinner()
       error: ->
-        window.location.hash = '!/pandora/stations'
+        window.workspace.navigate '/pandora/stations', true
     event.preventDefault()
 
   getMore: (event) ->

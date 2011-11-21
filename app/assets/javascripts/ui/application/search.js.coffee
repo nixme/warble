@@ -34,7 +34,7 @@ class Warble.SearchView extends Backbone.View
     @collection.fetch
       success: -> window.workspace.hideSpinner()
       error: ->
-        window.location.hash = '!/'
+        window.workspace.navigate '/', true
         window.workspace.hideSpinner()
 
     event.preventDefault()

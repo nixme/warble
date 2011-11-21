@@ -18,7 +18,7 @@ class Warble.HypeFeedsView extends Backbone.View
 
   usernameSearch: (event) ->
     username = this.$('#username_query').val()
-    window.location.hash = "#!/hype/#{username}/1"
+    window.workspace.navigate '/hype/#{username}/1', true
     event.preventDefault()
 
   handleEnter: (event) ->

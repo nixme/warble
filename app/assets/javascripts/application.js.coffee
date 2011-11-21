@@ -13,17 +13,16 @@ window.Warble = {}  # namespacing object for our classes
 jQuery(document).ready ($) ->
   class Warble.WorkspaceController extends Backbone.Router
     routes:
-      ''                            : 'index'
-      '!/'                          : 'home'
-      '!/search/:query'             : 'search'
-      '!/pandora/stations'          : 'pandoraStations'
-      '!/pandora/stations/:id'      : 'pandoraSongs'
-      '!/youtube'                   : 'youtube'
-      '!/hype'                      : 'hypeChooser'
-      '!/hype/latest/:page'         : 'hypeLatest'
-      '!/hype/popular/3days/:page'  : 'hypePopular3Days'
-      '!/hype/popular/week/:page'   : 'hypePopularWeek'
-      '!/hype/:user/:page'          : 'hypeUser'
+      '/search/:query'             : 'search'
+      '/pandora/stations'          : 'pandoraStations'
+      '/pandora/stations/:id'      : 'pandoraSongs'
+      '/youtube'                   : 'youtube'
+      '/hype'                      : 'hypeChooser'
+      '/hype/latest/:page'         : 'hypeLatest'
+      '/hype/popular/3days/:page'  : 'hypePopular3Days'
+      '/hype/popular/week/:page'   : 'hypePopularWeek'
+      '/hype/:user/:page'          : 'hypeUser'
+      '*unmatched'                 : 'home'
 
     initialize: ->
       # initialize models/collections
@@ -93,9 +92,6 @@ jQuery(document).ready ($) ->
     showSpinner: -> $('#spinner').fadeIn()
     hideSpinner: -> $('#spinner').fadeOut()
 
-    index: ->
-      window.location.hash = '!/'
-
     home: ->
       @serviceChooserView.render()
 
@@ -127,9 +123,9 @@ jQuery(document).ready ($) ->
             (new Warble.PandoraSongsView { model: station }).render()
             this.hideSpinner()
           error: =>
-            window.location.hash = '!/pandora/stations'
+            window.workspace.navigate '/pandora/stations', true
       else  # redirect back to station list
-        window.location.hash = '!/pandora/stations'
+        window.workspace.navigate '/pandora/stations', true
 
     youtube: ->
       @youtubeSearchView.render()
@@ -166,9 +162,12 @@ jQuery(document).ready ($) ->
 
 
   window.workspace = new Warble.WorkspaceController
-  Backbone.history.start()
+  Backbone.history.start pushState: true
 
-
+  # Route all <a data-relative="true"> clicks automatically in-app.
+  $('a[data-relative]').live 'click', (event) ->
+    event.preventDefault()
+    window.workspace.navigate($(event.currentTarget).attr('href'), true)
 
   socket = new io.Socket null,
     port: 8765
