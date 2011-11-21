@@ -8,95 +8,69 @@ The intelligent office jukebox...
 Getting Started
 ---------------
 
-You'll need a \*nix environment. Following are instructions for OS X 10.6:
+You'll need a \*nix environment. Following are instructions for OS X 10.7:
 
 
 ### Prerequisites:
 
-Install [Xcode](http://developer.apple.com/tools/xcode/).
+Install [Xcode](http://developer.apple.com/tools/xcode/) and
+[OS X GCC packages](https://github.com/kennethreitz/osx-gcc-installer).
 
-Install [Git](http://git-scm.org), [Node.js](http://nodejs.org/) and
-[Redis](http://redis.io/). If you use
-[homebrew](http://mxcl.github.com/homebrew/) for package management, then
+Use [Homebrew](http://mxcl.github.com/homebrew/) to install
+[Node.js](http://nodejs.org/), [Redis](http://redis.io/),
+[rbenv](https://github.com/sstephenson/rbenv), and
+[ruby-build](https://github.com/sstephenson/ruby-build).
 
 ```sh
-$ brew install git node redis
+$ brew install node redis rbenv ruby-build
 ```
 
 
-### Installing ruby:
+### Building Ruby:
 
-Install [RVM](http://rvm.beginrescueend.com/) to help create sandboxed ruby
-environments. Inspect the script if you're wary of executing scripts directly
-off the internet:
+Set up [rbenv](https://github.com/sstephenson/rbenv) for your shell:
 
 ```sh
-$ bash < <(curl -s http://rvm.beginrescueend.com/install/rvm)
-$ echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bash_profile
+$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+$ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 ```
 
-_Make sure you follow any post-install instructions and reload your
-terminal._
+_Reload your shell._
 
-Install the latest patch release of ruby 1.9.2 and add
+Build and install the latest patch release of ruby 1.9.3. Add
 [Bundler](http://gembundler.com) for dependency management.
 
 ```sh
-$ rvm install 1.9.2      # install the latest MRI/YARV 1.9.2
-$ rvm 1.9.2@global       # switch to 1.9.2's global gemset
-$ gem install bundler    # install bundler
-$ rvm --default 1.9.2    # set 1.9.2 as the default ruby
+$ rbenv install 1.9.3-p0   # Install the latest MRI 1.9.3
+$ rbenv rehash             # Rebuild the shim binaries
+$ gem install bundler      # Install bundler
 ```
 
 
 ### Setup Node.js:
 
-Install [npm](http://npmjs.org/) to manage node.js libraries. Inspect the script
-if you're wary of executing scripts directly off the internet:
+Install [npm](http://npmjs.org/) to manage node.js dependencies. Inspect the
+script if you're wary of executing scripts directly off the internet:
 
 ```sh
 $ curl http://npmjs.org/install.sh | sh
 ```
 
-Add `NODE_PATH` to your `~/.bash_profile` or appropriate shell startup script.
-Assuming you use homebrew installed at `/usr/local` and use bash, run the
-following:
-
-```sh
-$ echo 'export NODE_PATH="/usr/local/lib/node"' >> ~/.bash_profile
-```
-
-Install dependent node.js libraries:
-
-```sh
-$ npm install redis socket.io coffee-script
-```
-
 
 ### Preparing the project
 
-Clone the repository:
+Install dependencies:
 
 ```sh
-$ git clone git@github.com:nixme/warble.git
-$ cd warble
+$ bundle install --binstubs    # Ruby dependencies
+$ cd push
+$ npm install                  # Node.js dependencies
+$ cd ..
 ```
-
-Create a sandboxed ruby environment and install dependent gems:
-
-```sh
-$ rvm --create --rvmrc 1.9.2@warble
-$ bundle install
-```
-
-*Note:* This drops a `.rvmrc` file in the project which will automatically
-switch environment variables for the sandboxed ruby when you change
-directory into the project. The next time you enter this directory, you'll
-get a warning about trusting the file. Make sure you accept!
 
 Warble uses Facebook Connect to authenticate users. Create a new app at
 <http://facebook.com/developers>. Make sure to set the _Site URL_ field to
-http://localhost:5000/.
+http://localhost:3000/.
 
 Copy the _App ID_ and _App Secret_ values to environment variables in your
 shell. I recommend adding them to `~/.bash_profile` or appropriate shell
@@ -110,18 +84,23 @@ $ echo 'export FACEBOOK_APP_SECRET="abcdefabcdefabcdefabcdefabcdefab"' >> ~/.bas
 
 ### Running the application
 
-Ensure Redis is running. If installed via homebrew, you can find the
-proper incantations to start it by running:
+Ensure Redis is running. You can find the proper incantations by running:
 
 ```sh
 $ brew info redis
 ```
 
-Start the web server, search server, background processes, and other
-components with [Foreman](http://ddollar.github.com/foreman/):
+Start a local Solr search server in a separate shell:
 
 ```sh
-$ foreman start
+$ ./bin/rake sunspot:solr:run
 ```
 
-Now browse to <http://localhost:5000/> and get warbling!
+Start the web server, background processes, and other components with
+[Foreman](http://ddollar.github.com/foreman/):
+
+```sh
+$ ./bin/foreman start
+```
+
+Now browse to <http://localhost:3000/> and get warbling!
