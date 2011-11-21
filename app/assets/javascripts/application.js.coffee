@@ -1,5 +1,7 @@
 #= require jquery
 #= require jquery-ui
+#= require rails/csrf
+#= require rails/method
 #= require underscore
 #= require backbone
 #= require jquery.mapkey

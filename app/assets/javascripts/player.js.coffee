@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery-ui
+#= require rails/csrf
 #= require underscore
 #= require backbone
 
