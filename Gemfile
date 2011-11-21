@@ -30,6 +30,7 @@ group :assets do                        # Asset group not needed in production
   gem 'jquery-rails'
   gem 'rails-behaviors'
   gem 'rails-backbone'
+  gem 'swfobject-rails'
 end
 
 # Miscellaneous gems

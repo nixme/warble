@@ -1,3 +1,5 @@
+#= require swfobject
+
 class Warble.YoutubePlayerView extends Backbone.View
   initialize: ->
     _.bindAll this, 'render', 'volume', 'finished'
