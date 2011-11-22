@@ -11,7 +11,7 @@ Getting Started
 You'll need a \*nix environment. Following are instructions for OS X 10.7:
 
 
-### Prerequisites:
+### Prerequisites
 
 Install [Xcode](http://developer.apple.com/tools/xcode/) and
 [OS X GCC packages](https://github.com/kennethreitz/osx-gcc-installer).
@@ -26,7 +26,7 @@ $ brew install node redis rbenv ruby-build
 ```
 
 
-### Building Ruby:
+### Build Ruby
 
 Set up [rbenv](https://github.com/sstephenson/rbenv) for your shell:
 
@@ -35,19 +35,23 @@ $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
 $ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 ```
 
-_Reload your shell._
+**Reload your shell.**
 
-Build and install the latest patch release of ruby 1.9.3. Add
-[Bundler](http://gembundler.com) for dependency management.
+Build and install Ruby 1.9.3:
 
 ```sh
-$ rbenv install 1.9.3-p0   # Install the latest MRI 1.9.3
-$ rbenv rehash             # Rebuild the shim binaries
-$ gem install bundler      # Install bundler
+$ rbenv install 1.9.3-p0   # Install MRI 1.9.3-p0
+$ rbenv rehash             # Rebuild the rbenv shim binaries
+```
+
+Add [Bundler](http://gembundler.com) for dependency management:
+
+```sh
+$ gem install bundler
 ```
 
 
-### Setup Node.js:
+### Set up Node.js
 
 Install [npm](http://npmjs.org/) to manage node.js dependencies. Inspect the
 script if you're wary of executing scripts directly off the internet:
