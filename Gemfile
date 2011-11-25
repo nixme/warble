@@ -50,3 +50,7 @@ group :development do
   gem 'capistrano'                      # deployment helpers
   gem 'sunspot_solr', '1.3.0.rc6'       # Simple local Solr server
 end
+
+group :development, :test do
+  gem 'jazz_hands'                      # Pry-based Rails console + goodies
+end
