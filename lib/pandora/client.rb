@@ -26,7 +26,8 @@ module Pandora
     # override calling mechanism to add extra request parameters
     def call2(method, *args)
       if args
-        args.insert(0, Time.now.to_i)
+        server_time = Time.now.to_i - (@time_offset || 0)
+        args.insert(0, server_time) unless method == 'misc.sync'
         args.insert(1, @authToken) if @authToken
       end
 
@@ -46,8 +47,16 @@ module Pandora
     end
 
     def login(user, pass)
+      # Determine offset between our time and Pandora server time
       @rid = "%07iP" % (Time.now.to_i % 10000000)
-      response = call 'listener.authenticateListener', user, pass
+      if response = call('misc.sync')
+        server_time = @decryptor.decrypt(response)[4..-3].to_i
+        @time_offset = Time.now.to_i - server_time
+      end
+
+      # Authenticate
+      response = call 'listener.authenticateListener', user, pass, 'html5tuner',
+        '', '', 'HTML5', true
 
       @authToken  = response['authToken']
       @listenerId = response['listenerId']
