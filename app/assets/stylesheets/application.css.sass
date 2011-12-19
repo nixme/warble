@@ -1,15 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Crushed|Lato:300)
+@import url(http://fonts.googleapis.com/css?family=Crushed)
 // TODO: proper asset helper
 @import url(/assets/pictos.css)
 @import 'compass'
 @import 'compass/reset'
 
 @import '_tooltips'
-
-@mixin lato
-  font-family: Lato, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
-  font-weight: 300
-
 
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $primary:              #F90022
@@ -45,8 +40,8 @@ $z-body-gradient:    -10
 $z-body:              -9
 $z-queue-background:  -3
 $z-add:                1
-$z-header:             2
-
+$z-add-spinner:        2
+$z-header:             3
 
 
 // general styles
@@ -68,6 +63,10 @@ body
     bottom: 0
     width: 100%
     +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
+
+.ultralight
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif
+  font-weight: 300
 
 a
   text-decoration: none
@@ -185,8 +184,8 @@ span.pictos
       margin-right: 20px
 
     #artist, #title
-      +lato
-      +text-shadow(#FFF 1px 1px 1px)
+      @extend .ultralight
+      +text-shadow(#FFF 0px 1px 1px)
       +ellipsis
 
     #artist
@@ -279,10 +278,10 @@ header
       margin-right: 20px
 
     #artist, #title
-      +lato
-      +text-shadow(black 1px 1px 2px)
+      @extend .ultralight
+      +text-shadow(black 0px 1px 1px)
       +ellipsis
-      color: #EEE
+      color: #CCC
 
     #artist
       font-size: 30px
@@ -342,6 +341,7 @@ header
   display: none
   background: rgba(0, 0, 0, 0.3)
   width: 353px  // 3px over #add's width for its border
+  z-index: $z-add-spinner
 
   img
     float: right
@@ -380,11 +380,11 @@ header
       color: $secondary_b_darkest
 
   h2, ul#sources a
-    +lato
+    @extend .ultralight
     font-size: 24px
-    color: #111
+    color: #333
     padding-bottom: 7px
-    +text-shadow(#CCC 0 1px 1px)
+    +text-shadow(rgba(255, 255, 255, 0.4) 0 1px 1px)
 
   p
     font-size: 14px
