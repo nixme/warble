@@ -8,12 +8,12 @@
         %a#settings(href='#' title='Settings') y
         = link_to '-', logout_path, title: 'Logout', method: 'delete'
 
+  #playing
+
   #controls
     %a#play(href='#') 4
     %a#forward(href='#') 7
     #volume(data-volume='#{@jukebox.volume}')
-
-  #playing
 
 #add
 #spinner

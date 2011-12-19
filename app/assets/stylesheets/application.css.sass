@@ -40,6 +40,14 @@ $default-transition-duration: 0.2s
   100%
     -webkit-transform: rotate(360deg)
 
+// z-indexes (from lowest to highest)
+$z-body-gradient:    -10
+$z-body:              -9
+$z-queue-background:  -3
+$z-add:                1
+$z-header:             2
+
+
 
 // general styles
 
@@ -47,14 +55,15 @@ body
   background: $secondary_b_darkest image-url('/assets/primary_bg.png') fixed
   color: #555
   position: relative
-  z-index: -9
+  z-index: $z-body
   font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+  overflow: hidden
 
   // gradient fade over background
   &:before
     content: ' '
     position: fixed
-    z-index: -10
+    z-index: $z-body-gradient
     top: 0
     bottom: 0
     width: 100%
@@ -202,6 +211,7 @@ header
   +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
   width: 100%
   height: 100px
+  z-index: $z-header
 
   &:before
     content: ' '
@@ -210,16 +220,15 @@ header
     height: 4px
     +box-shadow(rgba(0, 0, 0, 0.7) 0 1px 7px)
 
-  #controls, #playing
+  #controls, #playing, #info
     display: inline-block
     vertical-align: top
     height: 70px
-
-  #controls, #playing, #info
     margin: 15px 20px
 
   #controls
-    width: 145px
+    float: right
+    width: 100px
     padding-top: 3px   // helps vertically center
 
     #play, #forward
@@ -246,6 +255,9 @@ header
 
   #playing
     width: 545px
+    position: fixed
+    left: 600px
+    top: 4px
 
     img
       border: 1px solid #666
@@ -282,7 +294,7 @@ header
 
 
   #info
-    float: right
+    margin-left: 200px
 
     h1
       font-size: 36px
@@ -322,7 +334,7 @@ header
   position: fixed
   top: 100px
   bottom: 0
-  left: 750px
+  left: 200px
   padding: 25px
   width: 350px
 
@@ -340,7 +352,7 @@ header
     -webkit-animation-timing-function: linear
 
 #add
-  z-index: -3
+  z-index: $z-add
   overflow: auto
   background: #bbb image-url('/assets/add_bg.png')
   +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
@@ -476,19 +488,18 @@ header
 
 #queue, ul#songs
   width: 550px
-
-#queue
   position: fixed
   top: 100px
-  left: 200px
   bottom: 0
+  left: 603px
+
+#queue
   background: #DDD
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
-  z-index: -1   // below ul#songs, above #add
+  z-index: $z-queue-background
 
 ul#songs
-  margin-left: 200px
-  padding: 100px 0 0 0
+  overflow-y: auto
 
   li
     +background-image(linear-gradient(#eee, #ddd))
@@ -528,7 +539,7 @@ ul#songs
 
   &:after
     // TODO: helvetica neue with text-shadow here
-    content: 'Hey you!\00a0\00a0 Add some songs from there\00a0\00a0\2192'
+    content: '\2190\00a0\00a0Hey you!\00a0\00a0 Add some songs!'
     display: block
     border-top: 1px solid white
     padding: 20px 0
@@ -536,7 +547,7 @@ ul#songs
     font-size: 12px
     text-align: center
     text-transform: uppercase
-    color: #AFAFAF
+    color: #9F9F9F
     +text-shadow(white 0 1px 0px)
 
 .ui-slider-horizontal
