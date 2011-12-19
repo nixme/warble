@@ -41,13 +41,13 @@ Build and install Ruby 1.9.3:
 
 ```sh
 $ rbenv install 1.9.3-p0   # Install MRI 1.9.3-p0
-$ rbenv rehash             # Rebuild the rbenv shim binaries
 ```
 
 Add [Bundler](http://gembundler.com) for dependency management:
 
 ```sh
 $ gem install bundler
+$ rbenv rehash             # Rebuild the rbenv shim binaries
 ```
 
 
