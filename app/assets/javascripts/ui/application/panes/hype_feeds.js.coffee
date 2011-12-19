@@ -1,20 +1,12 @@
+#= require ui/application/panes/pane
 #= require templates/hype_feeds
 
-class Warble.HypeFeedsView extends Backbone.View
-  template: -> window.JST['templates/hype_feeds']
+class Warble.HypeFeedsView extends Warble.PaneView
+  template: window.JST['templates/hype_feeds']
 
   events:
     'click #username_search' : 'usernameSearch'
     'keypress input'         : 'handleEnter'
-
-  initialize: ->
-    _.bindAll this, 'render', 'usernameSearch', 'handleEnter'
-    @el = $('#add')
-
-  render: ->
-    $(@el).html @template()
-    this.delegateEvents() # TODO: fix
-    this
 
   usernameSearch: (event) ->
     username = this.$('#username_query').val()

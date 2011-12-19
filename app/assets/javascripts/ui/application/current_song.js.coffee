@@ -2,17 +2,16 @@
 
 class Warble.CurrentSongView extends Backbone.View
   initialize: ->
-    _.bindAll this, 'render'
     @el = $('#playing')
-    @model.bind 'change', @render
+    @model.bind 'change', @render, this
 
-  template: -> window.JST['templates/current_song']
+  template: window.JST['templates/current_song']
 
   render: ->
-    $(@el).html this.template()(@model.toJSON())
+    $(@el).html this.template @model.toJSON()
 
     # user name tooltips on profile images
-    this.$('.submitter img[title]').tooltip  # TODO: dry up with SongView
+    @$('.submitter img[title]').tooltip  # TODO: dry up with SongView
       effect:   'fade'
       position: 'bottom right'
       offset:   [5, -34]

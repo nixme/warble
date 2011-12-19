@@ -2,18 +2,17 @@
 
 class Warble.YoutubePlayerView extends Backbone.View
   initialize: ->
-    _.bindAll this, 'render', 'volume', 'finished'
     @el = $('#ytplayer_wrapper')
-    @model.bind 'change:current', @render
-    @model.bind 'change:volume', @volume
+    @model.bind 'change:current', @render, this
+    @model.bind 'change:volume', @volume, this
 
     # youtube apis make you do this global function junk
     window.handleYoutubeStateChange = (state) =>
       if state == 0  # done playing
-        this.finished()
+        @finished()
 
     window.handleYoutubeError = =>
-      this.finished()
+      @finished()
 
     window.onYouTubePlayerReady = =>
       @player = document.getElementById 'ytplayer'
@@ -28,17 +27,17 @@ class Warble.YoutubePlayerView extends Backbone.View
   render: ->
     if !@player
       # make sure the slow-ass widget has loaded first
-      window.setTimeout (=> this.render()), 500
+      window.setTimeout (=> @render()), 500
     else
       @player.pauseVideo()
       if @pending_volume?
         @player.setVolume @pending_volume
         delete @pending_volume
       if @model.current_song()?.source == 'youtube'
-        this.$('#ytplayer').css('visibility', 'visible')
+        @$('#ytplayer').css('visibility', 'visible')
         @player.loadVideoById @model.current_song().external_id
       else
-        this.$('#ytplayer').css('visibility', 'hidden')
+        @$('#ytplayer').css('visibility', 'hidden')
 
   volume: ->
     vol = @model.get 'volume'

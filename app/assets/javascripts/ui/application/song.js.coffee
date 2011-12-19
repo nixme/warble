@@ -2,16 +2,15 @@
 
 class Warble.SongView extends Backbone.View
   tagName:  'li'
-  template: -> window.JST['templates/song']
+  template: window.JST['templates/song']
 
   initialize: ->
-    _.bindAll this, 'render', 'remove'
-    @model.bind 'change', @render
+    @model.bind 'change', @render, this
     @model.view = this
 
   render: ->
-    $(@el).html @template()(@model.toJSON())
-    this.$('.submitter img[title]').tooltip
+    $(@el).html @template @model.toJSON()
+    @$('.submitter img[title]').tooltip
       effect:   'fade'
       position: 'bottom right'
       offset:   [5, -26]

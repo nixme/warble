@@ -1,12 +1,13 @@
+#= require ui/application/panes/pane
 #= require templates/youtube
 #= require templates/youtube_results
 
 # TODO: proper controller routes for pages and queries
-class Warble.YoutubeSearchView extends Backbone.View
+class Warble.YoutubeSearchView extends Warble.PaneView
   YOUTUBE_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?callback=?"
 
-  template:              -> window.JST['templates/youtube']
-  searchResultsTemplate: -> window.JST['templates/youtube_results']
+  template:              window.JST['templates/youtube']
+  searchResultsTemplate: window.JST['templates/youtube_results']
 
   events:
     'click #youtube_search'    : 'search'
@@ -16,18 +17,13 @@ class Warble.YoutubeSearchView extends Backbone.View
     'click a#next_results'     : 'nextPage'
 
   initialize: ->
-    _.bindAll this, 'render', 'search', 'handleEnter', 'queueVideo'
-    @el = $('#add')
-
     @searchData = null
     @query      = ''
     @startIndex = 1
     @pageSize   = 10
 
-  render: ->
-    $(@el).html @template()
-    this.$('#youtube_query').focus()
-    this.delegateEvents()  # TODO: fix
+  activate: ->
+    @$('#youtube_query').focus()
 
   handleEnter: (event) ->
     if event.which == 13
@@ -66,7 +62,7 @@ class Warble.YoutubeSearchView extends Backbone.View
         author:     entry.author[0].name.$t
         thumbnail:  entry.media$group.media$thumbnail[0].url
 
-      $('#youtube_search_results').html @searchResultsTemplate()
+      $('#youtube_search_results').html @searchResultsTemplate
         results: @data
         hasPrev: @startIndex > 1
         hasNext: (@startIndex + data.feed.openSearch$itemsPerPage.$t) < data.feed.openSearch$totalResults.$t

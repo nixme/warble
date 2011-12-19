@@ -1,22 +1,19 @@
+#= require ui/application/panes/pane
 #= require templates/pandora_songs
 
-class Warble.PandoraSongsView extends Backbone.View
-  template: -> window.JST['templates/pandora_songs']
+class Warble.PandoraSongsView extends Warble.PaneView
+  template: window.JST['templates/pandora_songs']
 
   events:
     'click #add_songs':  'addSongs'
     'click #get_more':   'getMore'
     'click #select_all': 'selectAll'
 
-  initialize: ->
-    _.bindAll this, 'render', 'addSongs', 'getMore', 'selectAll'
-    @el = $('#add')
-
   render: ->
-    $(@el).html @template()
+    $(@el).html @template
       name: @model.get 'name'
       songs: @model.songs.toJSON()
-    this.delegateEvents()   # TODO: all pre-initted views can't share #add is the issue here
+    this
 
   addSongs: (event) ->
     window.workspace.showSpinner()
@@ -35,5 +32,5 @@ class Warble.PandoraSongsView extends Backbone.View
     event.preventDefault()
 
   selectAll: (event) ->
-    this.$('input:checkbox').attr('checked', true)
+    @$('input:checkbox').attr('checked', true)
     event.preventDefault()

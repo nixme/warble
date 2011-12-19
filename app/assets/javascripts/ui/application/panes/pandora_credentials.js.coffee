@@ -1,20 +1,12 @@
+#= require ui/application/panes/pane
 #= require templates/pandora_credentials
 
-class Warble.PandoraCredentialsView extends Backbone.View
+class Warble.PandoraCredentialsView extends Warble.PaneView
+  template: window.JST['templates/pandora_credentials']
+
   events:
     'click button'   : 'save'
     'submit form'    : 'save'
-
-  initialize: ->
-    _.bindAll this, 'render', 'save'
-    @el = $('#add')
-
-  template: -> window.JST['templates/pandora_credentials']
-
-  render: ->
-    $(@el).html this.template()
-    this.delegateEvents()   # TODO: all pre-initted views can't share #add is the issue here
-    this
 
   save: (event) ->
     # TODO: generalize the method shim

@@ -3,13 +3,12 @@
 class Warble.PandoraPlayerView extends Backbone.View
   DEFAULT_VOLUME = 80
 
-  template: -> window.JST['templates/player_song']
+  template: window.JST['templates/player_song']
 
   initialize: ->
-    _.bindAll this, 'render', 'volume', 'finished'
     @el = $('#player')
-    @model.bind 'change:current', @render
-    @model.bind 'change:volume', @volume
+    @model.bind 'change:current', @render, this
+    @model.bind 'change:volume', @volume, this
 
   render: ->
     if @model.current_song()?.source == 'youtube'
@@ -17,15 +16,15 @@ class Warble.PandoraPlayerView extends Backbone.View
       @el.html ''
     else   # pandora or hypem
       vol = @model.get('volume')
-      @el.html this.template()
+      @el.html @template
         current: @model.current_song()
-      this.$('audio').bind 'canplay', ->
-        this.volume = (vol ? DEFAULT_VOLUME) / 100
-        this.play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
-      this.$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
+      @$('audio').bind 'canplay', ->
+        @volume = (vol ? DEFAULT_VOLUME) / 100
+        @play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
+      @$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
   volume: ->
-    audio = @.$('audio')
+    audio = @$('audio')
     if audio.size
       audio.attr 'volume', @model.get('volume') / 100
 
