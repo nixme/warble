@@ -35,14 +35,23 @@ module Pandora
       url_args << "lid=#{@listenerId}" if @listenerId
       @path = RPC_PATH % url_args.join('&')
 
-      super(method, *args)
+      # getFragment doesn't support TLS
+      @use_ssl, @port =
+        if method == 'playlist.getFragment'
+          [false, 80]
+        else
+          [true, 443]
+        end
+
+      # Use the async call (which isn't really asynchronous) to force a new HTTP
+      # request so @use_ssl is respected.
+      call2_async(method, *args)
     end
 
     # override normal rpc mechanism to encrypt bodies
     def do_rpc(request, async = false)
       request = @encryptor.encrypt(request.gsub(/\n/, ''))
       response = super(request, async)
-      @http.finish if @http  # ensure we don't keep connections hanging
       response
     end
 
