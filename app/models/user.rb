@@ -1,34 +1,26 @@
-class User < Ohm::Model
-  attribute :facebook_id
-  attribute :token   # for authenticating websocket client since cookies won't pass
-  attribute :first_name
-  attribute :last_name
-  attribute :email
-  attribute :photo_url
-  attribute :pandora_username
-  attribute :pandora_password
-  attribute :num_songs_queued_today
-  attribute :date_last_queued
+class User < ActiveRecord::Base
+  validate :facebook_id, presence: true
+  validate :first_name,  presence: true
+  validate :last_name,   presence: true
+  validate :email,       presence: true
 
-  index :facebook_id
+  has_many :songs
+  has_many :votes
+  has_many :plays
 
-  collection :songs, Song   # songs the user has added
-
-  def validations
-    assert_unique :facebook_id
-  end
 
   def self.find_or_create_by_facebook_auth(access_token)
-    if user = find(:facebook_id => access_token['uid']).first
+    if user = where(facebook_id: access_token['uid']).first
       user
-    else   # no user found so create one!
+    else   # No user found so create one!
       info = access_token['info']
-      User.create :first_name  => info['first_name'],
-                  :last_name   => info['last_name'],
-                  :email       => info['email'],
-                  :photo_url   => info['image'],
-                  :token       => SecureRandom.hex(10),
-                  :facebook_id => access_token['uid']
+      User.create(
+        first_name:  info['first_name'],
+        last_name:   info['last_name'],
+        email:       info['email'],
+        photo_url:   info['image'],
+        facebook_id: access_token['uid']
+      )
     end
   end
 
@@ -50,10 +42,12 @@ class User < Ohm::Model
     @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
   end
 
-  def to_hash
-    super.merge :first_name => first_name,
-                :last_name  => last_name,
-                :email      => email,
-                :photo_url  => photo_url
+  def as_json(options = {})
+    {
+      first_name: first_name,
+      last_name:  last_name,
+      email:      email,
+      photo_url:  photo_url
+    }
   end
 end
