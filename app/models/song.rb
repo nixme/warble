@@ -12,6 +12,23 @@ class Song < ActiveRecord::Base
 
   # TODO: search indexing stuff
 
+
+
+  def self.find_or_create_from_youtube_params(params, submitter)
+    if song = where(source: 'youtube').where(external_id: params[:youtube_id]).first
+      song
+    else
+      Song.create({
+        source:      'youtube',
+        title:       params[:title],
+        artist:      params[:author],
+        cover_url:   params[:thumbnail],
+        external_id: params[:youtube_id],
+        user:        submitter
+      })
+    end
+  end
+
   def as_json(options = {})
     {
       source:      source,

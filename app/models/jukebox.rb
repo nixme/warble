@@ -37,9 +37,7 @@ module Jukebox
     # TODO: do proper priorities
     $redis.zadd('warble:queue', 1, play.id)
 
-    unless current_play
-      skip!
-    end
+    skip unless current_play
   end
 
   def skip
