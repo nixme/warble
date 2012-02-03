@@ -12,3 +12,4 @@ push/node_modules
 vendor/bundle
 .rvmrc
 config/database.yml
+.idea/

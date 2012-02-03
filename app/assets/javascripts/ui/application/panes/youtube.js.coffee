@@ -13,6 +13,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
     'click #youtube_search'    : 'search'
     'keypress input'           : 'handleEnter'
     'click a.entry'            : 'queueVideo'
+    'click div.preview'        : 'previewVideo'
     'click a#previous_results' : 'previousPage'
     'click a#next_results'     : 'nextPage'
 
@@ -28,6 +29,9 @@ class Warble.YoutubeSearchView extends Warble.PaneView
   handleEnter: (event) ->
     if event.which == 13
       this.search event
+
+  previewVideo: (event) ->
+    console.log event
 
   previousPage: (event) ->
     @startIndex -= @pageSize + 1
