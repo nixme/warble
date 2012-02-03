@@ -1,6 +1,6 @@
 class JukeboxesController < ApplicationController
   before_filter :authenticate_user!
-  respond_to :html, :json
+
 
   # App bootstrap
   def app

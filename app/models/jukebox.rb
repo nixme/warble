@@ -14,10 +14,17 @@ module Jukebox
   end
 
   def current_song
-    current_play.song
+    play = current_play
+    play && play.song
   end
 
   def queue
-    $redis.zrange(0, -1).map { |play_id| Play.find_by_id(play_id) }.compact
+    $redis.zrange('warble:queue', 0, -1)
+      .map { |play_id| Play.find_by_id(play_id) }
+      .compact
+  end
+
+  def queue_as_songs
+    queue.map(&:song)
   end
 end
