@@ -12,15 +12,12 @@ class JukeboxesController < ApplicationController
   end
 
   def show
-    render json: {
-      current: Jukebox.current_song,
-      volume:  Jukebox.volume
-    }
+    render json: Jukebox
   end
 
   def skip
     # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
-    Jukebox.app.skip!
+    Jukebox.skip
     head :ok
   end
 

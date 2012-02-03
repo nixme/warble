@@ -6,7 +6,6 @@ class Pandora::BaseController < ApplicationController
   def check_pandora_credentials!
     unless current_user.pandora_credentials?
       head :forbidden
-      false
     end
   end
 end
