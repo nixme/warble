@@ -60,4 +60,8 @@ class User < ActiveRecord::Base
       photo_url:  photo_url
     }
   end
+
+  def number_of_plays_today
+    plays.where(created_at: Time.zone.now.midnight..(Time.zone.now.midnight + 1.day)).count
+  end
 end

@@ -32,10 +32,10 @@ module Jukebox
   end
 
   def enqueue(song, user)
+    priority = user.number_of_plays_today
     play = user.plays.create(song: song)
 
-    # TODO: do proper priorities
-    $redis.zadd('warble:queue', 1, play.id)
+    $redis.zadd('warble:queue', priority, play.id)
 
     publish_queue_refresh
 
