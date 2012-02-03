@@ -3,7 +3,7 @@ class Pandora::SongsController < Pandora::BaseController
 
   def index
     begin
-      station = current_user.pandora_client.stations.find { |s| s.id == params[:station_id] }
+      station = current_user.pandora_client(session).stations.find { |s| s.id == params[:station_id] }
       pandora_songs = station.next_playlist   # grab 4 songs
 
       # convert pandora API objects to our song objects

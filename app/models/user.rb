@@ -38,8 +38,18 @@ class User < ActiveRecord::Base
     save
   end
 
-  def pandora_client
-    @pandora ||= Pandora::Client.new(pandora_username, pandora_password)
+  def pandora_client(session)
+    if session[:pandora_client]
+      Pandora::Client.new(session[:pandora_client])
+    else
+      pandora = Pandora::Client.new(pandora_username, pandora_password)
+      session[:pandora_client] = {
+              authToken:   pandora.authToken,
+              listenerId:  pandora.listenerId,
+              time_offset: pandora.time_offset
+      }
+      pandora
+    end
   end
 
   def as_json(options = {})
