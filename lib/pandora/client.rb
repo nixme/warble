@@ -10,7 +10,7 @@ module Pandora
     RPC_PATH = "/radio/xmlrpc/v#{PROTOCOL_VERSION}?%s"
     USER_AGENT = "Warble/0.0.1"
 
-    attr_accessor :stations, :authToken, :listenerId, :time_offset
+    attr_accessor :authToken, :listenerId, :time_offset
 
     # username, password - to initiate a fresh Pandora session
     # { authToken: "123abc", listenerId: 123456, time_offset: 10000 } - for existing sessions
@@ -20,19 +20,15 @@ module Pandora
       @decryptor = Blowfish.decryptor
 
       if args.size == 2
-        puts "New Pandora client via login"
         login(args[0], args[1])
       else
-        puts "Pandora client from existing session"
         session = args[0]
         @authToken =   session[:authToken]
         @listenerId =  session[:listenerId]
         @time_offset = session[:time_offset]
       end
 
-      @stations = call('station.getStations').map do |station_data|
-        Station.new(self, station_data)
-      end
+      @rid = "%07iP" % (Time.now.to_i % 10000000)
     end
 
     def decrypt(str)
@@ -73,7 +69,6 @@ module Pandora
 
     def login(user, pass)
       # Determine offset between our time and Pandora server time
-      @rid = "%07iP" % (Time.now.to_i % 10000000)
       if response = call('misc.sync')
         server_time = @decryptor.decrypt(response)[4..-3].to_i
         @time_offset = Time.now.to_i - server_time
@@ -94,6 +89,12 @@ module Pandora
       @stations << Station.new(self, call('station.createStation', tag + id))
     end
 
+    def stations
+      @stations ||= call('station.getStations').map do |station_data|
+        Station.new(self, station_data)
+      end
+    end
+
     def search
       # TODO...
     end
@@ -112,6 +113,7 @@ module Pandora
       end
 
       def next_playlist
+        puts 'next playlist...'
         @client.call('playlist.getFragment', @id, '0', '', '',
           AUDIO_FORMAT, '0', '0').map do |song_data|
           Song.new(@client, song_data)

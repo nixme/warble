@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20120203195018) do
     t.string   "title",       :null => false
     t.string   "artist"
     t.string   "album"
-    t.string   "cover_url"
-    t.string   "url"
+    t.text     "cover_url"
+    t.text     "url"
     t.integer  "user_id",     :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false

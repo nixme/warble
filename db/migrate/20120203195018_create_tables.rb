@@ -19,8 +19,8 @@ class CreateTables < ActiveRecord::Migration
       t.string     :title,       null: false
       t.string     :artist
       t.string     :album
-      t.string     :cover_url
-      t.string     :url
+      t.text       :cover_url
+      t.text       :url
       t.belongs_to :user,        null: false
       t.timestamps               null: false
     end

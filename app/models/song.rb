@@ -9,6 +9,25 @@ class Song < ActiveRecord::Base
   has_many   :users_who_voted,  through: :votes, source: :user
   has_many   :users_who_played, through: :plays, source: :user
 
+  def self.find_or_create_from_pandora_song(pandora_song, submitter)
+    if song = find_by_external_id(pandora_song.music_id)
+      song.incr :hits
+      song
+    else   # first time seeing the song, so create it
+      song = Song.create({
+        source:      'pandora',
+        title:       pandora_song.title,
+        artist:      pandora_song.artist,
+        album:       pandora_song.album,
+        cover_url:   pandora_song.art_url || pandora_song.artist_art_url,
+        url:         pandora_song.audio_url,
+        external_id: pandora_song.music_id,
+        user:        submitter
+      })
+      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
+      song
+    end
+  end
 
   # TODO: search indexing stuff
 

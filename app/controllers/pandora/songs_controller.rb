@@ -2,7 +2,7 @@ class Pandora::SongsController < Pandora::BaseController
   respond_to :json
 
   def index
-    begin
+
       station = current_user.pandora_client(session).stations.find { |s| s.id == params[:station_id] }
       pandora_songs = station.next_playlist   # grab 4 songs
 
@@ -12,8 +12,6 @@ class Pandora::SongsController < Pandora::BaseController
       end
 
       respond_with songs
-    rescue   # assuming end of playlist here but should check for the right exception
-      head 403
-    end
+
   end
 end
