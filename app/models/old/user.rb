@@ -1,4 +1,4 @@
-class User < Ohm::Model
+class Old::User < Ohm::Model
   attribute :facebook_id
   attribute :token   # for authenticating websocket client since cookies won't pass
   attribute :first_name

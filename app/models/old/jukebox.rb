@@ -1,4 +1,4 @@
-class Jukebox < Ohm::Model
+class Old::Jukebox < Ohm::Model
   list      :played,   Song
   reference :current,  Song
   attribute :volume

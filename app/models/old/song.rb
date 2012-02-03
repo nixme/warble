@@ -1,4 +1,4 @@
-class Song < Ohm::Model
+class Old::Song < Ohm::Model
   attribute :source
   attribute :title
   attribute :artist
