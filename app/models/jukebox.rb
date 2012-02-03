@@ -37,14 +37,20 @@ module Jukebox
     # TODO: do proper priorities
     $redis.zadd('warble:queue', 1, play.id)
 
+    publish_queue_refresh
+
     skip unless current_play
   end
 
   def skip
-    if $redis.zcard('warble:queue') == 0
-      $redis.del('warble:current_play')
+    if $redis.zcard('warble:queue') == 0    # If nothing queued
+      $redis.del('warble:current_play')     # ...then kill current song
     else
-      # TODO
+      results = $redis.multi do                       # Pop from queue and set as current
+        $redis.zrange('warble:queue', 0, 0)
+        $redis.zremrangebyrank('warble:queue', 0, 0)
+      end
+      $redis.set('warble:current_play', results.first.first)
     end
 
     publish_skip
@@ -60,7 +66,7 @@ module Jukebox
   def publish_skip
     $redis.publish(Warble::Application.config.pubsub_channel, {
       event: 'skip',
-      songs: as_json
+      jukebox: as_json
     }.to_json)
   end
 

@@ -9,9 +9,10 @@ class Song < ActiveRecord::Base
   has_many   :users_who_voted,  through: :votes, source: :user
   has_many   :users_who_played, through: :plays, source: :user
 
+  # TODO: search indexing stuff
+
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
-    if song = find_by_external_id(pandora_song.music_id)
-      song.incr :hits
+    if song = where(source: 'pandora').where(external_id: pandora_song.music_id).first
       song
     else   # first time seeing the song, so create it
       song = Song.create({
@@ -28,10 +29,6 @@ class Song < ActiveRecord::Base
       song
     end
   end
-
-  # TODO: search indexing stuff
-
-
 
   def self.find_or_create_from_youtube_params(params, submitter)
     if song = where(source: 'youtube').where(external_id: params[:youtube_id]).first
