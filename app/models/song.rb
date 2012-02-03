@@ -50,6 +50,7 @@ class Song < ActiveRecord::Base
 
   def as_json(options = {})
     {
+      id:          id,
       source:      source,
       title:       title,
       artist:      artist,

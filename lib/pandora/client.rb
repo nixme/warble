@@ -113,7 +113,6 @@ module Pandora
       end
 
       def next_playlist
-        puts 'next playlist...'
         @client.call('playlist.getFragment', @id, '0', '', '',
           AUDIO_FORMAT, '0', '0').map do |song_data|
           Song.new(@client, song_data)
