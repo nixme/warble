@@ -2,11 +2,20 @@ class JukeboxesController < ApplicationController
   before_filter :authenticate_user!
   respond_to :html, :json
 
-  def show
-    respond_with @jukebox = Jukebox.app
+  # App bootstrap
+  def app
+    @volume = Jukebox.volume
   end
 
+  # Player page bootstrap
   def player
+  end
+
+  def show
+    render json: {
+      current: Jukebox.current_song,
+      volume:  Jukebox.volume
+    }
   end
 
   def skip
@@ -16,7 +25,7 @@ class JukeboxesController < ApplicationController
   end
 
   def volume
-    Jukebox.app.set_volume params[:value]
+    Jukebox.volume = params[:value]
     head :ok
   end
 
