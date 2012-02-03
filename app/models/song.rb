@@ -45,6 +45,24 @@ class Song < ActiveRecord::Base
     end
   end
 
+  def self.find_or_create_from_hype_song(hype_song, submitter)
+    if song = where(source: 'hypem').where(external_id: hype_song.id).first
+      song
+    else
+      song = Song.create({
+        source:      'hypem',
+        title:       hype_song.title,
+        artist:      hype_song.artist,
+        url:         hype_song.url,
+        external_id: hype_song.id,
+        user:        submitter
+      })
+      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
+      song
+    end
+  end
+
+
   def as_json(options = {})
     {
       id:          id,
