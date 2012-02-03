@@ -7,7 +7,6 @@ gem 'pg'                                # PostgreSQL adapter
 gem 'foreigner'                         # Foreign key constraints in migrations
 gem 'hiredis'                           # ruby bindings for fast redis C lib
 gem 'redis'                             # ruby redis interface
-gem 'ohm'                               # simple ORM on redis
 
 # Full-text search
 gem 'sunspot_rails', '1.3.0.rc6'        # Apache Solr adapter
@@ -39,10 +38,6 @@ gem 'nokogiri'                          # HTML parsing
 gem 'patron'                            # libcurl (HTTP) ruby bindings
 gem 'execjs'                            # JS executor, used for scraping
 
-
-group :test do
-  gem 'turn', '0.8.2', require: false   # Pretty printed test output
-end
 
 group :development do
   gem 'foreman'                         # process launcher (Profile executor)

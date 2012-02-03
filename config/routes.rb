@@ -1,7 +1,7 @@
 Warble::Application.routes.draw do
 
   # Main interface
-  root to: 'jukeboxes#show'
+  root to: 'jukeboxes#app'
 
   # Authentication
   get    'login'                   => 'sessions#new',     as: :login

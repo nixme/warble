@@ -1,9 +1,8 @@
 class SongsController < ApplicationController
   before_filter :authenticate_user!
-  respond_to :json
 
   def index
-    respond_with Jukebox.app.upcoming.zrange(0, -1).map(&Song)
+    render json: Jukebox.queue_as_songs
   end
 
   def create

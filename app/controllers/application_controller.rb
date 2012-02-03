@@ -4,11 +4,18 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     unless current_user
       redirect_to login_url
-      false
     end
   end
 
   def current_user
-    @current_user ||= User[session[:user_id]]
+    @current_user =
+      begin
+        if session[:user_id] && (user = User.find_by_id(session[:user_id]))
+          user
+        else
+          reset_session
+          nil
+        end
+      end
   end
 end
