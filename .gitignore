@@ -10,3 +10,4 @@ public/songs
 solr
 push/node_modules
 vendor/bundle
+.rvmrc
