@@ -19,8 +19,8 @@ class CreateTables < ActiveRecord::Migration
       t.string     :title,       null: false
       t.string     :artist
       t.string     :album
-      t.string     :cover_url
-      t.string     :url
+      t.text       :cover_url
+      t.text       :url
       t.belongs_to :user,        null: false
       t.timestamps               null: false
     end
@@ -28,7 +28,7 @@ class CreateTables < ActiveRecord::Migration
     add_index :songs, [:source, :external_id], unique: true
 
     create_table :votes do |t|
-      t.belongs_to :user,       null: false
+      t.belongs_to :user
       t.belongs_to :song,       null: false
       t.datetime   :created_at, null: false
     end

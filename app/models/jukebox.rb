@@ -31,22 +31,27 @@ module Jukebox
     queue.map(&:song)
   end
 
-  def enqueue(song, user)
-    play = user.plays.create(song: song)
+  def enqueue(song, user=nil)
+    priority = user ? user.number_of_plays_today : 999
+    play = Play.create(user: user, song: song)
 
-    # TODO: do proper priorities
-    $redis.zadd('warble:queue', 1, play.id)
+    $redis.zadd('warble:queue', priority, play.id)
 
-    unless current_play
-      skip!
-    end
+    publish_queue_refresh
+
+    skip unless current_play
   end
 
   def skip
-    if $redis.zcard('warble:queue') == 0
-      $redis.del('warble:current_play')
+    if $redis.zcard('warble:queue') == 0    # If nothing queued
+      $redis.del('warble:current_play')     # ...then kill current song
+      auto_queue                            # ...and auto-queue another song
     else
-      # TODO
+      results = $redis.multi do                       # Pop from queue and set as current
+        $redis.zrange('warble:queue', 0, 0)
+        $redis.zremrangebyrank('warble:queue', 0, 0)
+      end
+      $redis.set('warble:current_play', results.first.first)
     end
 
     publish_skip
@@ -62,7 +67,7 @@ module Jukebox
   def publish_skip
     $redis.publish(Warble::Application.config.pubsub_channel, {
       event: 'skip',
-      songs: as_json
+      jukebox: as_json
     }.to_json)
   end
 
@@ -78,5 +83,13 @@ module Jukebox
       current: Jukebox.current_song,
       volume:  Jukebox.volume
     }
+  end
+
+ private
+  def auto_queue
+    songs = Play.limit(900).where("user_id IS NOT NULL").order("id DESC").map(&:song)   # songs from last 900 plays
+    songs += Song.limit(100).all                                                        # plus some random ones
+
+    enqueue songs[Random.rand(songs.size)]
   end
 end
