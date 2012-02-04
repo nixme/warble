@@ -87,9 +87,6 @@ module Jukebox
 
  private
   def auto_queue
-    songs = Play.limit(900).where("user_id IS NOT NULL").order("id DESC").map(&:song)   # songs from last 900 plays
-    songs += Song.limit(100).all                                                        # plus some random ones
-
-    enqueue songs[Random.rand(songs.size)]
+    enqueue Song.get_random
   end
 end
