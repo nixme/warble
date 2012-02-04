@@ -28,7 +28,7 @@ class CreateTables < ActiveRecord::Migration
     add_index :songs, [:source, :external_id], unique: true
 
     create_table :votes do |t|
-      t.belongs_to :user,       null: false
+      t.belongs_to :user
       t.belongs_to :song,       null: false
       t.datetime   :created_at, null: false
     end

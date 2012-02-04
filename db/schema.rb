@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(:version => 20120203195018) do
 
   create_table "plays", :force => true do |t|
-    t.integer  "user_id",                   :null => false
+    t.integer  "user_id"
     t.integer  "song_id",                   :null => false
     t.datetime "created_at",                :null => false
     t.integer  "skips",      :default => 0, :null => false

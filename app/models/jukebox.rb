@@ -31,9 +31,9 @@ module Jukebox
     queue.map(&:song)
   end
 
-  def enqueue(song, user)
-    priority = user.number_of_plays_today
-    play = user.plays.create(song: song)
+  def enqueue(song, user=nil)
+    priority = user ? user.number_of_plays_today : 999
+    play = Play.create(user: user, song: song)
 
     $redis.zadd('warble:queue', priority, play.id)
 
@@ -45,6 +45,7 @@ module Jukebox
   def skip
     if $redis.zcard('warble:queue') == 0    # If nothing queued
       $redis.del('warble:current_play')     # ...then kill current song
+      auto_queue                            # ...and auto-queue another song
     else
       results = $redis.multi do                       # Pop from queue and set as current
         $redis.zrange('warble:queue', 0, 0)
@@ -82,5 +83,13 @@ module Jukebox
       current: Jukebox.current_song,
       volume:  Jukebox.volume
     }
+  end
+
+ private
+  def auto_queue
+    songs = Play.limit(900).where("user_id IS NOT NULL").order("id DESC").map(&:song)   # songs from last 900 plays
+    songs += Song.limit(100).all                                                        # plus some random ones
+
+    enqueue songs[Random.rand(songs.size)]
   end
 end
