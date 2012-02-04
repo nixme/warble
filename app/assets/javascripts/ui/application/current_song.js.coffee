@@ -2,11 +2,13 @@
 
 class Warble.CurrentSongView extends Backbone.View
   initialize: ->
+    _.bindAll this, 'refresh'
+
     @el = $('#playing')
     @model.bind 'change', @render, this
-    @voteView = new Warble.VoteView
-      model: @model
-    @voteView.bind 'voteRecorded', @render, this
+
+    @voteView = new Warble.VoteView model: @model
+    @voteView.bind 'voteRecorded', @refresh
 
   template: window.JST['templates/current_song']
 
@@ -28,4 +30,7 @@ class Warble.CurrentSongView extends Backbone.View
 
     @voteView.render()
 
-    @
+    this
+
+  refresh: ->
+    @model.fetch success: => @render()

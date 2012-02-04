@@ -3,8 +3,9 @@ class VotesController < ApplicationController
 
   def create
     begin
-      if Song.find(params[:song_id]).votes.create(user: current_user).save
-        head :created
+      if (song = Song.find(params[:song_id]).votes.create(user: current_user)).save
+        render json:   song.as_json(),
+               status: :created
       else
         head :forbidden
       end
