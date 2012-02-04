@@ -14,7 +14,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
     'click #youtube_search'    : 'search'
     'keypress input'           : 'handleEnter'
     'click a.entry'            : 'queueVideo'
-    'click div.preview'        : 'previewVideo'
+    'click div.video'        : 'previewVideo'
     'click a#previous_results' : 'previousPage'
     'click a#next_results'     : 'nextPage'
 
@@ -32,12 +32,17 @@ class Warble.YoutubeSearchView extends Warble.PaneView
       this.search event
 
   previewVideo: (event) ->
-    console.log event
     preview_el = @$(event.currentTarget)
+    if preview_el.parent().hasClass('preview')
+      preview_el.html 'preview'
+      preview_el.parent().removeClass('preview')
+    else
+      preview_el.html  window.JST['templates/youtube_preview']
+        youtube_id: preview_el.data("youtube")
 
-    preview_el.html  window.JST['templates/youtube_preview']
-      youtube_id: preview_el.data("youtube")
+      preview_el.parent().addClass('preview')
 
+    @
 
   previousPage: (event) ->
     @startIndex -= @pageSize + 1
