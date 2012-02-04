@@ -80,7 +80,8 @@ module Jukebox
 
   def as_json(options = {})
     {
-      current: Jukebox.current_song,
+      current:      Jukebox.current_song,
+      current_play: Jukebox.current_play,
       volume:  Jukebox.volume
     }
   end

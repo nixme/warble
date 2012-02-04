@@ -1,15 +1,20 @@
-{{#current}}
-  <div class="submitter">
-  {{#voters}}
+{{#current_play}}
+  <div class="voters">
+  {{#song.voters}}
     <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
-  {{/voters}}
+  {{/song.voters}}
   </div>
 
-  {{#if cover_url}}
-  <img id="cover" src="{{cover_url}}" />
+  {{#if song.cover_url}}
+    {{#if user}}
+      <div class="submitter">
+        <img src="{{user.photo_url}}">
+      </div>
+    {{/if}}
+  <img id="cover" src="{{song.cover_url}}" />
   {{/if}}
-  <div id="artist">{{artist}}</div>
-  <div id="title">{{title}}</div>
+  <div id="artist">{{song.artist}}</div>
+  <div id="title">{{song.title}}</div>
 {{^}}
   <div id="artist">No songs in queue</div>
-{{/current}}
+{{/current_play}}
