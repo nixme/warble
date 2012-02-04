@@ -1,6 +1,7 @@
 #= require ui/application/panes/pane
 #= require templates/youtube
 #= require templates/youtube_results
+#= require templates/youtube_preview
 
 # TODO: proper controller routes for pages and queries
 class Warble.YoutubeSearchView extends Warble.PaneView
@@ -32,6 +33,11 @@ class Warble.YoutubeSearchView extends Warble.PaneView
 
   previewVideo: (event) ->
     console.log event
+    preview_el = @$(event.currentTarget)
+
+    preview_el.html  window.JST['templates/youtube_preview']
+      youtube_id: preview_el.data("youtube")
+
 
   previousPage: (event) ->
     @startIndex -= @pageSize + 1
