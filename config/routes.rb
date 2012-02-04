@@ -20,6 +20,11 @@ Warble::Application.routes.draw do
     put  'volume', :on => :member
     resources :songs, :only => [ :index, :create ]
   end
+
+  resources :songs, :only => [] do
+    resources :votes, :only => :create
+  end
+
   namespace :pandora do
     resource  :credentials, :only => [ :update, :destroy ]
     resources :stations, :only => :index do

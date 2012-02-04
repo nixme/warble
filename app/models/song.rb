@@ -74,6 +74,7 @@ class Song < ActiveRecord::Base
       url:         url,
       external_id: external_id,
       user:        user,
+      votes:       votes.as_json,
       voters:      users_who_voted.as_json
       # TODO: add collection of likes
     }

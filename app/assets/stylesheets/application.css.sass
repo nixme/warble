@@ -225,35 +225,6 @@ header
     height: 70px
     margin: 15px 20px
 
-  #controls
-    position: fixed
-    top: 0
-    right: 0
-    width: 100px
-    padding-top: 3px   // helps vertically center
-
-    #play, #forward
-      display: inline-block
-      @extend span.pictos
-      height: 40px
-      width: 40px
-      +background-image(linear-gradient(#ccc, #777))
-      +border-radius(20px)
-      +box-shadow(black 0 0 2px)
-      text-align: center
-      letter-spacing: -3px   // helps center the icon
-      line-height: 25px
-      font-size: 25px
-      color: #222
-      +text-shadow(#CCC 0 1px 1px)
-      margin-right: 7px
-      cursor: pointer
-
-      &:hover
-        +background-image(linear-gradient($primary, darken($primary, 20%)))
-        color: white
-        +text-shadow(#222 0 -1px 1px)
-
   #playing
     width: 545px
     position: fixed
@@ -293,6 +264,39 @@ header
       font-size: 20px
       padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
 
+  #controls
+    position: fixed
+    top: 0
+    right: 0
+    width: 100px
+    padding-top: 3px   // helps vertically center
+
+  #forward, #vote
+    display: inline-block
+    @extend span.pictos
+    height: 40px
+    width: 40px
+    +background-image(linear-gradient(#ccc, #777))
+    +border-radius(20px)
+    +box-shadow(black 0 0 2px)
+    text-align: center
+    letter-spacing: -3px   // helps center the icon
+    line-height: 25px
+    font-size: 25px
+    color: #222
+    +text-shadow(#CCC 0 1px 1px)
+    margin-right: 7px
+    cursor: pointer
+
+    &:hover
+      +background-image(linear-gradient($primary, darken($primary, 20%)))
+      color: white
+      +text-shadow(#222 0 -1px 1px)
+
+    img
+      border: none
+      width: 24px
+      +box-shadow(none)
 
   #info
     margin-left: 200px
