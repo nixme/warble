@@ -288,15 +288,19 @@ header
     margin-right: 7px
     cursor: pointer
 
+    .vote-icon
+      display: inline-block
+      width: 24px
+      height: 24px
+      background: url('/assets/like.png') no-repeat center center
+
     &:hover
       +background-image(linear-gradient($primary, darken($primary, 20%)))
       color: white
       +text-shadow(#222 0 -1px 1px)
 
-    img
-      border: none
-      width: 24px
-      +box-shadow(none)
+      .vote-icon
+        background: url('/assets/like-hover.png')
 
   #info
     margin-left: 200px
