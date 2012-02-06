@@ -14,18 +14,21 @@ module Pandora
 
     # username, password - to initiate a fresh Pandora session
     # { authToken: "123abc", listenerId: 123456, time_offset: 10000 } - for existing sessions
-    def initialize(*args)
+    def initialize(user, pass, session)
       super(HOST, RPC_PATH, nil, nil, nil, nil, nil, true)
       @encryptor = Blowfish.encryptor
       @decryptor = Blowfish.decryptor
 
-      if args.size == 2
-        login(args[0], args[1])
+      @user = user
+      @pass = pass
+      @session = session
+
+      if (client_info = session[:pandora_client])
+        @authToken =   client_info[:authToken]
+        @listenerId =  client_info[:listenerId]
+        @time_offset = client_info[:time_offset]
       else
-        session = args[0]
-        @authToken =   session[:authToken]
-        @listenerId =  session[:listenerId]
-        @time_offset = session[:time_offset]
+        login(@user, @pass)
       end
 
       @rid = "%07iP" % (Time.now.to_i % 10000000)
@@ -60,6 +63,17 @@ module Pandora
       call2_async(method, *args)
     end
 
+    # retries with a fresh session on failures
+    def call (method, *args)
+      begin
+        super method, *args
+      rescue
+        @authToken = @listenerId = @time_offset = nil
+        login @user, @pass
+        super method, *args
+      end
+    end
+
     # override normal rpc mechanism to encrypt bodies
     def do_rpc(request, async = false)
       request = @encryptor.encrypt(request.gsub(/\n/, ''))
@@ -80,6 +94,13 @@ module Pandora
 
       @authToken  = response['authToken']
       @listenerId = response['listenerId']
+
+      @session[:pandora_client] = {
+        authToken:   @authToken,
+        listenerId:  @listenerId,
+        time_offset: @time_offset
+      }
+      puts "New session from login #{@session[:pandora_client]}"
     end
 
     # type is either :shared or :music_id
