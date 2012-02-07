@@ -64,13 +64,13 @@ module Pandora
     end
 
     # retries with a fresh session on failures
-    def call (method, *args)
+    def call_with_retry(method, *args)
       begin
-        super method, *args
-      rescue
+        call method, *args
+      rescue Exception
         @authToken = @listenerId = @time_offset = nil
         login @user, @pass
-        super method, *args
+        call method, *args
       end
     end
 
@@ -111,7 +111,7 @@ module Pandora
     end
 
     def stations
-      @stations ||= call('station.getStations').map do |station_data|
+      @stations ||= call_with_retry('station.getStations').map do |station_data|
         Station.new(self, station_data)
       end
     end
@@ -134,7 +134,7 @@ module Pandora
       end
 
       def next_playlist
-        @client.call('playlist.getFragment', @id, '0', '', '',
+        @client.call_with_retry('playlist.getFragment', @id, '0', '', '',
           AUDIO_FORMAT, '0', '0').map do |song_data|
           Song.new(@client, song_data)
         end
