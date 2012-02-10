@@ -7,6 +7,7 @@
 @import '_tooltips'
 
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
+$default-border-radius: 3px
 $primary:              #F90022
 $secondary_a:          #FF7A00
 $secondary_b:          #02B4CD
@@ -43,15 +44,25 @@ $z-add:                1
 $z-add-spinner:        2
 $z-header:             3
 
+@mixin card-style
+  padding: 20px
+  +box-shadow(rgba(0,0,0,.33) 0px 1px 8px)
+  background: image-url('/assets/white_noise.png')
+  +border-radius()
+
+
 
 // general styles
 
+*
+  +box-sizing(border-box)
+
 body
-  background: $secondary_b_darkest image-url('/assets/primary_bg.png') fixed
+  background: image-url('/assets/wood.jpg') fixed
   color: #555
   position: relative
   z-index: $z-body
-  font-family: 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+  font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
   overflow: hidden
 
   // gradient fade over background
@@ -62,11 +73,11 @@ body
     top: 0
     bottom: 0
     width: 100%
-    +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
+    // +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
 
 .ultralight
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif
-  font-weight: 300
+  //font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif
+  // font-weight: 300
 
 a
   text-decoration: none
@@ -196,142 +207,122 @@ span.pictos
     #title
       font-size: 36px
       color: #555
-      padding-bottom: 10px  // so overflow from @ellipsis doesn't cut off descenders
+      padding-bottom: 10px  // so overflow from @ellipsis doesnt cut off descenders
 
 
 
 // app
-header, footer
-  position: fixed
 
-header
-  //+background-image(linear-gradient(#333, #111))
-  background: image-url('/assets/bar_bg.png') repeat-x
-  +box-shadow(rgba(0, 0, 0, 0.7) 0px 2px 10px)
-  width: 100%
-  height: 100px
-  z-index: $z-header
+#left
+  float: left
+  margin: 0 30px
 
-  &:before
-    content: ' '
-    display: block
-    background: image-url('/assets/stripe.png') repeat-x
-    height: 4px
-    +box-shadow(rgba(0, 0, 0, 0.7) 0 1px 7px)
 
-  #controls, #playing, #info
-    display: inline-block
-    vertical-align: top
-    height: 70px
-    margin: 15px 20px
+.metadata
+  +card-style()
+  display: block
+  +border-bottom-left-radius(3px)
+  +border-bottom-right-radius(3px)
 
-  #playing
-    width: 545px
-    position: fixed
-    left: 600px
-    top: 4px
+  p
+    +text-shadow(#fff 0px 1px 1px)
+    +ellipsis
+    color: #545454
+
+  .title, .artist
+    font-weight: bold
+
+  .artist, .album
+    font-size: 12px
+
+  .title
+    font-size: 16px
+    padding-bottom: 5px   // so overflow from @ellipsis doesnt cut off descenders
+
+
+
+#playing
+  width: 320px
+  img
+    border: 1px solid #666
+
+  .voters
+    float: right
+    margin: 17px 15px
 
     img
-      border: 1px solid #666
-      +box-shadow(black 1px 1px 5px)
+      height: 32px
+      width: 32px
+      margin-right: 5px
 
-    .voters
-      float: right
-      margin: 17px 15px
+  .submitter
+    position: absolute
+    top: 45px
+    left: 45px
 
-      img
-        height: 32px
-        width: 32px
-        margin-right: 5px
+    img
+      height: 24px
+      width: 24px
 
-    .submitter
-      position: absolute
-      top: 45px
-      left: 45px
+  img#cover
+    display: block
+    height: 320px
+    width: 320px
 
-      img
-        height: 24px
-        width: 24px
 
-    img#cover
-      float: left
-      height: 64px
-      width: 64px
-      margin-right: 20px
+#forward, #vote
+  display: inline-block
+  @extend span.pictos
+  height: 40px
+  width: 40px
+  +background-image(linear-gradient(#ccc, #777))
+  +border-radius(20px)
+  +box-shadow(black 0 0 2px)
+  text-align: center
+  letter-spacing: -3px   // helps center the icon
+  line-height: 25px
+  font-size: 25px
+  color: #222
+  +text-shadow(#CCC 0 1px 1px)
+  margin-right: 7px
+  cursor: pointer
 
-    #artist, #title
-      @extend .ultralight
-      +text-shadow(black 0px 1px 1px)
-      +ellipsis
-      color: #CCC
-
-    #artist
-      font-size: 30px
-      padding: 5px 0
-
-    #title
-      font-size: 20px
-      padding-bottom: 5px   // so overflow from @ellipsis doesn't cut off descenders
-
-  #controls
-    position: fixed
-    top: 0
-    right: 0
-    width: 100px
-    padding-top: 3px   // helps vertically center
-
-  #forward, #vote
+  .vote-icon
     display: inline-block
-    @extend span.pictos
-    height: 40px
-    width: 40px
-    +background-image(linear-gradient(#ccc, #777))
-    +border-radius(20px)
-    +box-shadow(black 0 0 2px)
-    text-align: center
-    letter-spacing: -3px   // helps center the icon
-    line-height: 25px
-    font-size: 25px
-    color: #222
-    +text-shadow(#CCC 0 1px 1px)
-    margin-right: 7px
-    cursor: pointer
+    width: 24px
+    height: 24px
+    background: url('/assets/like.png') no-repeat center center
+
+  &:hover
+    +background-image(linear-gradient($primary, darken($primary, 20%)))
+    color: white
+    +text-shadow(#222 0 -1px 1px)
 
     .vote-icon
-      display: inline-block
-      width: 24px
-      height: 24px
-      background: url('/assets/like.png') no-repeat center center
+      background: url('/assets/like-hover.png')
 
-    &:hover
-      +background-image(linear-gradient($primary, darken($primary, 20%)))
-      color: white
-      +text-shadow(#222 0 -1px 1px)
+//
+    #info
+      margin-left: 200px
 
-      .vote-icon
-        background: url('/assets/like-hover.png')
+      h1
+        font-size: 36px
 
-  #info
-    margin-left: 200px
+        .pictos
+          font-size: 50px
 
-    h1
-      font-size: 36px
+      #profile
+        margin-top: 10px
+        text-align: right
+        color: #ccc
+        font-size: 14px
 
-      .pictos
-        font-size: 50px
+        #toolbar
+          @extend span.pictos
+          margin-left: 5px
 
-    #profile
-      margin-top: 10px
-      text-align: right
-      color: #ccc
-      font-size: 14px
-
-      #toolbar
-        @extend span.pictos
-        margin-left: 5px
-
-        a
-          +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
+          a
+            +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
 
 
 // single song view global properties
@@ -347,19 +338,10 @@ header
   padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
 
 
-
-#add, #spinner
-  position: fixed
-  top: 100px
-  bottom: 0
-  left: 200px
-  padding: 25px
-  width: 350px
-
 #spinner
   display: none
   background: rgba(0, 0, 0, 0.3)
-  width: 353px  // 3px over #add's width for its border
+  width: 353px  // 3px over #adds width for its border
   z-index: $z-add-spinner
 
   img
@@ -372,9 +354,11 @@ header
 
 #add
   z-index: $z-add
+  margin-right: 30px
   overflow: auto
-  background: #bbb image-url('/assets/add_bg.png')
-  +box-shadow(rgba(0, 0, 0, 0.9) 0 0 15px)
+  +box-shadow(rgba(0,0,0,.33) 0px 1px 8px)
+  +border-radius(3px)
+  background: image-url('/assets/white_noise.png')
   border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
 
   &::-webkit-scrollbar
@@ -385,10 +369,6 @@ header
     background: rgba(0, 0, 0, 0.5)
     -webkit-border-radius: 3px
 
-  *:not(.button):not(h2)
-    font-size: 13px
-    +text-shadow(#DDD 0 1px 1px)
-
   .breadcrumbs
     padding-bottom: 5px
     border-bottom: 1px dotted #888
@@ -398,8 +378,7 @@ header
       font-weight: bold
       color: $secondary_b_darkest
 
-  h2, ul#sources a
-    @extend .ultralight
+  h2
     font-size: 24px
     color: #333
     padding-bottom: 7px
@@ -420,21 +399,19 @@ header
 
   ul#sources
     li
-      height: 64px
-      padding: 10px
+      font-size: 14px
+      font-weight: bold
+      display: inline-block
 
       img
-        float: left
-        margin-right: 15px
-
-      a
-        position: relative
-        top: 18px
+        display: inline-block
+        margin-right: 4px
+        width: 16px
+        height: 16px
 
   ul#pandora_stations
     li
       font-weight: bold
-      padding: 10px
 
       &:before
         @extend span.pictos
@@ -444,29 +421,23 @@ header
         font-size: 18px
 
   ul#pandora_songs, ul#search_results
-    li
-      padding: 10px 0
+    label
+      input
+        float: right
+        margin-top: 9px
+        width: 14px    // largest browser checkboxes
+        height: 14px
 
-      label
-        input
-          float: right
-          margin-top: 9px
-          width: 14px    // largest browser checkboxes
-          height: 14px
+      input:checked + .song   // darker titles for selected songs
+        color: black
 
-        input:checked + .song   // darker titles for selected songs
-          color: black
-
-      .song
-        color: #444
-
-        img    // TODO: this is copied from the queue li's, consolidate them
-          float: left
-          height: 32px
-          width: 32px
-          margin-right: 10px
-          border: 1px solid #EEE
-          +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+      img    // TODO: this is copied from the queue li\s, consolidate them
+        float: left
+        height: 32px
+        width: 32px
+        margin-right: 10px
+        border: 1px solid #EEE
+        +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
 
 
   #youtube_query, #search_query     // TODO: combine
@@ -478,7 +449,6 @@ header
   #youtube_search_results
     li  // TODO: combine with pandora_songs list
       height: 48px
-      padding: 10px 0
 
       &.preview
         padding-bottom: 220px
@@ -509,30 +479,20 @@ header
       float: right
       margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
 
-#queue, ul#songs
-  width: 550px
-  position: fixed
-  top: 100px
-  bottom: 0
-  left: 603px
-
 #queue
   background: #DDD
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
   z-index: $z-queue-background
 
 ul#songs
+  width: 320px
   overflow-y: auto
 
   li
-    +background-image(linear-gradient(#eee, #ddd))
-    height: 62px
-    border-top: 1px solid white
-    border-bottom: 1px solid #ccc
+    +card-style
 
     img
       +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-      border: 1px solid #EEE
 
     .submitter
       float: right
@@ -547,31 +507,11 @@ ul#songs
         width: 24px
 
     img.cover
+      display: inline-block
       float: left
       height: 32px
       width: 32px
-      margin: 15px
-
-    .name
-      margin-top: 15px
-
-      .artist, .title
-        font-size: 14px
-        color: $secondary_b_darkest
-        +text-shadow(white 0 1px 1px)
-
-  &:after
-    // TODO: helvetica neue with text-shadow here
-    content: '\2190\00a0\00a0Hey you!\00a0\00a0 Add some songs!'
-    display: block
-    border-top: 1px solid white
-    padding: 20px 0
-    font-weight: bold
-    font-size: 12px
-    text-align: center
-    text-transform: uppercase
-    color: #9F9F9F
-    +text-shadow(white 0 1px 0px)
+      margin-right: 16px
 
 .ui-slider-horizontal
   height: .4em

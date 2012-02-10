@@ -37,10 +37,11 @@ jQuery(document).ready ($) ->
       @hypeSongs   = new Warble.HypeSongList
 
       # initialize views
-      @headerView          = new Warble.HeaderView
+      @controlsView          = new Warble.ControlsView
       @currentSongView     = new Warble.CurrentSongView model: @jukebox
       @queueView           = new Warble.QueueView collection: @queue
       @serviceChooserView  = new Warble.ServiceChooserView
+        el: $('#add .tabs')
       @pandoraAuthView     = new Warble.PandoraCredentialsView
       @pandoraStationsView = new Warble.PandoraStationsView collection: @stationList
       @youtubeSearchView   = new Warble.YoutubeSearchView
@@ -52,7 +53,8 @@ jQuery(document).ready ($) ->
       @queue.fetch()
       @stationList.fetch()
 
-      @paneEl = $('#add')
+      @paneEl = $('#add .content')
+      @serviceChooserView.render()
       @currentPane = null
 
     skip: (jukebox) ->
@@ -62,7 +64,7 @@ jQuery(document).ready ($) ->
         @queue.remove(promoted_song)       # Remove top song in queue
       else
         @queue.fetch()                     # Refetch in case of error
-      @headerView.notify jukebox.current   # Desktop notification for new song
+      @controlsView.notify jukebox.current   # Desktop notification for new song
 
     # TODO: move to the proper single #app view
     showSpinner: -> $('#spinner').fadeIn()
@@ -75,7 +77,7 @@ jQuery(document).ready ($) ->
       @currentView = view
 
     home: ->
-      @switchPane @serviceChooserView
+      #@switchPane @serviceChooserView
 
     search: (query) ->
       #if query?
