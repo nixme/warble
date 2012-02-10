@@ -7,17 +7,17 @@ class Warble.PandoraPlayerView extends Backbone.View
 
   initialize: ->
     @el = $('#player')
-    @model.bind 'change:current', @render, this
+    @model.bind 'change:current_play', @render, this
     @model.bind 'change:volume', @volume, this
 
   render: ->
-    if @model.current_song()?.source == 'youtube'
+    if @model.current_play()?.song.source == 'youtube'
       # need to kill the current player in case of skip
       @el.html ''
     else   # pandora or hypem
       vol = @model.get('volume')
       @el.html @template
-        current: @model.current_song()
+        current: @model.current_play()?.song
       @$('audio').bind 'canplay', ->
         @volume = (vol ? DEFAULT_VOLUME) / 100
         @play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work

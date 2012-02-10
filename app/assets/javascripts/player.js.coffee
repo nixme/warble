@@ -12,19 +12,17 @@
 window.Warble = {}  # namespacing object for our classes
 
 jQuery(document).ready ($) ->
-  window.jukebox = new Warble.Jukebox
-  window.pandoraPlayer = new Warble.PandoraPlayerView model: window.jukebox
-  window.youtubePlayer = new Warble.YoutubePlayerView model: window.jukebox
+  window.jukebox = jukebox = new Warble.Jukebox
+  window.pandoraPlayer = new Warble.PandoraPlayerView model: jukebox
+  window.youtubePlayer = new Warble.YoutubePlayerView model: jukebox
 
-  window.jukebox.fetch()   # load current song to play
+  jukebox.fetch()   # load current song to play
 
   socket = io.connect("http://#{window.base_url}:8765")
   socket.on 'message', (raw_data) ->
     data = JSON.parse(raw_data)
+    jukebox.set data.jukebox
+
     switch data.event
-      when 'skip'
-        window.jukebox.set data.jukebox
-      when 'volume'
-        window.jukebox.set data.jukebox
       when 'reload'
         window.location.reload true

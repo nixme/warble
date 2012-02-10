@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery    # CSRF protection filter
 
+  before_filter :authenticate_user!
+
+
   def authenticate_user!
     unless current_user
       redirect_to login_url

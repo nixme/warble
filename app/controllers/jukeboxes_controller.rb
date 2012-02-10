@@ -1,5 +1,5 @@
 class JukeboxesController < ApplicationController
-  before_filter :authenticate_user!
+  skip_before_filter :authenticate_user!, only: :player
 
 
   # App bootstrap
@@ -24,15 +24,5 @@ class JukeboxesController < ApplicationController
   def volume
     Jukebox.volume = params[:value]
     head :ok
-  end
-
-  # TODO: move to more appropriate controller?
-  def search
-    if params[:query].blank?
-      results = []
-    else
-      results = Sunspot.search(Song) { keywords params[:query] }.results
-    end
-    respond_with results
   end
 end

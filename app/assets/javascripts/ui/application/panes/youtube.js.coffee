@@ -90,7 +90,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
   queueVideo: (event) ->
     window.workspace.showSpinner()
 
-    $.ajax '/jukebox/songs',
+    $.ajax '/jukebox/playlist',
       type: 'POST'
       data:
         youtube: @data[$(event.currentTarget).attr('data-id')]

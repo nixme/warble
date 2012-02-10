@@ -8,9 +8,9 @@ class Play < ActiveRecord::Base
 
   def as_json(options={})
     {
-      song: song.as_json,
-      user: user.as_json
+      skips: skips,
+      song:  song.as_json,
+      user:  user.as_json
     }
   end
-
 end

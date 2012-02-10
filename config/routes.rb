@@ -13,12 +13,18 @@ Warble::Application.routes.draw do
 
   ### ------------------------------ API ROUTES --------------------------------
 
+  resources :songs, only: :index
   resource :jukebox, :only => :show do    # TODO: change to resources for multiple jukeboxes
     get  'player', :on => :member
     post 'skip',   :on => :member
-    get  'search', :on => :member
     put  'volume', :on => :member
-    resources :songs, :only => [ :index, :create ]
+
+    resource :current_play, controller: :plays, only: :show do
+      resources :skips, only: :create
+    end
+    resources :plays, path: 'playlist', only: [:index, :create] do
+      resources :skips, only: :create
+    end
   end
 
   resources :songs, :only => [] do

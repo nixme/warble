@@ -1,0 +1,11 @@
+<div class="submitter">
+  {{#song.voters}}
+  <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
+  {{/song.voters}}
+</div>
+
+<img class="cover" src="{{song.cover_url}}" />
+<div class="name">
+  <div class="artist">{{song.artist}}</div>
+  <div class="title">{{song.title}}</div>
+</div>

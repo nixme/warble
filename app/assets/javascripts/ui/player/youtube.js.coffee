@@ -3,7 +3,7 @@
 class Warble.YoutubePlayerView extends Backbone.View
   initialize: ->
     @el = $('#ytplayer_wrapper')
-    @model.bind 'change:current', @render, this
+    @model.bind 'change:current_play', @render, this
     @model.bind 'change:volume', @volume, this
 
     # youtube apis make you do this global function junk
@@ -33,9 +33,9 @@ class Warble.YoutubePlayerView extends Backbone.View
       if @pending_volume?
         @player.setVolume @pending_volume
         delete @pending_volume
-      if @model.current_song()?.source == 'youtube'
+      if @model.current_play()?.song.source == 'youtube'
         @$('#ytplayer').css('visibility', 'visible')
-        @player.loadVideoById @model.current_song().external_id
+        @player.loadVideoById @model.current_play().song.external_id
       else
         @$('#ytplayer').css('visibility', 'hidden')
 

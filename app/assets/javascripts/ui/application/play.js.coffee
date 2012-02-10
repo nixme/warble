@@ -1,8 +1,8 @@
-#= require templates/song
+#= require templates/play
 
-class Warble.SongView extends Backbone.View
+class Warble.PlayView extends Backbone.View
   tagName:  'li'
-  template: window.JST['templates/song']
+  template: window.JST['templates/play']
 
   initialize: ->
     @model.bind 'change', @render, this

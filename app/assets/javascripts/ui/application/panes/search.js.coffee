@@ -44,7 +44,7 @@ class Warble.SearchView extends Warble.PaneView
     window.workspace.showSpinner()
 
     song_id = $(event.currentTarget).attr('data-id')
-    $.post '/jukebox/songs',
+    $.post '/jukebox/playlist',
       'song_id[]': [song_id]
 
     window.workspace.hideSpinner()

@@ -1,6 +1,6 @@
-#= require templates/current_song
+#= require templates/current_play
 
-class Warble.CurrentSongView extends Backbone.View
+class Warble.CurrentPlayView extends Backbone.View
   initialize: ->
     _.bindAll this, 'refresh'
 
@@ -10,25 +10,23 @@ class Warble.CurrentSongView extends Backbone.View
     @voteView = new Warble.VoteView model: @model
     @voteView.bind 'voteRecorded', @refresh
 
-  template: window.JST['templates/current_song']
+  template: window.JST['templates/current_play']
 
   render: ->
     $(@el).html this.template @model.toJSON()
 
     # user name tooltips on profile images
-    @$('.submitter img[title]').tooltip  # TODO: dry up with SongView
+    @$('.submitter img[title]').tooltip  # TODO: dry up with PlayView
       effect:   'fade'
       position: 'bottom right'
       offset:   [5, -34]
 
     # update browser title with artist and song
-    song = @model.current_song()
+    song = @model.current_play()?.song
     if song
       document.title = "#{song.artist}: #{song.title} \u2022 Warble"
     else
       document.title = 'Warble'
-
-    @voteView.render()
 
     this
 

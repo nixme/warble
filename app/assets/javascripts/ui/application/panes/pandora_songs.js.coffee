@@ -18,7 +18,7 @@ class Warble.PandoraSongsView extends Warble.PaneView
   addSongs: (event) ->
     window.workspace.showSpinner()
     song_ids = this.$('input:checkbox:checked').map(-> $(this).attr('data-id')).get()
-    $.post '/jukebox/songs',
+    $.post '/jukebox/playlist',
       'song_id[]': song_ids
     @model.songs.fetch   # get more songs, TODO: this is whack, bind the collection properly
       success: =>

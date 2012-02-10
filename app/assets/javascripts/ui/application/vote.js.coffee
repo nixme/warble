@@ -8,6 +8,9 @@ class Warble.VoteView extends Backbone.View
 
   initialize: (opts) ->
     @el = $('.vote')
+
+    @model.bind 'change', @render, this
+
     @delegateEvents()
 
   render: ->
@@ -19,4 +22,3 @@ class Warble.VoteView extends Backbone.View
     votes.create { song_id: @model.current_song().id },
       success: (model, resp) =>
         @trigger 'voteRecorded'
-

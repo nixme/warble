@@ -31,15 +31,15 @@ jQuery(document).ready ($) ->
     initialize: ->
       # initialize models/collections
       @jukebox     = new Warble.Jukebox   # TODO: switch to a single song model instead of full jukebox state
-      @queue       = new Warble.SongList
+      @playlist    = new Warble.Playlist
       @searchView  = new Warble.SearchView
       @stationList = new Warble.PandoraStationList
       @hypeSongs   = new Warble.HypeSongList
 
       # initialize views
       @headerView          = new Warble.HeaderView
-      @currentSongView     = new Warble.CurrentSongView model: @jukebox
-      @queueView           = new Warble.QueueView collection: @queue
+      @currentPlayView     = new Warble.CurrentPlayView model: @jukebox
+      @playlistView        = new Warble.PlaylistView collection: @playlist
       @serviceChooserView  = new Warble.ServiceChooserView
       @pandoraAuthView     = new Warble.PandoraCredentialsView
       @pandoraStationsView = new Warble.PandoraStationsView collection: @stationList
@@ -49,7 +49,7 @@ jQuery(document).ready ($) ->
 
       # load data
       @jukebox.fetch()
-      @queue.fetch()
+      @playlist.fetch()
       @stationList.fetch()
 
       @paneEl = $('#add')
@@ -57,12 +57,11 @@ jQuery(document).ready ($) ->
 
     skip: (jukebox) ->
       @jukebox.set jukebox                 # Update current song
-      promoted_song = @queue.at(0)
-      if promoted_song?
-        @queue.remove(promoted_song)       # Remove top song in queue
+      promoted_play = @playlist.at(0)
+      if promoted_play?
+        @playlist.remove(promoted_play)    # Remove top song in queue
       else
-        @queue.fetch()                     # Refetch in case of error
-      @headerView.notify jukebox.current   # Desktop notification for new song
+        @playlist.fetch()                  # Refetch in case of error
 
     # TODO: move to the proper single #app view
     showSpinner: -> $('#spinner').fadeIn()
@@ -143,22 +142,22 @@ jQuery(document).ready ($) ->
       @hypeSongs.fetch()
 
 
-  window.workspace = new Warble.WorkspaceRouter
+  window.workspace = workspace = new Warble.WorkspaceRouter
   Backbone.history.start pushState: true
 
   # Route all <a data-relative="true"> clicks automatically in-app.
   $('a[data-relative]').live 'click', (event) ->
     event.preventDefault()
-    window.workspace.navigate($(event.currentTarget).attr('href'), true)
+    workspace.navigate($(event.currentTarget).attr('href'), true)
 
   socket = io.connect("http://#{window.base_url}:8765")
   socket.on 'message', (raw_data) ->
     data = JSON.parse(raw_data)
+    workspace.jukebox.set data.jukebox
+    workspace.playlist.reset data.jukebox.playlist
     switch data.event
-      when 'refresh'
-        window.workspace.queue.reset data.songs
       when 'skip'
-        window.workspace.skip data.jukebox
+        workspace.headerView.notify workspace.jukebox.current_play   # Desktop notification for new song
       when 'volume'
         # TODO don't change the value if this is the window that set it
         # also, move this into a view or something

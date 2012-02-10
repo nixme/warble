@@ -62,7 +62,7 @@ class Song < ActiveRecord::Base
     end
   end
 
-  def self.get_random
+  def self.random
     # 7 out of 10 times we'll play something from the rotation, else we'll just pick something completely random
     if rand(10) > 2
       ids = connection.select_all(
