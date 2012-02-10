@@ -1,12 +1,12 @@
-class Warble.HeaderView extends Backbone.View
-  el: 'body > header'
-
+class Warble.ControlsView extends Backbone.View
   events:
     'click a#forward'  : 'skip'
     'click a#settings' : 'enableNotifications'
 
   initialize: ->
-    @model.current_play.bind 'change:id', @notify, this
+    _.bindAll @, 'skip'
+    @el = $('#controls')
+    @delegateEvents()
 
     @notifications = (window.webkitNotifications?.checkPermission() == 0)
 

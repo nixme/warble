@@ -1,10 +1,4 @@
 {{#current_play}}
-  <div class="voters">
-  {{#song.voters}}
-    <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
-  {{/song.voters}}
-  </div>
-
   {{#if song.cover_url}}
     {{#if user}}
       <div class="submitter">
@@ -13,8 +7,18 @@
     {{/if}}
   <img id="cover" src="{{song.cover_url}}" />
   {{/if}}
-  <div id="artist">{{song.artist}}</div>
-  <div id="title">{{song.title}}</div>
+
+  <div class="metadata">
+    <div class="voters">
+    {{#song.voters}}
+      <img src="{{photo_url}}" title="{{first_name}} {{last_name}}" />
+    {{/song.voters}}
+    </div>
+    <p class="title">{{song.title}}</p>
+    <p class="artist">{{song.artist}}</p>
+    <p class="album">{{song.album}}</p>
+
+  </div>
 {{^}}
-  <div id="artist">No songs in queue</div>
+  <div class="artist">No songs in queue</div>
 {{/current_play}}
