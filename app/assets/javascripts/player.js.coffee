@@ -1,3 +1,4 @@
+#= require handlebars.1.0.0.beta.3
 #= require jquery
 #= require jquery-ui
 #= require rails/csrf
