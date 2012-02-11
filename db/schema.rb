@@ -11,21 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120204184529) do
+ActiveRecord::Schema.define(:version => 20120203195018) do
 
   create_table "plays", :force => true do |t|
     t.integer  "user_id"
     t.integer  "song_id",                   :null => false
-    t.datetime "created_at",                :null => false
+    t.datetime "created_at"
     t.integer  "skips",      :default => 0, :null => false
   end
+
+  add_index "plays", ["song_id", "user_id"], :name => "index_plays_on_song_id_and_user_id"
 
   create_table "songs", :force => true do |t|
     t.string   "source",      :null => false
     t.string   "external_id", :null => false
-    t.string   "title",       :null => false
-    t.string   "artist"
-    t.string   "album"
+    t.text     "title",       :null => false
+    t.text     "artist"
+    t.text     "album"
     t.text     "cover_url"
     t.text     "url"
     t.integer  "user_id",     :null => false

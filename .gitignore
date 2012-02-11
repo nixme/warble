@@ -9,6 +9,7 @@ config/redis.yml
 public/songs
 solr
 push/node_modules
+migration/vendor
 vendor/bundle
 .rvmrc
 config/database.yml
