@@ -13,9 +13,6 @@
 #   https://github.com/capistrano/capistrano/wiki
 #
 
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))  # add rvm lib dir
-
-require 'rvm/capistrano'
 require 'bundler/capistrano'
 
 set :application, 'warble'
@@ -30,9 +27,12 @@ set :deploy_via, :remote_cache
 server 'warble', :web, :app, :db, :primary => true
 set :user,            'gopal.patel'
 set :deploy_to,       "/usr/local/srv/#{application}"
-set :rvm_ruby_string, "ruby-1.9.2@#{application}"
 set :keep_releases,   5
 default_run_options[:pty] = true
+
+set :default_environment, {
+  'PATH' => '/usr/local/ruby-1.9.3-p0/bin:$PATH'
+}
 
 namespace :deploy do
   # passenger is always running, so start and stop are no-ops
