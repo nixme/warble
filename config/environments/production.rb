@@ -43,7 +43,7 @@ Warble::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += %w( handlebars.1.0.0.beta.3.js player.js )
 
   # Enable threaded mode
   # config.threadsafe!

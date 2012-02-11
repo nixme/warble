@@ -61,10 +61,14 @@ namespace :deploy do
     # datastore configurations
     run "ln -nfs #{shared_path}/config/redis.yml #{release_path}/config/redis.yml"
     run "ln -nfs #{shared_path}/config/sunspot.yml #{release_path}/config/sunspot.yml"
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
 
     # archived songs directory
     run "rm #{release_path}/public/songs/.gitkeep && rmdir #{release_path}/public/songs"
     run "ln -nfs #{shared_path}/songs #{release_path}/public/songs"
+
+    # node modules
+    run "ln -nfs #{shared_path}/node_modules #{release_path}/push/node_modules"
   end
 
   desc 'Symlink Resque admin assets directory'
