@@ -5,6 +5,13 @@
 
 @import '_tooltips'
 
+$left-column-width: 320px
+$small-artwork-size: 32px
+$card-style-padding: 20px
+$default-font: Roboto, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
+
+
+
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $default-border-radius: 3px
 $primary:              #F90022
@@ -44,10 +51,25 @@ $z-add-spinner:        2
 $z-header:             3
 
 @mixin card-style
-  padding: 20px
-  +box-shadow(rgba(0,0,0,.33) 0px 1px 8px)
+  padding: $card-style-padding
+  +box-shadow(rgba(0,0,0,.45) 0px 1px 12px)
   background: image-url('/assets/white_noise.png')
   +border-radius()
+
+@mixin card-button
+  +card-style
+  padding: 16px 48px
+  +border-radius(2px)
+  color: #545454
+  font-size: 14px
+  +box-shadow(rgba(0,0,0,.24) 0px 1px 1px, #fff 0px 1px 1px inset)
+  +text-shadow(#fff 0px 1px 1px)
+  font-family: $default-font
+  font-weight: bold
+
+  &:active
+    +box-shadow(rgba(0,0,0,.45) 0px 1px 8px inset, rgba(255,255,255,.55) 0px 1px 0px )
+
 
 
 
@@ -56,13 +78,17 @@ $z-header:             3
 *
   +box-sizing(border-box)
 
+html, body
+  height: 100%
+
 body
+  min-width: 1150px
   background: image-url('/assets/wood.jpg') fixed
   color: #555
   position: relative
   z-index: $z-body
-  font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
-  overflow: hidden
+  font-family: $default-font
+  overflow-x: hidden
 
   // gradient fade over background
   &:before
@@ -94,33 +120,28 @@ input, button, .button
 button, .button
   display: inline-block
   position: relative
-  padding: 8px 14px 9px
-  color: white
-  background: #222
-  +border-radius(5px)
-  +box-shadow(rgba(0, 0, 0, 0.5) 0 1px 3px)
-  +text-shadow(rgba(0, 0, 0, 0.25) 0 -1px 1px)
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25)
-  font-size: 18px
+  background: #FAFAFA
   line-height: 1
   cursor: pointer
 
-  &:hover
-    background: #111
-    color: white
-    +transition
-
-  &:active
-    top: 1px
-
 h1
-  font-family: 'Crushed', Arial, serif
   font-weight: normal
   color: $secondary_a
   +text-shadow(rgba(0, 0, 0, 0.4) 0px 1px 5px)
 
   .pictos
     color: $primary
+
+p.tagline
+  color: #fff
+  font-weight: bold
+  font-size: 11px
+  margin: 22px 0
+  //padding: 8px
+  //border-top: 1px solid rgba(255,255,255,.18)
+  //border-bottom: 1px solid rgba(255,255,255,.18)
+  +text-shadow(rgba(0,0,0,.33) 0 1px 3px)
+  text-transform: uppercase
 
 span.pictos
   font-family: 'Pictos'
@@ -130,7 +151,7 @@ span.pictos
 
 #loginboxwrapper
   position: fixed
-  top: 50%
+  top: 35%
   left: 50%
 
 // login page
@@ -138,28 +159,16 @@ span.pictos
 #loginboxwrapper
   width: 300px
   margin: 0 0 0 -150px
+  //+card-style
+  text-align: center
 
   #loginbox
-    +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
-    +border-radius(10px)
-    +background-image(linear-gradient(white, #bbb))
-    top: 40%
-    padding: 30px
-    text-align: center
-
     h1
       margin-bottom: 25px
       font-size: 48px
-
-      .pictos
-        font-size: 66px
-
     button
-      padding: 13px 10px 14px 45px
-      background: #333 image-url('/assets/facebook_32.png') no-repeat 8px center
+      +card-button
 
-      &:hover
-        background: #111 image-url('/assets/facebook_32.png') no-repeat 8px center
 
 // youtube player
 #ytplayer_wrapper
@@ -177,11 +186,8 @@ span.pictos
   margin-left: -400px
 
   #player
+    +card-style
     +box-shadow(rgba(0, 0, 0, 0.5) 0 0 50px)
-    +border-radius(10px)
-    +background-image(linear-gradient(white, #bbb))
-    height: 120px
-    padding: 75px
 
     &:after
       content: ' '
@@ -220,6 +226,7 @@ span.pictos
 .metadata
   +card-style()
   display: block
+  +border-radius(0)
   +border-bottom-left-radius(3px)
   +border-bottom-right-radius(3px)
 
@@ -241,10 +248,10 @@ span.pictos
 
 
 #playing
-  width: 320px
-  img
-    border: 1px solid #666
-
+  overflow: hidden
+  +border-top-left-radius()
+  +border-top-right-radius()
+  width: $left-column-width
   .voters
     float: right
     margin: 17px 15px
@@ -265,8 +272,8 @@ span.pictos
 
   img#cover
     display: block
-    height: 320px
-    width: 320px
+    height: $left-column-width
+    width: $left-column-width
 
 
 #forward, #vote
@@ -325,16 +332,13 @@ span.pictos
 
 
 // single song view global properties
-.artist, .title
+.artist, .title, .album
   font-size: 13px
   +ellipsis
 
-.artist
-  padding: 2px 0
-
-.title
+.title, .artist
   font-weight: bold
-  padding-bottom: 3px   // so overflow from @ellipsis doesn't cut off descenders
+  padding-bottom: 3px   // so overflow from @ellipsis doesnt cut off descenders
 
 
 #spinner
@@ -352,12 +356,11 @@ span.pictos
     -webkit-animation-timing-function: linear
 
 #add
-  z-index: $z-add
+  height: 96%
+  +card-style
+  position: relative
   margin-right: 30px
   overflow: auto
-  +box-shadow(rgba(0,0,0,.33) 0px 1px 8px)
-  +border-radius(3px)
-  background: image-url('/assets/white_noise.png')
   border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
 
   &::-webkit-scrollbar
@@ -386,38 +389,46 @@ span.pictos
   p
     font-size: 14px
 
-  p, ul, form
-    margin-top: 10px
+  hr.hackyrule
+    position: absolute
+    width: 100%
+    top: 42px
+    left: 0px
+    border: 0
+    border-bottom: 1px solid rgba(0, 0, 0, .18)
 
-  ul, form, .breadcrumbs
-    margin-bottom: 15px
-
-  form
-    input
-      margin-right: 10px
 
   ul#sources
+    margin-top: -12px
+    margin-bottom: 20px
     li
-      font-size: 14px
+      font-size: 13px
       font-weight: bold
       display: inline-block
+      margin-right: 24px
+      padding: 12px
+      border: 1px solid transparent
+
+      &.selected
+        position: relative
+        background: image-url('/assets/white_noise.png')
+        border: 1px solid rgba(0, 0, 0, .18)
+        +border-top-left-radius()
+        +border-top-right-radius()
+        border-bottom-color: transparent
 
       img
         display: inline-block
         margin-right: 4px
         width: 16px
         height: 16px
+        margin-bottom: -1px
 
   ul#pandora_stations
+    margin-bottom: 32px
     li
-      font-weight: bold
-
-      &:before
-        @extend span.pictos
-        margin-right: 7px
-        content: 'm'
-        color: darken($secondary_a_dark, 15%)
-        font-size: 18px
+      line-height: 38px
+      border-bottom: 1px solid #CCC
 
   ul#pandora_songs, ul#search_results
     label
@@ -447,17 +458,20 @@ span.pictos
 
   #youtube_search_results
     li  // TODO: combine with pandora_songs list
-      height: 48px
+      position: relative
+      float: left
+      padding: 8px
+      width: 33%
 
-      &.preview
-        padding-bottom: 220px
+      .preview
+        font-size: 11px
+        padding: 4px 0
+        font-weight: bold
+        cursor: pointer
 
       img   // TODO: compied from pandora_songs list, consolidate them
-        float: left
-        height: 48px
-        width: 48px
-        margin-right: 10px
-        border: 1px solid #EEE
+        height: auto
+        width: 100%
         +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
 
       .title
@@ -484,14 +498,16 @@ span.pictos
   z-index: $z-queue-background
 
 ul#songs
-  width: 320px
+  width: $left-column-width
   overflow-y: auto
 
   li
     +card-style
+    margin-bottom: 8px
 
     img
-      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+      +box-shadow(#fff 0px 1px 1px, #000 0px 1px 4px inset)
+      +border-radius(2px)
 
     .submitter
       float: right
@@ -506,11 +522,15 @@ ul#songs
         width: 24px
 
     img.cover
-      display: inline-block
       float: left
-      height: 32px
-      width: 32px
-      margin-right: 16px
+      height: $small-artwork-size
+      width: $small-artwork-size
+      margin-right: $small-artwork-size / 2
+
+    .name
+      display: block
+      width: $left-column-width - $small-artwork-size - ($small-artwork-size / 2) - ($card-style-padding * 2)
+      margin-left: $small-artwork-size + ($small-artwork-size / 2)
 
 .ui-slider-horizontal
   height: .4em

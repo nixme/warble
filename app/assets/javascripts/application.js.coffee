@@ -11,7 +11,7 @@
 
 #= require_self
 
-#= require_tree ./components
+#= require_tree ./utils
 #= require_tree ./models
 #= require_tree ./ui/application
 
@@ -68,13 +68,14 @@ jQuery(document).ready ($) ->
 
     switchPane: (view) ->
       $(@currentView.el).remove() if @currentView
+      @serviceChooserView.autoSelectTab()
       @paneEl.append view.render().el
       view.delegateEvents()   # TODO: make this unnecessary
       view.activate?()
       @currentView = view
 
     home: ->
-      #@switchPane @serviceChooserView
+      @switchPane new Backbone.View
 
     search: (query) ->
       #if query?
