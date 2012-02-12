@@ -1,7 +1,4 @@
 class JukeboxesController < ApplicationController
-  skip_before_filter :authenticate_user!, only: :player
-
-
   # App bootstrap
   def app
     @volume = Jukebox.volume
