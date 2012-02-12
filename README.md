@@ -88,6 +88,16 @@ $ echo 'FACEBOOK_APP_ID=111111111111111' >> .env
 $ echo 'FACEBOOK_APP_SECRET=abcdefabcdefabcdefabcdefabcdefab' >> .env
 ```
 
+Copy the sample connection configurations:
+
+```sh
+$ cp config/redis.yml.sample config/redis.yml
+$ cp config/database.yml.sample config/database.yml
+```
+
+Edit `config/redis.yml` and `config/database.yml` to match your local Redis and
+PostgreSQL configuration.
+
 
 ### Running the application
 
