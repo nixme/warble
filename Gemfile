@@ -7,12 +7,14 @@ gem 'pg'                                # PostgreSQL adapter
 gem 'foreigner'                         # Foreign key constraints in migrations
 gem 'hiredis'                           # ruby bindings for fast redis C lib
 gem 'redis'                             # ruby redis interface
+gem 'connection_pool'                   # Simple connection pooling
 
 # Full-text search
-gem 'sunspot_rails', '1.3.0.rc6'        # Apache Solr adapter
+gem 'tire'                              # ElasticSearch adapter
 
 # Async processing
-gem 'resque', require: 'resque/server'
+gem 'girl_friday'                       # Threaded, actor-based task queues
+gem 'sinatra', '~> 1.3'                 # Used by GirlFriday::Server
 
 # Authentication
 gem 'omniauth-facebook'
@@ -41,9 +43,9 @@ gem 'execjs'                            # JS executor, used for scraping
 
 group :development do
   gem 'foreman'                         # process launcher (Profile executor)
-  gem 'thin'                            # web server
+  gem 'unicorn'                         # Application server
   gem 'capistrano'                      # deployment helpers
-  gem 'sunspot_solr', '1.3.0.rc6'       # Simple local Solr server
+  gem 'springboard'                     # Simple local ElasticSearch server
 end
 
 group :development, :test do

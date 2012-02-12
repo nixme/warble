@@ -1,3 +1,3 @@
-web:    bundle exec rails server thin -p $PORT
-worker: bundle exec rake resque:work QUEUE=*
+web:    bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 push:   cd push && npm run-script start
+search: bundle exec springboard -c config/elasticsearch -f

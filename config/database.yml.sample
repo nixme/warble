@@ -6,7 +6,7 @@ development:
   adapter: postgresql
   encoding: unicode
   database: warble
-  pool: 5
+  pool: 11
   username: stringer
   password: bell
 
@@ -33,7 +33,7 @@ test:
   adapter: postgresql
   encoding: unicode
   database: warble
-  pool: 5
+  pool: 11
   username: stringer
   password: bell
   min_messages: warning

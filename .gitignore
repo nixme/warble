@@ -7,7 +7,7 @@ tmp/
 config/redis.yml
 *.swp
 public/songs
-solr
+db/elasticsearch
 push/node_modules
 migration/vendor
 vendor/bundle

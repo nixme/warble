@@ -1,3 +1,5 @@
+require 'girl_friday/server'
+
 Warble::Application.routes.draw do
 
   # Main interface
@@ -43,8 +45,8 @@ Warble::Application.routes.draw do
 
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
 
-  # resque admin interface
-  mount Resque::Server.new, :at => '/resque'
+  # girl_friday status interface
+  mount GirlFriday::Server.new, at: '/queues'
 
 
   ### --------------------------- CATCH-ALL ROUTES -----------------------------

@@ -1,4 +1,8 @@
+require 'fileutils'
+
 class Song < ActiveRecord::Base
+  include Tire::Model::Search
+
   validate :source,      presence: true
   validate :external_id, presence: true
   validate :title,       presence: true
@@ -9,7 +13,16 @@ class Song < ActiveRecord::Base
   has_many   :users_who_voted,  through: :votes, source: :user
   has_many   :users_who_played, through: :plays, source: :user
 
-  # TODO: search indexing stuff
+  tire.mapping do
+    indexes :id,     type: :integer, index: :not_analyzed
+    indexes :title,  type: :string,  analyzer: :snowball,  boost: 3
+    indexes :artist, type: :string,  analyzer: :snowball,  boost: 2
+    indexes :album,  type: :string,  analyzer: :snowball,  boost: 2
+    indexes :source, type: :string,  index: :not_analyzed, boost: 0.1
+  end
+
+  after_commit ->(song) { Queues::Index.push song.id }  # Index after any saves
+
 
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = where(source: 'pandora').where(external_id: pandora_song.music_id).first
@@ -25,7 +38,7 @@ class Song < ActiveRecord::Base
         external_id: pandora_song.music_id,
         user:        submitter
       })
-      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
+      Queues::Archive.push song.id    # Queue for async download
       song
     end
   end
@@ -57,7 +70,7 @@ class Song < ActiveRecord::Base
         external_id: hype_song.id,
         user:        submitter
       })
-      Resque.enqueue(::ArchiveSong, song.id)  # send for async download
+      Queues::Archive.push song.id    # Queue for async download
       song
     end
   end
@@ -75,6 +88,27 @@ class Song < ActiveRecord::Base
     else
       find(:first, :offset =>rand(count))
     end
+  end
+
+  def archive!
+    raise 'No URL!' unless url    # Check for an actual URL
+    filename = Rails.root.join('public', 'songs', "#{id}.mp3").to_s
+
+    # Archive the song to disk
+    http = Patron::Session.new
+    http.connect_timeout = 2
+    http.timeout = 500
+    http.get_file(url, filename)
+
+    # Check that it actually saved
+    if !File.size?(filename)
+      FileUtils.rm filename, force: true
+      raise 'Error archiving song'
+    end
+
+    # Change location to local path
+    url = "/songs/#{id}.mp3"
+    save!
   end
 
   def as_json(options = {})
