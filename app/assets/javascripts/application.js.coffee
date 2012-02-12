@@ -158,7 +158,7 @@ jQuery(document).ready ($) ->
     workspace.playlist.reset data.jukebox.playlist
     switch data.event
       when 'skip'
-        workspace.headerView.notify workspace.jukebox.current_play   # Desktop notification for new song
+        workspace.headerView.notify workspace.jukebox.current_play()   # Desktop notification for new song
       when 'volume'
         # TODO don't change the value if this is the window that set it
         # also, move this into a view or something

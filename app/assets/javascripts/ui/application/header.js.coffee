@@ -32,10 +32,11 @@ class Warble.HeaderView extends Backbone.View
           @notifications = (window.webkitNotifications.checkPermission() == 0)
     event.preventDefault()
 
-  notify: (song) ->
-    if @notifications
+  notify: (play) ->
+    if @notifications && play
+      song = play.song
       notification = window.webkitNotifications.createNotification(song.cover_url, song.artist, song.title)
       notification.ondisplay = ->
-        setTimeout (-> notification.cancel()), 5000
+        setTimeout (=> @cancel()), 5000
+      notification.onclick = -> @cancel()
       notification.show()
-
