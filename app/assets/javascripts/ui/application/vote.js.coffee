@@ -18,7 +18,7 @@ class Warble.VoteView extends Backbone.View
     @
 
   handleVote: (e) ->
-    votes = new Warble.VoteList @model.current_song().votes
-    votes.create { song_id: @model.current_song().id },
+    votes = new Warble.VoteList @model.current_play().song.votes
+    votes.create { song_id: @model.current_play().song.id },
       success: (model, resp) =>
         @trigger 'voteRecorded'
