@@ -107,7 +107,7 @@ class Song < ActiveRecord::Base
     end
 
     # Change location to local path
-    url = "/songs/#{id}.mp3"
+    self.url = "/songs/#{id}.mp3"
     save!
   end
 
