@@ -24,9 +24,8 @@ class Warble.PandoraPlayerView extends Backbone.View
       @$('audio').bind 'ended', @finished   # ended doesn't bubble so backbone can't handle it
 
   volume: ->
-    audio = @$('audio')
-    if audio.size
-      audio.attr 'volume', @model.get('volume') / 100
+    value = @model.get('volume') / 100
+    @$('audio').each -> @volume = value
 
   finished: ->
     $.post '/jukebox/skip'
