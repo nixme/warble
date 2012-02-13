@@ -1,13 +1,13 @@
 # Capistrano configuration for internal deployment
 #
 # Expects target server to run Nginx + Phusion Passenger 3. Uses a system-wide
-# RVM installation and Bundler to auto-update dependencies. Please manually
-# create a '1.9.2@warble' gemset with the bundler gem already installed
-# before first deployment. Also put the host's redis configuration at
-# /usr/local/srv/warble/config/redis.yml. Create a ruby wrapper script
-# at /usr/local/srv/warble/shared/bin/ruby that sets the facebook API
-# environment variables. Set passenger to use that as its ruby.
-# Node server isn't handled by these tasks currently.
+# ruby installation and Bundler to auto-update dependencies. Please manually
+# install bundler before the first deployment. Also put the host's redis
+# configuration at /usr/local/srv/warble/config/redis.yml and database
+# configuration at /usr/local/srv/warble/config/database.yml. Create a ruby
+# wrapper script at /usr/local/srv/warble/shared/bin/ruby that sets the facebook
+# API environment variables. Set passenger to use that as its ruby. Node server
+# isn't handled by these tasks currently.
 #
 # For more information on Capistrano, see
 #   https://github.com/capistrano/capistrano/wiki
@@ -71,11 +71,6 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/node_modules #{release_path}/push/node_modules"
   end
 
-  desc 'Symlink Resque admin assets directory'
-  task :symlink_resque_assets, :roles => :app, :except => { :no_release => true } do
-    run "cd #{release_path}; ln -nfs `bundle show resque`/lib/resque/server/public public/resque"
-  end
-
   desc 'Refresh connected clients'
   task :refresh_clients, :roles => :app, :except => { :no_release => true } do
     run "cd #{release_path}; rake clients:refresh RAILS_ENV=production"
@@ -83,6 +78,5 @@ namespace :deploy do
 
   after 'deploy:finalize_update', 'deploy:symlink_config'
   after 'deploy:update_code',     'deploy:upload_assets'
-  after 'deploy:update_code',     'deploy:symlink_resque_assets'
   after 'deploy:restart',         'deploy:refresh_clients'
 end
