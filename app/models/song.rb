@@ -26,6 +26,7 @@ class Song < ActiveRecord::Base
 
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = where(source: 'pandora').where(external_id: pandora_song.music_id).first
+      song.fsck! pandora_song.audio_url
       song
     else   # first time seeing the song, so create it
       song = Song.create({
@@ -60,6 +61,7 @@ class Song < ActiveRecord::Base
 
   def self.find_or_create_from_hype_song(hype_song, submitter)
     if song = where(source: 'hypem').where(external_id: hype_song.id).first
+      song.fsck! hype_song.url
       song
     else
       song = Song.create({
@@ -90,7 +92,28 @@ class Song < ActiveRecord::Base
     end
   end
 
+  # Is this song archivable to disk?
+  def archivable?
+    %w[pandora hypem].include?(source)
+  end
+
+  # Ensure a song has been archived.
+  #
+  # Occassionally a song may not get archived if a job or net fails. Then it's
+  # forever broken if the URL relied on a one-time token. If we come across the
+  # song again with a new URL, then try archiving again.
+  def fsck!(new_url)
+    return unless archivable?
+
+    unless url =~ %r{^/songs/}  # Unarchived song?
+      self.url = new_url        # Then use the new URL and
+      save!                     #   queue for re-archiving
+      Queues::Archive.push id
+    end
+  end
+
   def archive!
+    raise "Cannot archive a #{source} song" unless archivable?
     raise 'No URL!' unless url    # Check for an actual URL
     filename = Rails.root.join('public', 'songs', "#{id}.mp3").to_s
 
