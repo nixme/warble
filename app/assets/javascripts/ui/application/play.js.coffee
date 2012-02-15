@@ -9,7 +9,7 @@ class Warble.PlayView extends Backbone.View
     @model.view = this
 
   render: ->
-    $(@el).html @template @model.toJSON()
+    @$el.html @template @model.toJSON()
     @$('.submitter img[title]').tooltip
       effect:   'fade'
       position: 'bottom right'
@@ -17,4 +17,4 @@ class Warble.PlayView extends Backbone.View
     this
 
   remove: ->
-    $(@el).remove()
+    @$el.remove()

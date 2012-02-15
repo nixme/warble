@@ -8,6 +8,7 @@ class Play < ActiveRecord::Base
 
   def as_json(options={})
     {
+      id:    id,
       skips: skips,
       song:  song.as_json,
       user:  user.as_json

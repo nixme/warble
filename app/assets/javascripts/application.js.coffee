@@ -18,16 +18,17 @@ window.Warble = {}  # namespacing object for our classes
 jQuery(document).ready ($) ->
   class Warble.WorkspaceRouter extends Backbone.Router
     routes:
-      '/search/:query'             : 'search'
-      '/pandora/stations'          : 'pandoraStations'
-      '/pandora/stations/:id'      : 'pandoraSongs'
-      '/youtube'                   : 'youtube'
-      '/hype'                      : 'hypeChooser'
-      '/hype/latest/:page'         : 'hypeLatest'
-      '/hype/popular/3days/:page'  : 'hypePopular3Days'
-      '/hype/popular/week/:page'   : 'hypePopularWeek'
-      '/hype/:user/:page'          : 'hypeUser'
-      '*unmatched'                 : 'home'
+      'search'                    : 'search'
+      'search/:query'             : 'search'
+      'pandora/stations'          : 'pandoraStations'
+      'pandora/stations/:id'      : 'pandoraSongs'
+      'youtube'                   : 'youtube'
+      'hype'                      : 'hypeChooser'
+      'hype/latest/:page'         : 'hypeLatest'
+      'hype/popular/3days/:page'  : 'hypePopular3Days'
+      'hype/popular/week/:page'   : 'hypePopularWeek'
+      'hype/:user/:page'          : 'hypeUser'
+      '*unmatched'                : 'home'
 
     initialize: ->
       # initialize models/collections
@@ -38,7 +39,7 @@ jQuery(document).ready ($) ->
       @hypeSongs   = new Warble.HypeSongList
 
       # initialize views
-      @headerView          = new Warble.HeaderView
+      @headerView          = new Warble.HeaderView model: @jukebox
       @currentPlayView     = new Warble.CurrentPlayView model: @jukebox
       @playlistView        = new Warble.PlaylistView collection: @playlist
       @serviceChooserView  = new Warble.ServiceChooserView
@@ -71,6 +72,7 @@ jQuery(document).ready ($) ->
     switchPane: (view) ->
       $(@currentView.el).remove() if @currentView
       @paneEl.append view.render().el
+      view.delegateEvents()   # TODO: make this unnecessary
       view.activate?()
       @currentView = view
 
@@ -149,7 +151,7 @@ jQuery(document).ready ($) ->
   # Route all <a data-relative="true"> clicks automatically in-app.
   $('a[data-relative]').live 'click', (event) ->
     event.preventDefault()
-    workspace.navigate($(event.currentTarget).attr('href'), true)
+    workspace.navigate $(event.currentTarget).attr('href'), trigger: true
 
   socket = io.connect("http://#{window.base_url}:8765")
   socket.on 'message', (raw_data) ->
@@ -157,8 +159,6 @@ jQuery(document).ready ($) ->
     workspace.jukebox.set data.jukebox
     workspace.playlist.reset data.jukebox.playlist
     switch data.event
-      when 'skip'
-        workspace.headerView.notify workspace.jukebox.current_play()   # Desktop notification for new song
       when 'volume'
         # TODO don't change the value if this is the window that set it
         # also, move this into a view or something

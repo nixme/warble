@@ -1,10 +1,11 @@
 #= require templates/current_play
 
 class Warble.CurrentPlayView extends Backbone.View
+  el: '#playing'
+
   initialize: ->
     _.bindAll this, 'refresh'
 
-    @el = $('#playing')
     @model.bind 'change', @render, this
 
     @voteView = new Warble.VoteView model: @model
@@ -13,7 +14,7 @@ class Warble.CurrentPlayView extends Backbone.View
   template: window.JST['templates/current_play']
 
   render: ->
-    $(@el).html this.template @model.toJSON()
+    @$el.html this.template @model.toJSON()
 
     # user name tooltips on profile images
     @$('.submitter img[title]').tooltip  # TODO: dry up with PlayView
@@ -22,7 +23,7 @@ class Warble.CurrentPlayView extends Backbone.View
       offset:   [5, -34]
 
     # update browser title with artist and song
-    song = @model.current_play()?.song
+    song = @model.current_play.get('song')
     if song
       document.title = "#{song.artist}: #{song.title} \u2022 Warble"
     else

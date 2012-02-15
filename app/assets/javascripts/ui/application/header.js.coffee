@@ -1,11 +1,12 @@
 class Warble.HeaderView extends Backbone.View
+  el: 'body > header'
+
   events:
     'click a#forward'  : 'skip'
     'click a#settings' : 'enableNotifications'
 
   initialize: ->
-    @el = $('body > header')
-    @delegateEvents()
+    @model.current_play.bind 'change:id', @notify, this
 
     @notifications = (window.webkitNotifications?.checkPermission() == 0)
 
@@ -32,9 +33,9 @@ class Warble.HeaderView extends Backbone.View
           @notifications = (window.webkitNotifications.checkPermission() == 0)
     event.preventDefault()
 
-  notify: (play) ->
-    if @notifications && play
-      song = play.song
+  notify: ->
+    if @notifications && @model.current_play
+      song = @model.current_play.get('song')
       notification = window.webkitNotifications.createNotification(song.cover_url, song.artist, song.title)
       notification.ondisplay = ->
         setTimeout (=> @cancel()), 5000

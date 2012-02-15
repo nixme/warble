@@ -3,5 +3,5 @@ class Warble.PaneView extends Backbone.View
 
   # Default render implementation: Just renders the template to the element
   render: ->
-    $(@el).html @template()
+    @$el.html @template()
     this

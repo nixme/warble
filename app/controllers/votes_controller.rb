@@ -10,6 +10,8 @@ class VotesController < ApplicationController
         head :forbidden
       end
 
+      Jukebox.publish_event 'refresh'
+
     rescue ActiveRecord::RecordNotUnique
       head :not_modified
     end

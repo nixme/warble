@@ -14,7 +14,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
     'click #youtube_search'    : 'search'
     'keypress input'           : 'handleEnter'
     'click a.entry'            : 'queueVideo'
-    'click div.video'        : 'previewVideo'
+    'click div.video'          : 'previewVideo'
     'click a#previous_results' : 'previousPage'
     'click a#next_results'     : 'nextPage'
 
@@ -37,12 +37,10 @@ class Warble.YoutubeSearchView extends Warble.PaneView
       preview_el.html 'preview'
       preview_el.parent().removeClass('preview')
     else
-      preview_el.html  window.JST['templates/youtube_preview']
+      preview_el.html window.JST['templates/youtube_preview']
         youtube_id: preview_el.data("youtube")
-
       preview_el.parent().addClass('preview')
-
-    @
+    this
 
   previousPage: (event) ->
     @startIndex -= @pageSize + 1
@@ -54,7 +52,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
 
   search: (event) ->
     window.workspace.showSpinner()
-    q = this.$('#youtube_query').val()
+    q = @$('#youtube_query').val()
 
     # reset the search start-index if it's a new search
     if @query != q
@@ -82,7 +80,7 @@ class Warble.YoutubeSearchView extends Warble.PaneView
         hasPrev: @startIndex > 1
         hasNext: (@startIndex + data.feed.openSearch$itemsPerPage.$t) < data.feed.openSearch$totalResults.$t
 
-      $(@el).scrollTop 0
+      @$el.scrollTop 0
       window.workspace.hideSpinner()
 
     event.preventDefault()

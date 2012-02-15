@@ -34,9 +34,13 @@ Warble::Application.routes.draw do
   end
 
   namespace :pandora do
-    resource  :credentials, :only => [ :update, :destroy ]
-    resources :stations, :only => :index do
-      resources :songs, :only => :index
+    # TODO: A regular format constraint just returns a 406. We need it to fall
+    # through to the catch-all, thus this hack.
+    constraints ->(request) { request.format && request.format.json? } do
+      resource  :credentials, only: [ :update, :destroy ]
+      resources :stations, only: :index do
+        resources :songs, only: :index
+      end
     end
   end
 

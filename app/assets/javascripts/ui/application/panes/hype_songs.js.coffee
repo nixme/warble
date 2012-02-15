@@ -12,7 +12,7 @@ class Warble.HypeSongsView extends Warble.PaneView
     @collection.bind 'all', @render, this
 
   render: ->
-    $(@el).html @template
+    @$el.html @template
       feed:  @collection.feed
       songs: @collection.toJSON()
     window.workspace.hideSpinner()

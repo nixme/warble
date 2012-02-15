@@ -10,7 +10,7 @@ class Warble.PandoraSongsView extends Warble.PaneView
     'click #select_all': 'selectAll'
 
   render: ->
-    $(@el).html @template
+    @$el.html @template
       name: @model.get 'name'
       songs: @model.songs.toJSON()
     this

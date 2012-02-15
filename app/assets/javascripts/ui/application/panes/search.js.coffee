@@ -7,16 +7,16 @@ class Warble.SearchView extends Warble.PaneView
   template: window.JST['templates/search']
 
   events:
-    'click #library_search' : 'search'
-    'keypress input'        : 'handleEnter'
-    'click a.result'        : 'queueVideo'
+    'click a.library_search' : 'search'
+    'keypress input'         : 'handleEnter'
+    'click a.result'         : 'queueVideo'
 
   initialize: ->
     @collection = new Warble.SearchList
     @collection.bind 'all', @render, this
 
   render: ->
-    $(@el).html @template
+    @$el.html @template
       query:   @collection.query
       results: @collection.toJSON()
     this
@@ -29,7 +29,7 @@ class Warble.SearchView extends Warble.PaneView
       this.search event
 
   search: (event) ->
-    @collection.query = this.$('#search_query').val()
+    @collection.query = @$('#search_query').val()
 
     window.workspace.showSpinner()
     @collection.fetch

@@ -8,7 +8,7 @@ class Warble.PandoraStationsView extends Warble.PaneView
     'click #pandora_logout': 'logout'
 
   render: ->
-    $(@el).html @template
+    @$el.html @template
       stations: @collection.toJSON()
     this
 
