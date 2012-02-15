@@ -79,14 +79,9 @@ class Song < ActiveRecord::Base
 
   def self.random
     # 7 out of 10 times we'll play something from the rotation, else we'll just pick something completely random
-    if rand(10) > 2
-      ids = connection.select_all(
-              "select plays.song_id from plays left join votes on plays.song_id = votes.song_id " +
-              "where votes.id is not null or plays.user_id is not null " +
-              "order by plays.created_at desc limit 1000"
-      )
-
-      find(ids[rand(ids.length)]["song_id"].to_i)
+    if rand(10) > 5
+      ids = Play.select('DISTINCT song_id').order('created_at DESC').limit(1000).map(&:song_id)
+      find(ids[rand(ids.length)])
     else
       find(:first, :offset =>rand(count))
     end
