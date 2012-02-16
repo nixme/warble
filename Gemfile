@@ -13,8 +13,7 @@ gem 'connection_pool'                   # Simple connection pooling
 gem 'tire'                              # ElasticSearch adapter
 
 # Async processing
-gem 'girl_friday'                       # Threaded, actor-based task queues
-gem 'sinatra', '~> 1.3'                 # Used by GirlFriday::Server
+gem 'sidekiq', git: 'https://github.com/mperham/sidekiq.git'  # Threaded, Resque-compatible task queues
 
 # Authentication
 gem 'omniauth-facebook'

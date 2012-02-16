@@ -21,7 +21,7 @@ class Song < ActiveRecord::Base
     indexes :source, type: :string,  index: :not_analyzed, boost: 0.1
   end
 
-  after_commit ->(song) { Queues::Index.push song.id }  # Index after any saves
+  after_commit ->(song) { IndexSongWorker.perform_async song.id }  # Index after any saves
 
 
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
@@ -39,7 +39,7 @@ class Song < ActiveRecord::Base
         external_id: pandora_song.music_id,
         user:        submitter
       })
-      Queues::Archive.push song.id    # Queue for async download
+      ArchiveSongWorker.perform_async song.id   # Queue for archiving
       song
     end
   end
@@ -72,7 +72,7 @@ class Song < ActiveRecord::Base
         external_id: hype_song.id,
         user:        submitter
       })
-      Queues::Archive.push song.id    # Queue for async download
+      ArchiveSongWorker.perform_async song.id   # Queue for archiving
       song
     end
   end
@@ -118,7 +118,7 @@ class Song < ActiveRecord::Base
     unless url =~ %r{^/songs/}  # Unarchived song?
       self.url = new_url        # Then use the new URL and
       save!                     #   queue for re-archiving
-      Queues::Archive.push id
+      ArchiveSongWorker.perform_async id
     end
   end
 

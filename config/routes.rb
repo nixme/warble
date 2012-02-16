@@ -1,5 +1,3 @@
-require 'girl_friday/server'
-
 Warble::Application.routes.draw do
 
   # Main interface
@@ -49,8 +47,7 @@ Warble::Application.routes.draw do
 
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
 
-  # girl_friday status interface
-  mount GirlFriday::Server.new, at: '/queues'
+  # TODO
 
 
   ### --------------------------- CATCH-ALL ROUTES -----------------------------
