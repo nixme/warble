@@ -80,8 +80,23 @@ class Song < ActiveRecord::Base
   def self.random
     # 7 out of 10 times we'll play something from the rotation, else we'll just pick something completely random
     if rand(10) > 5
-      ids = Play.select('DISTINCT song_id').order('created_at DESC').limit(1000).map(&:song_id)
-      find(ids[rand(ids.length)])
+      # Take the last 1000 plays but rid duplicate songs
+      song_ids = Play.order('created_at DESC NULLS LAST').limit(1000).map(&:song_id).uniq
+
+      # Join to votes to influence randomness. Each song starts with 1 point.
+      # Each vote adds 2 points to the song.
+      song_id_to_votes = Hash[
+        Vote.select('song_id, count(*) AS votes')
+            .group(:song_id)
+            .where(song_id: song_ids)
+            .map { |row| [row.song_id, [row.song_id] + ([row.song_id] * row.votes.to_i * 2)] }
+      ]
+
+      random_song_id = song_ids.each do |song_id|
+        song_id_to_votes[song_id] || [song_id]
+      end.flatten.sample
+
+      find random_song_id
     else
       find(:first, :offset =>rand(count))
     end
