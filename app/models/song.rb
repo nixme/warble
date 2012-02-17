@@ -81,7 +81,9 @@ class Song < ActiveRecord::Base
     # 7 out of 10 times we'll play something from the rotation, else we'll just pick something completely random
     if rand(10) > 5
       # Take the last 1000 plays but rid duplicate songs
-      song_ids = Play.order('created_at DESC NULLS LAST').limit(1000).map(&:song_id).uniq
+      song_ids = Play.where('user_id IS NOT NULL')
+                     .order('created_at DESC NULLS LAST')
+                     .limit(1000).map(&:song_id).uniq
 
       # Join to votes to influence randomness. Each song starts with 1 point.
       # Each vote adds 2 points to the song.
