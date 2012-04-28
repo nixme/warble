@@ -2,13 +2,19 @@
 
 require 'pandora/blowfish'
 require 'xmlrpc/client'
+require 'open-uri'
 
 module Pandora
   class Client < XMLRPC::Client
-    PROTOCOL_VERSION = 33
+    PROTOCOL_VERSION = 34
     HOST = 'www.pandora.com'
     RPC_PATH = "/radio/xmlrpc/v#{PROTOCOL_VERSION}?%s"
     USER_AGENT = "Warble/0.0.1"
+
+    # Pandora made calling misc.sync painful. See
+    # https://github.com/PromyLOPh/pianobar/issues/236. Using a
+    # community-maintained endpoint until a better solution is found.
+    INITIAL_TIME_SYNC_ENDPOINT = 'http://ridetheclown.com/s2/synctime.php'
 
     attr_accessor :authToken, :listenerId, :time_offset
 
@@ -83,14 +89,12 @@ module Pandora
 
     def login(user, pass)
       # Determine offset between our time and Pandora server time
-      if response = call('misc.sync')
-        server_time = @decryptor.decrypt(response)[4..-3].to_i
-        @time_offset = Time.now.to_i - server_time
-      end
+      server_time = open(INITIAL_TIME_SYNC_ENDPOINT).read.to_i
+      @time_offset = Time.now.to_i - server_time
 
       # Authenticate
-      response = call 'listener.authenticateListener', user, pass, 'html5tuner',
-        '', '', 'HTML5', true
+      response = call 'listener.authenticateListener', '00000000000000000000000000000000',
+        user, pass, 'html5tuner', '', '', 'HTML5', true
 
       @authToken  = response['authToken']
       @listenerId = response['listenerId']
