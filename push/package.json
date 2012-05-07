@@ -1,10 +1,11 @@
 {
   "name": "warble-push",
   "description": "Push components of the Warble jukebox server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Gopal Patel <nixme@stillhope.com>",
   "engines": {
-    "node": ">= 0.6.2"
+    "node": ">= 0.6.2",
+    "npm": "~1.1.18"
   },
   "dependencies": {
     "coffee-script": "1.1.3",
