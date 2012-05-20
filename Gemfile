@@ -9,6 +9,9 @@ gem 'hiredis'                           # ruby bindings for fast redis C lib
 gem 'redis'                             # ruby redis interface
 gem 'connection_pool'                   # Simple connection pooling
 
+# API clients and adapters
+gem 'pandora_client'                    # Pandora Tuner API client
+
 # Full-text search
 gem 'tire'                              # ElasticSearch adapter
 

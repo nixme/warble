@@ -25,7 +25,7 @@ class Song < ActiveRecord::Base
 
 
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
-    if song = where(source: 'pandora').where(external_id: pandora_song.music_id).first
+    if song = where(source: 'pandora').where(external_id: pandora_song.id).first
       song.fsck! pandora_song.audio_url
       song
     else   # first time seeing the song, so create it
@@ -34,9 +34,9 @@ class Song < ActiveRecord::Base
         title:       pandora_song.title,
         artist:      pandora_song.artist,
         album:       pandora_song.album,
-        cover_url:   pandora_song.art_url || pandora_song.artist_art_url,
+        cover_url:   pandora_song.album_art_url,
         url:         pandora_song.audio_url,
-        external_id: pandora_song.music_id,
+        external_id: pandora_song.id,
         user:        submitter
       })
       ArchiveSongWorker.perform_async song.id   # Queue for archiving

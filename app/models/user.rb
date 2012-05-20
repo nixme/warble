@@ -38,10 +38,6 @@ class User < ActiveRecord::Base
     save
   end
 
-  def pandora_client(session)
-    Pandora::Client.new(pandora_username, pandora_password, session)
-  end
-
   def as_json(options = {})
     {
       first_name: first_name,

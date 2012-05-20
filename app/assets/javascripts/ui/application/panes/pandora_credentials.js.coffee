@@ -12,5 +12,6 @@ class Warble.PandoraCredentialsView extends Warble.PaneView
     # TODO: generalize the method shim
     $.post '/pandora/credentials', this.$('#pandora_credentials').serialize() + '&_method=PUT', =>
       window.workspace.pandoraStations()
+    , 'json'
     event.preventDefault()
     false
