@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Warble::Application.routes.draw do
 
   # Main interface
@@ -47,7 +49,7 @@ Warble::Application.routes.draw do
 
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
 
-  # TODO
+  mount Sidekiq::Web,   at: '/sidekiq'
 
 
   ### --------------------------- CATCH-ALL ROUTES -----------------------------

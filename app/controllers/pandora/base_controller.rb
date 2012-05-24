@@ -11,10 +11,12 @@ class Pandora::BaseController < ApplicationController
   end
 
   def pandora_client
-    session[:pandora_user] ||=
-      $pandora_partner.login_user(
-        current_user.pandora_username,
-        current_user.pandora_password
-      )
+    PandoraRetryingClient.new(
+      session[:pandora_user] ||=
+        $pandora_partner.login_user(
+          current_user.pandora_username,
+          current_user.pandora_password
+        )
+    )
   end
 end

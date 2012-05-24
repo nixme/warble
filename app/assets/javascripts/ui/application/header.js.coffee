@@ -21,7 +21,7 @@ class Warble.HeaderView extends Backbone.View
             value: ui.value
 
   skip: (event) ->
-    $.post '/jukebox/skip'
+    @model.skip()
     event.preventDefault()
 
   enableNotifications: ->

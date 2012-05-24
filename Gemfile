@@ -16,7 +16,9 @@ gem 'pandora_client'                    # Pandora Tuner API client
 gem 'tire'                              # ElasticSearch adapter
 
 # Async processing
-gem 'sidekiq', git: 'https://github.com/mperham/sidekiq.git'  # Threaded, Resque-compatible task queues
+gem 'sidekiq'                           # Threaded, Resque-compatible task queues
+gem 'sinatra'                           # Mini web framework [only for Sidekiq::Web]
+gem 'slim'                              # Simple templating [only for Sidekiq::Web]
 
 # Authentication
 gem 'omniauth-facebook'

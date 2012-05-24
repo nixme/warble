@@ -3,7 +3,8 @@
 class ArchiveSongWorker
   include Sidekiq::Worker
 
-  queue :archiving
+  sidekiq_options queue: :archiving
+
 
   def perform(song_id)
     song = Song.find_by_id(song_id)

@@ -8,3 +8,6 @@ class Warble.Jukebox extends Backbone.Model
     @bind 'change', =>
       @current_play.set @get('current_play'), silent: true
       @current_play.change()
+
+  skip: ->
+    $.post '/jukebox/skip'

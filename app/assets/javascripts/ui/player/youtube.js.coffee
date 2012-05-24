@@ -48,4 +48,4 @@ class Warble.YoutubePlayerView extends Backbone.View
       @pending_volume = vol
 
   finished: ->
-    $.post '/jukebox/skip'
+    @model.skip()

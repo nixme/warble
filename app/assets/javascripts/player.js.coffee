@@ -4,6 +4,8 @@
 #= require rails/csrf
 #= require underscore
 #= require backbone
+#= require requestAnimationFrame
+#= require Three
 
 #= require_self
 
@@ -14,8 +16,13 @@ window.Warble = {}  # namespacing object for our classes
 
 jQuery(document).ready ($) ->
   window.jukebox = jukebox = new Warble.Jukebox
-  window.pandoraPlayer = new Warble.PandoraPlayerView model: jukebox
-  window.youtubePlayer = new Warble.YoutubePlayerView model: jukebox
+  window.audioPlayer = new Warble.AudioPlayer(jukebox)
+  window.songView = new Warble.SongPlayerView
+    model: jukebox
+  window.visualizationView = new Warble.VisualizationView
+    audioPlayer: window.audioPlayer
+  window.youtubePlayer = new Warble.YoutubePlayerView
+    model: jukebox
 
   jukebox.fetch()   # load current song to play
 

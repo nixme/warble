@@ -3,7 +3,8 @@
 class IndexSongWorker
   include Sidekiq::Worker
 
-  queue :indexing
+  sidekiq_options queue: :indexing
+
 
   def perform(song_id)
     song = Song.find_by_id(song_id)
