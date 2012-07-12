@@ -6,7 +6,7 @@
     #profile
       %span#toolbar
         %a#settings(href='#' title='Settings') y
-        = link_to '-', logout_path, title: 'Logout', method: 'delete'
+        = link_to '-', destroy_user_session_path, title: 'Logout', method: 'delete'
 
   #playing
 

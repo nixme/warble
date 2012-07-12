@@ -42,6 +42,7 @@ GEM
       multi_json (~> 1.0)
     arel (2.2.1)
     awesome_print (1.0.2)
+    bcrypt-ruby (3.0.1)
     binding_of_caller (0.6.7)
     builder (3.0.0)
     capistrano (2.9.0)
@@ -75,6 +76,11 @@ GEM
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
     debugger-ruby_core_source (1.1.3)
+    devise (2.1.2)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (~> 3.1)
+      warden (~> 1.2.1)
     diff-lcs (1.1.3)
     diffy (2.0.8)
     ejs (1.0.0)
@@ -141,15 +147,18 @@ GEM
       httpauth (~> 0.1)
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
-      rack (~> 1.2)
     omniauth (1.1.0)
       hashie (~> 1.2)
       rack
-    omniauth-facebook (1.4.1)
-      omniauth-oauth2 (~> 1.1.0)
-    omniauth-oauth2 (1.1.0)
-      oauth2 (~> 0.8.0)
+    omniauth-facebook (1.0.0)
+      omniauth-oauth2 (~> 1.0.0)
+    omniauth-github (1.0.1)
       omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+    omniauth-oauth2 (1.0.0)
+      oauth2 (~> 0.5.0)
+      omniauth (~> 1.0)
+    orm_adapter (0.4.0)
     pandora_client (0.1.0)
       crypt19 (~> 1.2.1)
       faraday (~> 0.8)
@@ -249,6 +258,8 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    warden (1.2.1)
+      rack (>= 1.0)
     yard (0.8.2.1)
 
 PLATFORMS
@@ -260,6 +271,7 @@ DEPENDENCIES
   compass (= 0.12.alpha)
   connection_pool
   crypt19
+  devise
   execjs
   foreigner
   foreman
@@ -269,6 +281,7 @@ DEPENDENCIES
   jquery-rails
   nokogiri
   omniauth-facebook
+  omniauth-github
   pandora_client
   patron
   pg

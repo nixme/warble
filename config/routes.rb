@@ -1,15 +1,13 @@
 Warble::Application.routes.draw do
 
+  devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
+  devise_scope :user do
+    get 'login', to: 'user/sessions#new', as: :new_user_session
+    delete 'logout', to: 'user/sessions#destroy', as: :destroy_user_session
+  end
+
   # Main interface
   root to: 'jukeboxes#app'
-
-  # Authentication
-  get    'login'                   => 'sessions#new',     as: :login
-  delete 'logout'                  => 'sessions#destroy', as: :logout
-  match  'auth/:provider/callback' => 'sessions#create'
-  match  'auth/failure'            => 'sessions#failure'
-  # TODO: more resource friendly?
-
 
   ### ------------------------------ API ROUTES --------------------------------
 
