@@ -16,10 +16,15 @@ class User < ActiveRecord::Base
 
 
   def self.create_with_omniauth(info)
-    create(first_name: info['first_name'],
-           last_name: info['last_name'],
-           email: info['email'],
-           photo_url: info['image'])
+     # GitHub doesn't return these fields individually.
+     unless first_name = info['first_name'] && last_name = info['last_name']
+       first_name, last_name = info['name'].split(" ")
+     end
+
+     create(first_name: first_name,
+           last_name:   last_name,
+           email:       info['email'],
+           photo_url:   info['image'])
   end
 
   def self.find_or_create_by_email_with_omniauth(info)
