@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validate :last_name,   presence: true
   validate :email,       presence: true
   
-  has_many :identites
+  has_many :authorizations
   has_many :songs
   has_many :votes
   has_many :plays

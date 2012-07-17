@@ -1,10 +1,6 @@
 Warble::Application.routes.draw do
 
   devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
-  devise_scope :user do
-    get 'login', to: 'user/sessions#new', as: :new_user_session
-    delete 'logout', to: 'user/sessions#destroy', as: :destroy_user_session
-  end
 
   # Main interface
   root to: 'jukeboxes#app'
@@ -85,7 +81,7 @@ Warble::Application.routes.draw do
           authenticated_user[request]
         }
 
-  match '/*client_route' => redirect(catch_all_redirect('/login'), status: 302),
+  match '/*client_route' => redirect(catch_all_redirect(new_user_session_path), status: 302),
         constraints: ->(request) {
           html_format[request] &&
           not_handled_by_middleware[request]
