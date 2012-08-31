@@ -1,13 +1,9 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def login
-        #user = User.find_or_create_by_facebook_auth(request.env['omniauth.auth'])
-    #session[:user_id] = user.id
-    #redirect_to root_url
     auth = request.env['omniauth.auth']
 
     # TODO: find or create by
     @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
-
 
     # Account Linking
     if signed_in?
@@ -33,6 +29,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   alias :facebook :login
-  alias :github :login
+  alias :do :login
 
 end

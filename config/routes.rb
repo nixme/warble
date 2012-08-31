@@ -81,7 +81,7 @@ Warble::Application.routes.draw do
           authenticated_user[request]
         }
 
-  match '/*client_route' => redirect(catch_all_redirect(new_user_session_path), status: 302),
+  match '/*client_route' => redirect(catch_all_redirect('/users/auth'), status: 302),
         constraints: ->(request) {
           html_format[request] &&
           not_handled_by_middleware[request]
