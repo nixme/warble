@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120203195018) do
+ActiveRecord::Schema.define(:version => 20120712225746) do
+
+  create_table "identities", :force => true do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "identities", ["user_id"], :name => "index_identities_on_user_id"
 
   create_table "plays", :force => true do |t|
     t.integer  "user_id"
@@ -38,18 +48,25 @@ ActiveRecord::Schema.define(:version => 20120203195018) do
   add_index "songs", ["source", "external_id"], :name => "index_songs_on_source_and_external_id", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "facebook_id",      :null => false
-    t.string   "first_name",       :null => false
-    t.string   "last_name",        :null => false
-    t.string   "email",            :null => false
+    t.string   "first_name",                          :null => false
+    t.string   "last_name",                           :null => false
+    t.string   "email",                               :null => false
     t.string   "photo_url"
     t.string   "pandora_username"
     t.string   "pandora_password"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",        :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
   end
 
-  add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
 
   create_table "votes", :force => true do |t|
     t.integer  "user_id",    :null => false

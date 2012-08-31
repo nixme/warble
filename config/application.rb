@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'active_record/railtie'
 require 'action_controller/railtie'
+require 'action_mailer/railtie'
 require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 
@@ -19,6 +20,7 @@ module Warble
     # here. Application configuration should go into files in
     # config/initializers -- all .rb files in that directory are automatically
     # loaded.
+    config.action_mailer.perform_deliveries = false
 
     # Custom directories with classes and modules that will autoload.
     config.autoload_paths += %W(#{config.root}/lib)

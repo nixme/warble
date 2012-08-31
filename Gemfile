@@ -16,10 +16,12 @@ gem 'pandora_client'                    # Pandora Tuner API client
 gem 'tire'                              # ElasticSearch adapter
 
 # Async processing
-gem 'sidekiq', git: 'https://github.com/mperham/sidekiq.git'  # Threaded, Resque-compatible task queues
+gem 'sidekiq' # Threaded, Resque-compatible task queues
 
 # Authentication
+gem 'devise'
 gem 'omniauth-facebook'
+gem 'omniauth-do'
 
 # Front-end
 gem 'haml', '3.2.0.alpha.8'             # HTML pre-processor

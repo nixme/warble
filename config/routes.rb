@@ -1,15 +1,9 @@
 Warble::Application.routes.draw do
 
+  devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
+
   # Main interface
   root to: 'jukeboxes#app'
-
-  # Authentication
-  get    'login'                   => 'sessions#new',     as: :login
-  delete 'logout'                  => 'sessions#destroy', as: :logout
-  match  'auth/:provider/callback' => 'sessions#create'
-  match  'auth/failure'            => 'sessions#failure'
-  # TODO: more resource friendly?
-
 
   ### ------------------------------ API ROUTES --------------------------------
 
@@ -87,7 +81,7 @@ Warble::Application.routes.draw do
           authenticated_user[request]
         }
 
-  match '/*client_route' => redirect(catch_all_redirect('/login'), status: 302),
+  match '/*client_route' => redirect(catch_all_redirect('/users/auth'), status: 302),
         constraints: ->(request) {
           html_format[request] &&
           not_handled_by_middleware[request]

@@ -21,3 +21,5 @@ sub_client = redis.createClient()
 sub_client.subscribe 'Jukebox:player'
 sub_client.on 'message', (channel, message) ->
   io.sockets.send message
+
+console.log "You're tuned to KWBL, Warble Live…"
