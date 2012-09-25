@@ -40,14 +40,14 @@ $ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 Build and install Ruby 1.9.3:
 
 ```sh
-$ rbenv install 1.9.3-p0   # Install MRI 1.9.3-p0
+$ rbenv install 1.9.3-p194   # Install MRI 1.9.3-p194
 ```
 
 Add [Bundler](http://gembundler.com) for dependency management:
 
 ```sh
 $ gem install bundler
-$ rbenv rehash             # Rebuild the rbenv shim binaries
+$ rbenv rehash               # Rebuild the rbenv shim binaries
 ```
 
 
@@ -88,6 +88,17 @@ $ echo 'FACEBOOK_APP_ID=111111111111111' >> .env
 $ echo 'FACEBOOK_APP_SECRET=abcdefabcdefabcdefabcdefabcdefab' >> .env
 ```
 
+Add credentials for a Pandora partner. Pick one from
+http://pan-do-ra-api.wikia.com/wiki/Json/5/partners:
+
+```sh
+$ echo 'PANDORA_USERNAME=username' >> .env
+$ echo 'PANDORA_PASSWORD=password' >> .env
+$ echo 'PANDORA_DEVICE_ID=device_id' >> .env
+$ echo 'PANDORA_ENCRYPTION_KEY=encryption_key' >> .env
+$ echo 'PANDORA_DECRYPTION_KEY=decryption_key' >> .env
+```
+
 Copy the sample connection configurations:
 
 ```sh
@@ -105,12 +116,6 @@ Ensure Redis is running. You can find the proper incantations by running:
 
 ```sh
 $ brew info redis
-```
-
-Start a local Solr search server in a separate shell:
-
-```sh
-$ ./bin/rake sunspot:solr:run
 ```
 
 Start the web server, background processes, and other components with
