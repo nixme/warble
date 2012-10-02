@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery    # CSRF protection filter
+  # Disable CSRF protection until we add API-keys or something.
+  #
+  # protect_from_forgery    # CSRF protection filter
 
   before_filter :authenticate_user!
 

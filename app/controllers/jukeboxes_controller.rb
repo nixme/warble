@@ -1,5 +1,6 @@
 class JukeboxesController < ApplicationController
   # App bootstrap
+
   def app
     @volume = Jukebox.volume
   end
