@@ -5,8 +5,7 @@ gem 'rails', '3.1.3'
 # Datastore adapters
 gem 'pg'                                # PostgreSQL adapter
 gem 'foreigner'                         # Foreign key constraints in migrations
-gem 'hiredis'                           # ruby bindings for fast redis C lib
-gem 'redis'                             # ruby redis interface
+gem 'redis'                             # Redis adapter
 gem 'connection_pool'                   # Simple connection pooling
 
 # API clients and adapters
@@ -16,7 +15,9 @@ gem 'pandora_client'                    # Pandora Tuner API client
 gem 'tire'                              # ElasticSearch adapter
 
 # Async processing
-gem 'sidekiq', git: 'https://github.com/mperham/sidekiq.git'  # Threaded, Resque-compatible task queues
+gem 'sidekiq'                           # Threaded, Resque-compatible task queues
+gem 'sinatra', require: false           # Mini web framework [only for Sidekiq::Web]
+gem 'slim', '<= 1.3.0'                  # Simple templating [only for Sidekiq::Web]
 
 # Authentication
 gem 'omniauth-facebook'
