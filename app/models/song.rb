@@ -38,7 +38,7 @@ class Song < ActiveRecord::Base
         url:         pandora_song.audio_url,
         external_id: pandora_song.id,
         user:        submitter
-      })
+      }, without_protection: true)
       ArchiveSongWorker.perform_async song.id   # Queue for archiving
       song
     end
@@ -55,7 +55,7 @@ class Song < ActiveRecord::Base
         cover_url:   params[:thumbnail],
         external_id: params[:youtube_id],
         user:        submitter
-      })
+      }, without_protection: true)
     end
   end
 
@@ -71,7 +71,7 @@ class Song < ActiveRecord::Base
         url:         hype_song.url,
         external_id: hype_song.id,
         user:        submitter
-      })
+      }, without_protection: true)
       ArchiveSongWorker.perform_async song.id   # Queue for archiving
       song
     end

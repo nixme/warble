@@ -5,7 +5,9 @@ class Pandora::BaseController < ApplicationController
  private
 
   def check_pandora_credentials!
-    unless current_user.pandora_credentials?
+    if !$pandora_partner   # Keys not provided via envvars
+      head :service_unavailable
+    elsif !current_user.pandora_credentials?
       head :forbidden
     end
   end

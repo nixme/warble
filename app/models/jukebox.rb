@@ -32,7 +32,11 @@ module Jukebox
 
   def enqueue(song, user = nil)
     priority = user ? user.number_of_plays_today : 999
-    play = Play.create(user: user, song: song)
+
+    play = Play.new
+    play.user = user
+    play.song = song
+    play.save!
 
     $redis_pool.with { |redis| redis.zadd('warble:queue', priority, play.id) }
 
