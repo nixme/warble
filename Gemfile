@@ -9,6 +9,8 @@ gem 'redis'                             # Redis adapter
 gem 'connection_pool'                   # Simple connection pooling
 
 # API clients and adapters
+gem 'faraday'                           # Flexible HTTP client library
+gem 'faraday_middleware'                # Request/response middleware for Faraday
 gem 'pandora_client'                    # Pandora Tuner API client
 
 # Full-text search
@@ -22,9 +24,11 @@ gem 'slim', '<= 1.3.0'                  # Simple templating [only for Sidekiq::W
 # Authentication
 gem 'omniauth-facebook'
 
-# Front-end
+# Front-end asset helpers
 gem 'haml', '3.2.0.alpha.8'             # HTML pre-processor
-group :assets do                        # Asset group not needed in production
+
+# Front-end asset helpers not loaded in production
+group :assets do
   gem 'sass-rails', '~> 3.1.5'          # CSS pre-processor
   gem 'compass', '0.12.alpha'
   gem 'coffee-rails', '~> 3.1.1'        # CoffeeScript compiling
@@ -35,6 +39,13 @@ group :assets do                        # Asset group not needed in production
   gem 'rails-behaviors'
   gem 'rails-backbone'
   gem 'swfobject-rails'
+end
+
+# Push server gems. Not loaded by main Rails app.
+group :push do
+  gem 'faye'                            # Pub/sub to the browser
+  gem 'faye-redis'                      # Redis backend for Faye state
+  gem 'thin'                            # Evented web server
 end
 
 # Miscellaneous gems

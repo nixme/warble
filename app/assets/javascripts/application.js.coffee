@@ -5,11 +5,13 @@
 #= require rails/method
 #= require underscore
 #= require backbone
+#= require faye-browser
 #= require jquery.mapkey
 #= require tooltip
 
 #= require_self
 
+#= require_tree ./components
 #= require_tree ./models
 #= require_tree ./ui/application
 
@@ -153,18 +155,16 @@ jQuery(document).ready ($) ->
     event.preventDefault()
     workspace.navigate $(event.currentTarget).attr('href'), trigger: true
 
-  socket = io.connect("http://#{window.base_url}:8765")
-  socket.on 'message', (raw_data) ->
-    data = JSON.parse(raw_data)
+  Warble.push.initialize()
+  Warble.push.bind 'jukebox:change', (data) ->
     workspace.jukebox.set data.jukebox
     workspace.playlist.reset data.jukebox.playlist
-    switch data.event
-      when 'volume'
-        # TODO don't change the value if this is the window that set it
-        # also, move this into a view or something
-        $('#volume').slider('value', data.jukebox.volume)
-      when 'reload'
-        window.location.reload true
+
+  # TODO don't change the value if this is the window that set it
+  # also, move this into a view or something
+  workspace.jukebox.bind 'change:volume', ->
+    $('#volume').slider('value', workspace.jukebox.get('volume'))
+
 
   $.mapKey 'enter', ->
     # TODO: pull up drawer and set focus to search

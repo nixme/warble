@@ -9,7 +9,7 @@ module Jukebox
 
   def volume=(value)
     $redis_pool.with { |redis| redis.set('warble:volume', value.to_i) }
-    publish_event 'volume'
+    publish_change_event
   end
 
   def current_play
@@ -36,7 +36,7 @@ module Jukebox
 
     $redis_pool.with { |redis| redis.zadd('warble:queue', priority, play.id) }
 
-    publish_event 'refresh'
+    publish_change_event
 
     skip unless current_play
   end
@@ -55,16 +55,14 @@ module Jukebox
       end
     end
 
-    publish_event 'skip'
+    publish_change_event
   end
 
-  def publish_event(event)
-    $redis_pool.with do |redis|
-      redis.publish(Warble::Application.config.pubsub_channel, {
-        event:   event,
-        jukebox: as_json
-      }.to_json)
-    end
+  def publish_change_event
+    PushMessageWorker.message(
+      event:   'jukebox:change',
+      jukebox: as_json
+    )
   end
 
   def as_json(options = {})

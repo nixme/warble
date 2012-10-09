@@ -17,12 +17,11 @@ Install [Xcode](http://developer.apple.com/tools/xcode/) and
 [OS X GCC packages](https://github.com/kennethreitz/osx-gcc-installer).
 
 Use [Homebrew](http://mxcl.github.com/homebrew/) to install
-[Node.js](http://nodejs.org/), [Redis](http://redis.io/),
-[rbenv](https://github.com/sstephenson/rbenv), and
+[Redis](http://redis.io/), [rbenv](https://github.com/sstephenson/rbenv), and
 [ruby-build](https://github.com/sstephenson/ruby-build).
 
 ```sh
-$ brew install node redis rbenv ruby-build
+$ brew install redis rbenv ruby-build
 ```
 
 
@@ -51,25 +50,12 @@ $ rbenv rehash               # Rebuild the rbenv shim binaries
 ```
 
 
-### Set up Node.js
-
-Install [npm](http://npmjs.org/) to manage node.js dependencies. Inspect the
-script if you're wary of executing scripts directly off the internet:
-
-```sh
-$ curl http://npmjs.org/install.sh | sh
-```
-
-
 ### Preparing the project
 
 Install dependencies:
 
 ```sh
-$ bundle install --binstubs    # Ruby dependencies
-$ cd push
-$ npm install                  # Node.js dependencies
-$ cd ..
+$ bundle install --binstubs --path vendor/bundle
 ```
 
 Warble uses Facebook Connect to authenticate users. A Facebook _App ID_ and _App
