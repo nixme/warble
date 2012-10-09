@@ -7,6 +7,7 @@
 #= require backbone
 #= require jquery.mapkey
 #= require tooltip
+#= require soundcloud
 
 #= require_self
 
@@ -28,6 +29,7 @@ jQuery(document).ready ($) ->
       'hype/popular/3days/:page'  : 'hypePopular3Days'
       'hype/popular/week/:page'   : 'hypePopularWeek'
       'hype/:user/:page'          : 'hypeUser'
+      'soundcloud'                : 'soundcloud'
       '*unmatched'                : 'home'
 
     initialize: ->
@@ -39,15 +41,16 @@ jQuery(document).ready ($) ->
       @hypeSongs   = new Warble.HypeSongList
 
       # initialize views
-      @headerView          = new Warble.HeaderView model: @jukebox
-      @currentPlayView     = new Warble.CurrentPlayView model: @jukebox
-      @playlistView        = new Warble.PlaylistView collection: @playlist
-      @serviceChooserView  = new Warble.ServiceChooserView
-      @pandoraAuthView     = new Warble.PandoraCredentialsView
-      @pandoraStationsView = new Warble.PandoraStationsView collection: @stationList
-      @youtubeSearchView   = new Warble.YoutubeSearchView
-      @hypeChooserView     = new Warble.HypeFeedsView
-      @hypeSongsView       = new Warble.HypeSongsView collection: @hypeSongs
+      @headerView             = new Warble.HeaderView model: @jukebox
+      @currentPlayView        = new Warble.CurrentPlayView model: @jukebox
+      @playlistView           = new Warble.PlaylistView collection: @playlist
+      @serviceChooserView     = new Warble.ServiceChooserView
+      @pandoraAuthView        = new Warble.PandoraCredentialsView
+      @pandoraStationsView    = new Warble.PandoraStationsView collection: @stationList
+      @youtubeSearchView      = new Warble.YoutubeSearchView
+      @hypeChooserView        = new Warble.HypeFeedsView
+      @hypeSongsView          = new Warble.HypeSongsView collection: @hypeSongs
+      @soundcloudSearchView   = new Warble.SoundcloudSearchView
 
       # load data
       @jukebox.fetch()
@@ -144,6 +147,9 @@ jQuery(document).ready ($) ->
       @hypeSongs.url = "/hype?username=#{encodeURIComponent(user)}&page=#{encodeURIComponent(page)}"
       @hypeSongs.fetch()
 
+    soundcloud: ->
+      #SC.initialize client_id: "dae39b5eb16934e43c93209cb65051ee"
+      @switchPane @soundcloudSearchView
 
   window.workspace = workspace = new Warble.WorkspaceRouter
   Backbone.history.start pushState: true
