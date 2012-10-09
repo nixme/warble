@@ -58,16 +58,13 @@ Install dependencies:
 $ bundle install --binstubs --path vendor/bundle
 ```
 
-Warble uses Facebook Connect to authenticate users. A Facebook _App ID_ and _App
-Secret_ are expected in the `FACEBOOK_APP_ID` and `FACEBOOK_APP_SECRET`
-environment variables.
-
-Create a new app at <http://facebook.com/developers>. Make sure to set the _Site
-URL_ field to http://localhost:3000/.
+Warble uses Facebook Connect to authenticate users. Create a new app at
+<http://facebook.com/developers>. Make sure to set the _Site URL_ field to
+http://localhost:3000/.
 
 [Foreman](http://ddollar.github.com/foreman/) loads environment variables from
 `.env` in the project root when booting the app. Copy the Facebook _App ID_ and
-_App Secret_ values:
+_App Secret_ values from the app details on Facebook:
 
 ```sh
 $ echo 'FACEBOOK_APP_ID=111111111111111' >> .env
@@ -75,7 +72,7 @@ $ echo 'FACEBOOK_APP_SECRET=abcdefabcdefabcdefabcdefabcdefab' >> .env
 ```
 
 Add credentials for a Pandora partner. Pick one from
-http://pan-do-ra-api.wikia.com/wiki/Json/5/partners:
+<http://pan-do-ra-api.wikia.com/wiki/Json/5/partners>:
 
 ```sh
 $ echo 'PANDORA_USERNAME=username' >> .env
