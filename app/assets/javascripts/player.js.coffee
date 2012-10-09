@@ -4,9 +4,11 @@
 #= require rails/csrf
 #= require underscore
 #= require backbone
+#= require faye-browser
 
 #= require_self
 
+#= require_tree ./components
 #= require models/jukebox
 #= require_tree ./ui/player
 
@@ -19,11 +21,6 @@ jQuery(document).ready ($) ->
 
   jukebox.fetch()   # load current song to play
 
-  socket = io.connect("http://#{window.base_url}:8765")
-  socket.on 'message', (raw_data) ->
-    data = JSON.parse(raw_data)
+  Warble.push.initialize()
+  Warble.push.bind 'jukebox:change', (data) ->
     jukebox.set data.jukebox
-
-    switch data.event
-      when 'reload'
-        window.location.reload true

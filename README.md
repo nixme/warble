@@ -17,12 +17,11 @@ Install [Xcode](http://developer.apple.com/tools/xcode/) and
 [OS X GCC packages](https://github.com/kennethreitz/osx-gcc-installer).
 
 Use [Homebrew](http://mxcl.github.com/homebrew/) to install
-[Node.js](http://nodejs.org/), [Redis](http://redis.io/),
-[rbenv](https://github.com/sstephenson/rbenv), and
+[Redis](http://redis.io/), [rbenv](https://github.com/sstephenson/rbenv), and
 [ruby-build](https://github.com/sstephenson/ruby-build).
 
 ```sh
-$ brew install node redis rbenv ruby-build
+$ brew install redis rbenv ruby-build
 ```
 
 
@@ -51,37 +50,21 @@ $ rbenv rehash               # Rebuild the rbenv shim binaries
 ```
 
 
-### Set up Node.js
-
-Install [npm](http://npmjs.org/) to manage node.js dependencies. Inspect the
-script if you're wary of executing scripts directly off the internet:
-
-```sh
-$ curl http://npmjs.org/install.sh | sh
-```
-
-
 ### Preparing the project
 
 Install dependencies:
 
 ```sh
-$ bundle install --binstubs    # Ruby dependencies
-$ cd push
-$ npm install                  # Node.js dependencies
-$ cd ..
+$ bundle install --binstubs --path vendor/bundle
 ```
 
-Warble uses Facebook Connect to authenticate users. A Facebook _App ID_ and _App
-Secret_ are expected in the `FACEBOOK_APP_ID` and `FACEBOOK_APP_SECRET`
-environment variables.
-
-Create a new app at <http://facebook.com/developers>. Make sure to set the _Site
-URL_ field to http://localhost:3000/.
+Warble uses Facebook Connect to authenticate users. Create a new app at
+<http://facebook.com/developers>. Make sure to set the _Site URL_ field to
+http://localhost:3000/.
 
 [Foreman](http://ddollar.github.com/foreman/) loads environment variables from
 `.env` in the project root when booting the app. Copy the Facebook _App ID_ and
-_App Secret_ values:
+_App Secret_ values from the app details on Facebook:
 
 ```sh
 $ echo 'FACEBOOK_APP_ID=111111111111111' >> .env
@@ -89,7 +72,7 @@ $ echo 'FACEBOOK_APP_SECRET=abcdefabcdefabcdefabcdefabcdefab' >> .env
 ```
 
 Add credentials for a Pandora partner. Pick one from
-http://pan-do-ra-api.wikia.com/wiki/Json/5/partners:
+<http://pan-do-ra-api.wikia.com/wiki/Json/5/partners>:
 
 ```sh
 $ echo 'PANDORA_USERNAME=username' >> .env
