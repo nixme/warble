@@ -43,6 +43,25 @@ class Song < ActiveRecord::Base
       song
     end
   end
+  
+  def self.find_or_create_from_soundcloud_params(params, submitter)
+    if song = where(source: 'soundcloud').where(external_id: params[:soundcloud_id]).first
+      song.fsck! params[:url]
+      song
+    else   # first time seeing the song, so create it
+      song = Song.create({
+        source:      'soundcloud',
+        title:       params[:title],
+        artist:      params[:author],
+        cover_url:   params[:artwork_url],
+        url:         params[:url],
+        external_id: params[:soundcloud_id],
+        user:        submitter
+      }, without_protection: true)
+      ArchiveSongWorker.perform_async song.id   # Queue for archiving
+      song
+    end
+  end
 
   def self.find_or_create_from_youtube_params(params, submitter)
     if song = where(source: 'youtube').where(external_id: params[:youtube_id]).first
@@ -106,7 +125,7 @@ class Song < ActiveRecord::Base
 
   # Is this song archivable to disk?
   def archivable?
-    %w[pandora hypem].include?(source)
+    %w[pandora hypem soundcloud].include?(source)
   end
 
   # Ensure a song has been archived.

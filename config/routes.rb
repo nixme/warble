@@ -46,7 +46,6 @@ Warble::Application.routes.draw do
 
   match 'hype' => 'hype#index'
 
-
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
 
   mount Sidekiq::Web => '/sidekiq'

@@ -71,6 +71,13 @@ $ echo 'FACEBOOK_APP_ID=111111111111111' >> .env
 $ echo 'FACEBOOK_APP_SECRET=abcdefabcdefabcdefabcdefabcdefab' >> .env
 ```
 
+Add your SoundCloud Client ID. Note that Warble currently exposes this 
+to end users. Get a new ID from http://soundcloud.com/you/apps/new
+
+```sh
+$ echo 'SOUNDCLOUD_CLIENT_ID=soundcloud_client_id' >> .env
+```
+
 Add credentials for a Pandora partner. Pick one from
 <http://pan-do-ra-api.wikia.com/wiki/Json/5/partners>:
 

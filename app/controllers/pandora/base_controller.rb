@@ -1,7 +1,7 @@
 class Pandora::BaseController < ApplicationController
   before_filter :check_pandora_credentials!
-
-
+  
+  
  private
 
   def check_pandora_credentials!
