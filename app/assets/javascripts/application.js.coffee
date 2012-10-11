@@ -8,8 +8,6 @@
 #= require faye-browser
 #= require jquery.mapkey
 #= require tooltip
-#= require soundcloud
-
 #= require_self
 
 #= require_tree ./components
