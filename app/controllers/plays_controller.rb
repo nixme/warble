@@ -11,7 +11,12 @@ class PlaysController < ApplicationController
         Jukebox.enqueue(Song.find(song_id), current_user)
       end
       head :created
-
+      
+    elsif params[:soundcloud]
+      song = Song.find_or_create_from_soundcloud_params(params[:soundcloud], current_user)
+      Jukebox.enqueue(song, current_user)
+      head :created
+      
     elsif params[:youtube]
       song = Song.find_or_create_from_youtube_params(params[:youtube], current_user)
       Jukebox.enqueue(song, current_user)
