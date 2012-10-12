@@ -12,6 +12,7 @@
 #= require_self
 
 #= require_tree ./components
+#= require_tree ./utils
 #= require_tree ./models
 #= require_tree ./ui/application
 
@@ -41,10 +42,14 @@ jQuery(document).ready ($) ->
       @hypeSongs   = new Warble.HypeSongList
 
       # initialize views
-      @headerView          = new Warble.HeaderView model: @jukebox
+      @controlsView        = new Warble.ControlsView
       @currentPlayView     = new Warble.CurrentPlayView model: @jukebox
       @playlistView        = new Warble.PlaylistView collection: @playlist
+
+      @controlsView.bind 'jukebox:skip', @currentPlayView.refresh
+
       @serviceChooserView  = new Warble.ServiceChooserView
+        el: $('#add .tabs')
       @pandoraAuthView     = new Warble.PandoraCredentialsView
       @pandoraStationsView = new Warble.PandoraStationsView collection: @stationList
       @rdioView            = new Warble.RdioView
@@ -58,30 +63,23 @@ jQuery(document).ready ($) ->
       @playlist.fetch()
       @stationList.fetch()
 
-      @paneEl = $('#add')
+      @paneEl = $('#add .content')
+      @serviceChooserView.render()
       @currentPane = null
 
-    skip: (jukebox) ->
-      @jukebox.set jukebox                 # Update current song
-      promoted_play = @playlist.at(0)
-      if promoted_play?
-        @playlist.remove(promoted_play)    # Remove top song in queue
-      else
-        @playlist.fetch()                  # Refetch in case of error
-
-    # TODO: move to the proper single #app view
-    showSpinner: -> $('#spinner').fadeIn()
-    hideSpinner: -> $('#spinner').fadeOut()
+    showSpinner: -> Utils.toggleLoadingSpinner(on)
+    hideSpinner: -> Utils.toggleLoadingSpinner(off)
 
     switchPane: (view) ->
       $(@currentView.el).remove() if @currentView
+      @serviceChooserView.autoSelectTab()
       @paneEl.append view.render().el
       view.delegateEvents()   # TODO: make this unnecessary
       view.activate?()
       @currentView = view
 
     home: ->
-      @switchPane @serviceChooserView
+      @switchPane new Backbone.View
 
     search: (query) ->
       #if query?

@@ -1,25 +1,26 @@
 %header
   #info
-    %h1
-      %span.pictos m
-      Warble
+    = image_tag "logo-small.png", class: 'logo-in-application'
     #profile
       %span#toolbar
-        %a#settings(href='#' title='Settings') y
-        = link_to '-', logout_path, title: 'Logout', method: 'delete'
+        %a.link-floating#settings(href='#' title='Settings') Settings
+        = link_to 'Logout of Warble', logout_path, title: 'Logout', method: 'delete', class: 'link-floating'
 
-  #playing
+#left
+  %aside#playing
 
-  #controls
+  %aside#controls
     %span.vote
     %a#forward(href='#') 7
     #volume(data-volume='#{@volume}')
 
+  %ul#songs
+
 #add
-#spinner
-  = image_tag 'spinner.png'
+  .tabs
+  .content
+
 #queue
-%ul#songs
 
 - content_for :scripts do
   = javascript_include_tag 'application', debug: Rails.env.development?

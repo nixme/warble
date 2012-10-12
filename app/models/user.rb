@@ -14,13 +14,13 @@ class User < ActiveRecord::Base
       user
     else   # No user found so create one!
       info = access_token['info']
-      User.create(
+      User.create({
         first_name:  info['first_name'],
         last_name:   info['last_name'],
         email:       info['email'],
         photo_url:   info['image'],
         facebook_id: access_token['uid']
-      )
+      }, without_protection: true)
     end
   end
 

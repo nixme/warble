@@ -3,14 +3,17 @@ class VotesController < ApplicationController
 
   def create
     begin
-      if (song = Song.find(params[:song_id]).votes.create(user: current_user)).save
+      song = Song.find(params[:song_id])
+      vote = song.votes.build()
+      vote.user = current_user
+      if vote.save
         render json:   song.as_json(),
                status: :created
       else
         head :forbidden
       end
 
-      Jukebox.publish_event 'refresh'
+      Jukebox.publish_change_event
 
     rescue ActiveRecord::RecordNotUnique
       head :not_modified

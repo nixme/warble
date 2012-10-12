@@ -32,15 +32,20 @@ class Warble.YoutubeSearchView extends Warble.PaneView
       this.search event
 
   previewVideo: (event) ->
-    preview_el = @$(event.currentTarget)
-    if preview_el.parent().hasClass('preview')
-      preview_el.html 'preview'
-      preview_el.parent().removeClass('preview')
-    else
-      preview_el.html window.JST['templates/youtube_preview']
-        youtube_id: preview_el.data("youtube")
-      preview_el.parent().addClass('preview')
-    this
+    button = @$(event.currentTarget)
+    preview_el = $ document.createElement('div')
+    target = button.parent()
+    image = $(target).find('img')
+
+    target.append preview_el.html  window.JST['templates/youtube_preview']
+      youtube_id: button.data("youtube")
+
+    # WTF is this
+    Utils.clonePosition image, preview_el,
+      offsetTop: -17
+      offsetLeft: -400
+
+    @
 
   previousPage: (event) ->
     @startIndex -= @pageSize + 1
