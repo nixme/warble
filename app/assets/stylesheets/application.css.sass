@@ -2,7 +2,9 @@
 @import 'pictos'
 @import 'compass'
 @import 'compass/reset'
-
+@import 'effects'
+@import 'spinner'
+@import 'slider'
 @import '_tooltips'
 
 $left-column-width: 320px
@@ -50,6 +52,9 @@ $z-add:                1
 $z-add-spinner:        2
 $z-header:             3
 
+@mixin grey-border
+  border: 1px solid rgba(162,164,166,.5)
+
 @mixin avatar($size:48px, $over-dark:true)
   +border-radius(2px)
   height: $size
@@ -75,20 +80,22 @@ $z-header:             3
   border-color: rgba(0,0,0,.33)
   +box-shadow(rgba(0,0,0,.45) 0px 1px 8px inset, rgba(255,255,255,.33) 0px 1px 0)
 
-%button-base
+%input-base
   +border-radius(2px)
+  +grey-border
   color: rgba(0,0,0,.66)
   font-size: 14px
   +text-shadow(#fff 0px 1px 1px)
   font-family: $default-font
   font-weight: bold
-  border: 1px solid #fafafa
-  padding: 8px 16px
+  padding: 12px 16px
+  margin: 2px
 
 @mixin card-button
-  @extend %button-base
+  @extend %input-base
   +card-style
   padding: 16px 48px
+  border: 1px solid #fafafa
   +box-shadow(rgba(0,0,0,.24) 0px 1px 1px, #fff 0px 1px 1px inset)
   &:active
     @extend %button-active
@@ -142,8 +149,8 @@ input
   font-size: 14px
   color: #555
 
-input, button, .button
-  border: 0
+input, button, textarea, .button
+  @extend %input-base
   font-weight: 500
 
 button, .button
@@ -153,15 +160,33 @@ button, .button
   cursor: pointer
 
 .plastic-button
-  @extend %button-base
   +background(linear-gradient(rgba(255,255,255,.5), rgba(217,217,217,.5)))
   +box-shadow(#fff 0 1px 0, #fff 0px 1px 1px inset)
-  border: 1px solid rgba(162,164,166,.5)
   &:active
     @extend %button-active
 
 .card-button
   +card-button
+
+.form-bordered
+  background: rgba(255,255,255,.5)
+  +grey-border
+
+.form-stacked
+  margin: auto
+  padding: $application-margin
+  margin-top: 18%
+  +border-radius
+  width: 450px
+
+  h2, p
+    margin-bottom: 8px
+
+  input[type=text], input[type=password], textarea
+    width: 100%
+    margin: 8px 0
+  input, button, textarea
+    display: block
 
 h1
   font-weight: normal
@@ -551,30 +576,3 @@ ul#pandora_songs, ul#search_results
       width: $left-column-width - $small-artwork-size - ($small-artwork-size / 2) - ($card-style-padding * 2)
       margin-left: $small-artwork-size + ($small-artwork-size / 2)
 
-.ui-slider-horizontal
-  height: .4em
-  width: 87px
-
-.ui-slider
-  .ui-slider-handle
-    width: .8em
-    height: .8em
-  margin-top: 14px
-
-.ui-slider-handle.ui-corner-all
-  outline: none
-  -webkit-focus-ring-color: none
-  background: image-url('/assets/volume-knob.png')
-  border: none
-  width: 17px
-  height: 18px
-  top: -.30em
-  &:focus
-    outline: none
-    background: image-url('/assets/volume-knob-focus.png')
-
-
-.ui-slider.ui-slider-horizontal.ui-widget.ui-widget-content.ui-corner-all
-  +background(linear-gradient(#666, #999))
-  border: none
-  +box-shadow(rgba(0,0,0,.20) 0 1px 3px inset, rgba(255,255,255,.5) 0 1px 0)

@@ -65,9 +65,8 @@ jQuery(document).ready ($) ->
       @serviceChooserView.render()
       @currentPane = null
 
-    # TODO: move to the proper single #app view
-    showSpinner: -> $('#spinner').fadeIn()
-    hideSpinner: -> $('#spinner').fadeOut()
+    showSpinner: -> Utils.toggleLoadingSpinner(on)
+    hideSpinner: -> Utils.toggleLoadingSpinner(off)
 
     switchPane: (view) ->
       $(@currentView.el).remove() if @currentView
