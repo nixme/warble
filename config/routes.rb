@@ -44,6 +44,10 @@ Warble::Application.routes.draw do
     end
   end
 
+  namespace :rdio do
+    resources :songs, only: :index
+  end
+
   match 'hype' => 'hype#index'
 
 

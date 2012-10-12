@@ -14,7 +14,7 @@ class Warble.PandoraPlayerView extends Backbone.View
     if @model.current_play.get('song')?.source == 'youtube'
       # need to kill the current player in case of skip
       @$el.html ''
-    else   # pandora or hypem
+    else   # pandora or hypem or rdio
       vol = @model.get('volume')
       @$el.html @template
         current: @model.current_play.get('song')
@@ -28,4 +28,4 @@ class Warble.PandoraPlayerView extends Backbone.View
     @$('audio').each -> @volume = value
 
   finished: ->
-    $.post '/jukebox/skip'
+    @trigger 'song:finished'

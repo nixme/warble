@@ -10,10 +10,10 @@ class Warble.YoutubePlayerView extends Backbone.View
     # youtube apis make you do this global function junk
     window.handleYoutubeStateChange = (state) =>
       if state == 0  # done playing
-        @finished()
+        @trigger 'song:finished'
 
     window.handleYoutubeError = =>
-      @finished()
+      @trigger 'song:finished'
 
     window.onYouTubePlayerReady = =>
       @player = document.getElementById 'ytplayer'
@@ -46,6 +46,3 @@ class Warble.YoutubePlayerView extends Backbone.View
       @player.setVolume vol
     else
       @pending_volume = vol
-
-  finished: ->
-    $.post '/jukebox/skip'

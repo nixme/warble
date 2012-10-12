@@ -7,6 +7,7 @@ class JukeboxesController < ApplicationController
 
   # Player page bootstrap
   def player
+    @rdio_token = Rdio::Client.new(ENV['RDIO_APP_KEY'], ENV['RDIO_APP_SECRET']).playback_token(request.host)
   end
 
   def show

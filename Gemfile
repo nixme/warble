@@ -12,6 +12,7 @@ gem 'connection_pool'                   # Simple connection pooling
 gem 'faraday'                           # Flexible HTTP client library
 gem 'faraday_middleware'                # Request/response middleware for Faraday
 gem 'pandora_client'                    # Pandora Tuner API client
+gem 'rdio-ruby', git: 'https://github.com/nixme/rdio-ruby.git'
 
 # Full-text search
 gem 'tire'                              # ElasticSearch adapter
@@ -23,6 +24,7 @@ gem 'slim', '<= 1.3.0'                  # Simple templating [only for Sidekiq::W
 
 # Authentication
 gem 'omniauth-facebook'
+gem 'omniauth-rdio'
 
 # Front-end asset helpers
 gem 'haml', '3.2.0.beta.3'              # HTML pre-processor

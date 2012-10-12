@@ -24,6 +24,7 @@ jQuery(document).ready ($) ->
       'search/:query'             : 'search'
       'pandora/stations'          : 'pandoraStations'
       'pandora/stations/:id'      : 'pandoraSongs'
+      'rdio'                      : 'rdio'
       'youtube'                   : 'youtube'
       'hype'                      : 'hypeChooser'
       'hype/latest/:page'         : 'hypeLatest'
@@ -36,7 +37,6 @@ jQuery(document).ready ($) ->
       # initialize models/collections
       @jukebox     = new Warble.Jukebox   # TODO: switch to a single song model instead of full jukebox state
       @playlist    = new Warble.Playlist
-      @searchView  = new Warble.SearchView
       @stationList = new Warble.PandoraStationList
       @hypeSongs   = new Warble.HypeSongList
 
@@ -47,9 +47,11 @@ jQuery(document).ready ($) ->
       @serviceChooserView  = new Warble.ServiceChooserView
       @pandoraAuthView     = new Warble.PandoraCredentialsView
       @pandoraStationsView = new Warble.PandoraStationsView collection: @stationList
+      @rdioView            = new Warble.RdioView
       @youtubeSearchView   = new Warble.YoutubeSearchView
       @hypeChooserView     = new Warble.HypeFeedsView
       @hypeSongsView       = new Warble.HypeSongsView collection: @hypeSongs
+      @searchView          = new Warble.SearchView
 
       # load data
       @jukebox.fetch()
@@ -112,6 +114,9 @@ jQuery(document).ready ($) ->
             window.workspace.navigate '/pandora/stations', true
       else  # redirect back to station list
         window.workspace.navigate '/pandora/stations', true
+
+    rdio: ->
+      @switchPane @rdioView
 
     youtube: ->
       @switchPane @youtubeSearchView
