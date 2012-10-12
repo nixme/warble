@@ -11,6 +11,7 @@
 
 #= require_self
 
+#= require_tree ./components
 #= require_tree ./utils
 #= require_tree ./models
 #= require_tree ./ui/application
@@ -44,6 +45,8 @@ jQuery(document).ready ($) ->
       @controlsView        = new Warble.ControlsView
       @currentPlayView     = new Warble.CurrentPlayView model: @jukebox
       @playlistView        = new Warble.PlaylistView collection: @playlist
+
+      @controlsView.bind 'jukebox:skip', @currentPlayView.refresh
 
       @serviceChooserView  = new Warble.ServiceChooserView
         el: $('#add .tabs')

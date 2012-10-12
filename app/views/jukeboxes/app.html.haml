@@ -1,9 +1,10 @@
 %header
   #info
+    = image_tag "logo-small.png", class: 'logo-in-application'
     #profile
       %span#toolbar
-        %a#settings(href='#' title='Settings') y
-        = link_to '-', logout_path, title: 'Logout', method: 'delete'
+        %a.link-floating#settings(href='#' title='Settings') Settings
+        = link_to 'Logout of Warble', logout_path, title: 'Logout', method: 'delete', class: 'link-floating'
 
 #left
   %aside#playing

@@ -11,7 +11,6 @@ $card-style-padding: 20px
 $default-font: Roboto, 'Helvetica Neue', HelveticaNeue, Arial, Helvetica, sans-serif
 
 
-
 // colors from http://colorschemedesigner.com/#5y321G6KNFMVG
 $default-border-radius: 3px
 $primary:              #F90022
@@ -33,6 +32,7 @@ $secondary_b_brightest: #D0F6FB
 
 $secondary_b_darkest:  #123034
 
+$application-margin:   30px
 
 $default-transition-duration: 0.2s
 
@@ -50,28 +50,57 @@ $z-add:                1
 $z-add-spinner:        2
 $z-header:             3
 
+@mixin avatar($size:48px, $over-dark:true)
+  +border-radius(2px)
+  height: $size
+  width: $size
+  overflow: hidden
+  @if $over-dark
+    +box-shadow(rgba(0,0,0,.33) 0 1px 4px)
+  @else
+    +box-shadow(rgba(0,0,0,.66) 0 1px 0 inset, rgb(255,255,255) 0 1px 0)
+  img
+    height: 100%
+
+
+
 @mixin card-style
   padding: $card-style-padding
   +box-shadow(rgba(0,0,0,.45) 0px 1px 12px)
   background: image-url('/assets/white_noise.png')
   +border-radius()
 
-@mixin card-button
-  +card-style
-  padding: 16px 48px
+%button-active
+  color: rgba(0,0,0,.33)
+  border-color: rgba(0,0,0,.33)
+  +box-shadow(rgba(0,0,0,.45) 0px 1px 8px inset, rgba(255,255,255,.33) 0px 1px 0)
+
+%button-base
   +border-radius(2px)
-  color: #545454
+  color: rgba(0,0,0,.66)
   font-size: 14px
-  +box-shadow(rgba(0,0,0,.24) 0px 1px 1px, #fff 0px 1px 1px inset)
   +text-shadow(#fff 0px 1px 1px)
   font-family: $default-font
   font-weight: bold
+  border: 1px solid #fafafa
+  padding: 8px 16px
 
+@mixin card-button
+  @extend %button-base
+  +card-style
+  padding: 16px 48px
+  +box-shadow(rgba(0,0,0,.24) 0px 1px 1px, #fff 0px 1px 1px inset)
   &:active
-    +box-shadow(rgba(0,0,0,.45) 0px 1px 8px inset, rgba(255,255,255,.55) 0px 1px 0px )
+    @extend %button-active
+    border-color: rgba(0,0,0,.66)
 
-
-
+@mixin subtle-text
+  color: rgba(0,0,0,.66)
+  font-weight: bold
+  font-size: 11px
+  margin: 22px 0
+  +text-shadow(rgba(255,255,255,.18) 0 1px 0)
+  text-transform: uppercase
 
 // general styles
 
@@ -99,14 +128,14 @@ body
     bottom: 0
     width: 100%
     // +background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)))
-
-.ultralight
-  //font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif
-  // font-weight: 300
-
 a
   text-decoration: none
-  +link-colors(#333, $primary, $primary, #333, #333)
+  // +link-colors(#333, $primary, $primary, #333, #333)
+  color: #333
+
+a.link-floating
+  +subtle-text
+  margin-left: 12px
 
 input
   padding: 10px
@@ -120,9 +149,19 @@ input, button, .button
 button, .button
   display: inline-block
   position: relative
-  background: #FAFAFA
   line-height: 1
   cursor: pointer
+
+.plastic-button
+  @extend %button-base
+  +background(linear-gradient(rgba(255,255,255,.5), rgba(217,217,217,.5)))
+  +box-shadow(#fff 0 1px 0, #fff 0px 1px 1px inset)
+  border: 1px solid rgba(162,164,166,.5)
+  &:active
+    @extend %button-active
+
+.card-button
+  +card-button
 
 h1
   font-weight: normal
@@ -133,15 +172,7 @@ h1
     color: $primary
 
 p.tagline
-  color: #fff
-  font-weight: bold
-  font-size: 11px
-  margin: 22px 0
-  //padding: 8px
-  //border-top: 1px solid rgba(255,255,255,.18)
-  //border-bottom: 1px solid rgba(255,255,255,.18)
-  +text-shadow(rgba(0,0,0,.33) 0 1px 3px)
-  text-transform: uppercase
+  +subtle-text
 
 span.pictos
   font-family: 'Pictos'
@@ -162,12 +193,12 @@ span.pictos
   //+card-style
   text-align: center
 
-  #loginbox
-    h1
-      margin-bottom: 25px
-      font-size: 48px
-    button
-      +card-button
+#loginbox
+  h1
+    margin-bottom: 25px
+    font-size: 48px
+  button
+    +card-button
 
 
 // youtube player
@@ -218,17 +249,24 @@ span.pictos
 
 // app
 
+.logo-in-application
+  margin-top: -4px
+  float: left
+
+#info
+  text-align: right
+  margin: 0 $application-margin
+  padding: 16px 0
+
 #left
   float: left
-  margin: 0 30px
+  margin: 0 $application-margin
 
 
 .metadata
   +card-style()
   display: block
   +border-radius(0)
-  +border-bottom-left-radius(3px)
-  +border-bottom-right-radius(3px)
 
   p
     +text-shadow(#fff 0px 1px 1px)
@@ -246,54 +284,64 @@ span.pictos
     padding-bottom: 5px   // so overflow from @ellipsis doesnt cut off descenders
 
 
-
 #playing
-  overflow: hidden
-  +border-top-left-radius()
-  +border-top-right-radius()
   width: $left-column-width
+  position: relative
+  +box-shadow(rgba(0,0,0,.33) 0 1px 8px)
   .voters
-    float: right
-    margin: 17px 15px
+    margin-top: 8px
 
-    img
-      height: 32px
-      width: 32px
-      margin-right: 5px
+  .voter
+    +avatar(32px, false)
 
   .submitter
+    +avatar(48px)
     position: absolute
-    top: 45px
-    left: 45px
+    top: 8px
+    left: 8px
+    z-index: 100
 
-    img
-      height: 24px
-      width: 24px
-
-  img#cover
+#cover
+  +border-top-left-radius(4px)
+  +border-top-right-radius(4px)
+  display: block
+  height: $left-column-width
+  width: $left-column-width
+  background-color: black
+  background-size: auto 100%
+  background-position: center center
+  background-repeat: no-repeat
+  position: relative
+  &:after
+    +border-top-left-radius()
+    +border-top-right-radius()
+    position: absolute
+    content: ' '
     display: block
-    height: $left-column-width
-    width: $left-column-width
+    width: 100%
+    height: 100%
+    +box-shadow(rgba(255,255,255,.18) 0 1px 0 inset)
+    background: image-url('/assets/album-gloss.png') no-repeat
 
 #controls
-  position: absolute
-  top: 28px
-  left: 28px
+  +card-style
+  +border-top-radius(0)
+  min-height: 72px
 
 #forward, #vote
   display: inline-block
+  float: left
   @extend span.pictos
   height: 40px
   width: 40px
-  +background-image(linear-gradient(#ccc, #777))
-  +border-radius(20px)
-  +box-shadow(black 0 0 2px)
+  padding: 0
   text-align: center
   letter-spacing: -3px   // helps center the icon
   line-height: 25px
   font-size: 25px
-  color: #222
-  +text-shadow(#CCC 0 1px 1px)
+  +border-radius(20px)
+  color: rgba(0,0,0,.66)
+  +text-shadow(#FFF 0 1px 0)
   margin-right: 7px
   cursor: pointer
 
@@ -303,37 +351,16 @@ span.pictos
     height: 24px
     background: url('/assets/like.png') no-repeat center center
 
-  &:hover
-    +background-image(linear-gradient($primary, darken($primary, 20%)))
-    color: white
-    +text-shadow(#222 0 -1px 1px)
+  &:active
+    @extend %button-active
 
-    .vote-icon
-      background: url('/assets/like-hover.png')
-
-//
-    #info
-      margin-left: 200px
-
-      h1
-        font-size: 36px
-
-        .pictos
-          font-size: 50px
-
-      #profile
-        margin-top: 10px
-        text-align: right
-        color: #ccc
-        font-size: 14px
-
-        #toolbar
-          @extend span.pictos
-          margin-left: 5px
-
-          a
-            +link-colors(#ccc, $primary, $primary, #ccc, #ccc)
-
+#volume
+  display: inline-block
+  float: right
+  &:after
+    display: block
+    content: " "
+    clear: both
 
 // single song view global properties
 .artist, .title, .album
@@ -360,10 +387,10 @@ span.pictos
     -webkit-animation-timing-function: linear
 
 #add
-  height: 96%
+  height: 94%
   +card-style
   position: relative
-  margin-right: 30px
+  margin-right: $application-margin
   overflow: auto
   border-right: 3px solid rgba(0, 0, 0, 0)  // only way to add margin to styled scrollbar
 
@@ -402,107 +429,93 @@ span.pictos
     border-bottom: 1px solid rgba(0, 0, 0, .18)
 
 
-  ul#sources
-    margin-top: -12px
-    margin-bottom: 20px
-    li
-      font-size: 13px
-      font-weight: bold
-      display: inline-block
-      margin-right: 24px
-      padding: 12px
-      border: 1px solid transparent
-
-      &.selected
-        position: relative
-        background: image-url('/assets/white_noise.png')
-        border: 1px solid rgba(0, 0, 0, .18)
-        +border-top-left-radius()
-        +border-top-right-radius()
-        border-bottom-color: transparent
-
-      img
-        display: inline-block
-        margin-right: 4px
-        width: 16px
-        height: 16px
-        margin-bottom: -1px
-
-  ul#pandora_stations
-    margin-bottom: 32px
-    li
-      line-height: 38px
-      border-bottom: 1px solid #CCC
-
-  ul#pandora_songs, ul#search_results
-    label
-      input
-        float: right
-        margin-top: 9px
-        width: 14px    // largest browser checkboxes
-        height: 14px
-
-      input:checked + .song   // darker titles for selected songs
-        color: black
-
-      img    // TODO: this is copied from the queue li\s, consolidate them
-        float: left
-        height: 32px
-        width: 32px
-        margin-right: 10px
-        border: 1px solid #EEE
-        +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-
-
-  #youtube_query, #search_query     // TODO: combine
-    width: 220px
-
-  #youtube_search, #library_search, #username_search  // TODO: combine
-    margin-left: 15px
-
-  #youtube_search_results
-    li  // TODO: combine with pandora_songs list
-      position: relative
-      float: left
-      padding: 8px
-      width: 33%
-      height: 375px
-
-      .preview
-        font-size: 11px
-        padding: 4px 0
-        font-weight: bold
-        cursor: pointer
-
-      img   // TODO: compied from pandora_songs list, consolidate them
-        height: auto
-        width: 100%
-        +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
-
-      .title
-        margin-top: 10px
-
-
-  a.button
+ul#sources
+  margin-top: -12px
+  margin-bottom: 20px
+  li
     font-size: 13px
-    background: $secondary_a_dark
-    color: white
-    padding: 5px 12px 6px
-    margin-right: 10px   // TODO: necessary?
+    font-weight: bold
+    display: inline-block
+    margin-right: 24px
+    padding: 12px
+    border: 1px solid transparent
 
-    &:hover
-      background: darken($secondary_a_dark, 10%)
+    &.selected
+      position: relative
+      background: image-url('/assets/white_noise.png')
+      border: 1px solid rgba(0, 0, 0, .18)
+      +border-top-left-radius()
+      +border-top-right-radius()
+      border-bottom-color: transparent
 
-    &#select_all, &#next_results
+    img
+      display: inline-block
+      margin-right: 4px
+      width: 16px
+      height: 16px
+      margin-bottom: -1px
+
+ul#pandora_stations
+  margin-bottom: 32px
+  li
+    line-height: 38px
+    border-bottom: 1px solid #CCC
+
+ul#pandora_songs, ul#search_results
+  label
+    input
       float: right
-      margin-right: 0px   // TODO: if remove above 10px right margin, then remove this
+      margin-top: 9px
+      width: 14px    // largest browser checkboxes
+      height: 14px
+
+    input:checked + .song   // darker titles for selected songs
+      color: black
+
+    img    // TODO: this is copied from the queue li\s, consolidate them
+      float: left
+      height: 32px
+      width: 32px
+      margin-right: 10px
+      border: 1px solid #EEE
+      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+
+#youtube_query, #search_query     // TODO: combine
+  width: 220px
+
+#youtube_search, #library_search, #username_search  // TODO: combine
+  margin-left: 15px
+
+#youtube_search_results
+  li  // TODO: combine with pandora_songs list
+    position: relative
+    float: left
+    padding: 8px
+    width: 33%
+    height: 375px
+
+    .preview
+      font-size: 11px
+      padding: 4px 0
+      font-weight: bold
+      cursor: pointer
+
+    img   // TODO: compied from pandora_songs list, consolidate them
+      height: auto
+      width: 100%
+      +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
+
+    .title
+      margin-top: 10px
+
 
 #queue
   background: #DDD
   +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
   z-index: $z-queue-background
 
-ul#songs
+#songs
   margin-top: 8px
   width: $left-column-width
   overflow-y: auto
@@ -547,3 +560,21 @@ ul#songs
     width: .8em
     height: .8em
   margin-top: 14px
+
+.ui-slider-handle.ui-corner-all
+  outline: none
+  -webkit-focus-ring-color: none
+  background: image-url('/assets/volume-knob.png')
+  border: none
+  width: 17px
+  height: 18px
+  top: -.30em
+  &:focus
+    outline: none
+    background: image-url('/assets/volume-knob-focus.png')
+
+
+.ui-slider.ui-slider-horizontal.ui-widget.ui-widget-content.ui-corner-all
+  +background(linear-gradient(#666, #999))
+  border: none
+  +box-shadow(rgba(0,0,0,.20) 0 1px 3px inset, rgba(255,255,255,.5) 0 1px 0)
