@@ -77,6 +77,22 @@ class Song < ActiveRecord::Base
     end
   end
 
+  def self.find_or_create_from_rdio_song(rdio_song, submitter)
+    if (song = where(source: 'rdio').where(external_id: rdio_song.key).first)
+      song
+    else
+      Song.create({
+        source:      'rdio',
+        title:       rdio_song.name,
+        artist:      rdio_song.artist,
+        album:       rdio_song.album,
+        cover_url:   rdio_song.big_icon,
+        external_id: rdio_song.key,
+        user:        submitter
+      }, without_protection: true)
+    end
+  end
+
   def self.random
     # 7 out of 10 times we'll play something from the rotation, else we'll just pick something completely random
     if rand(10) > 5

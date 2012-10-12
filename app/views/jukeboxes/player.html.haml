@@ -2,6 +2,10 @@
   #player
 #ytplayer_wrapper
   #ytplayer
+#rdioplayer_wrapper
+  #rdioplayer
 
 - content_for :scripts do
+  :javascript
+    window.rdio_playback_token = #{@rdio_token.to_json};
   = javascript_include_tag 'player', debug: Rails.env.development?

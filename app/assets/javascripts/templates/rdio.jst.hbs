@@ -1,0 +1,24 @@
+<div class="breadcrumbs">
+  <a href="/" data-relative="true">Sources</a>
+  &raquo;
+  <span class="current">Rdio</a>
+</div>
+
+<h2>Search Rdio</h2>
+
+<input type="text" id="search_query" value="{{query}}" />
+<a href="#" class="button library_search">Search</a>
+
+<ul id="search_results">
+  {{#results}}
+  <li>
+    <a href="#" class="result" data-id="{{id}}">
+      <div class="song">
+        <img src="{{cover_url}}" />
+        <div class="artist">{{artist}}</div>
+        <div class="title">{{title}}</div>
+      </div>
+    </a>
+  </li>
+  {{/results}}
+</ul>
