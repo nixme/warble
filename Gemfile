@@ -31,6 +31,7 @@ gem 'haml', '3.2.0.beta.3'              # HTML pre-processor
 
 # Front-end asset helpers not loaded in production
 group :assets do
+  gem 'animation', '~> 0.1.alpha.3'               # [TEMP] Sass CSS3 animation helpers. Remove after Compass 0.13 upgrade
   gem 'sass-rails'                      # CSS pre-processor
   gem 'compass-rails'                   # CSS helpers and mixins
   gem 'coffee-rails'                    # CoffeeScript compiling

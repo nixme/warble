@@ -1,0 +1,31 @@
+//
+//  Extensions to jQuery UI's slider.
+//
+
+.ui-slider-horizontal
+  height: .4em
+  width: 87px
+
+.ui-slider
+  .ui-slider-handle
+    width: .8em
+    height: .8em
+  margin-top: 14px
+
+.ui-slider-handle.ui-corner-all
+  outline: none
+  -webkit-focus-ring-color: none
+  background: image-url('/assets/volume-knob.png')
+  border: none
+  width: 17px
+  height: 18px
+  top: -.30em
+  &:focus
+    outline: none
+    background: image-url('/assets/volume-knob-focus.png')
+  
+
+.ui-slider.ui-slider-horizontal.ui-widget.ui-widget-content.ui-corner-all
+  +background(linear-gradient(#666, #999))
+  border: none
+  +box-shadow(rgba(0,0,0,.20) 0 1px 3px inset, rgba(255,255,255,.5) 0 1px 0)

@@ -1,0 +1,40 @@
+// NOTE: This depends on _effects.sass
+
+.loading-bezel
+  padding: 12px
+  background-color: rgba(0,0,0,.66)
+  +border-radius
+
+.loading
+  position: absolute
+  top: 43%
+  left: 48%
+  font-size: 20px
+  z-index: 999
+
+  &.hidden
+    display: none
+    +animation(slideUpOut .6s 1)
+  img
+    width: 32px
+    height: 32px
+    position: relative
+
+//
+  > div
+    +single-transition(opacity, .5s, ease-in-out)
+
+  > div.mask
+    +opacity(0.33)
+
+
+
+%spinner-base
+  +animation(spin 1s infinite)
+  +animation-timing-function(linear)
+img.spinner
+  @extend %spinner-base
+.spinner-wrapper
+  // Just a stub
+
+

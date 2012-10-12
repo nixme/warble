@@ -1,0 +1,100 @@
+// TODO: Switch to https://github.com/ericam/compass-animate
+// whenever we upgrade to Compass 0.13
+
+@import "animation"
+@import "animation/animate/attention-seekers"
+@import "animation/animate/flippers"
+@import "animation/animate/fading"
+@import "animation/animate/rotating"
+
+// -------------------------------------------------
+// EFFECTS
+// -------------------------------------------------
+
+// KEYFRAMES
+
+$default-animation-timing-function: ease-in-out
+$default-animation-duration:        .33s
+
++keyframes(spin)
+  0%
+    +rotate(0deg)
+  100%
+    +rotate(360deg)
+
++keyframes(popin)
+  0%
+    -webkit-transform: scale(.5)
+    opacity: 0
+  80%
+    -webkit-transform: scale(1.1)
+  100%
+    -webkit-transform: scale(1.0)
+    opacity: 1
+
++keyframes(popout)
+  0%
+    -webkit-transform: scale(1.0)
+    opacity: 1
+  20%
+    -webkit-transform: scale(1.1)
+    opacity: .5
+  100%
+    -webkit-transform: scale(.1)
+    opacity: 0
+
+
++keyframes(slideUpIn)
+  0%
+    -webkit-transform: translateY(100%)
+    opacity: 0
+  80%
+    -webkit-transform: translateY(-2%)
+  100%
+    -webkit-transform: translateY(0)
+    opacity: 1
+
++keyframes(slideUpOut)
+  0%
+    -webkit-transform: translateY(0)
+    opacity: 1
+  80%
+    -webkit-transform: translateY(-2%)
+  100%
+    -webkit-transform: translateY(100%)
+    opacity: 0
+
+
+
+
+.animate
+  &.rotateOut
+    +animation(rotateOut .5s 1)
+  &.popin
+    +animation(popin .2s 1)
+  &.popout
+    +animation(popout .2s 1)
+    +animation-fill-mode(forwards)
+  &.bounce
+    z-index: 0
+    +animation(pulse .5s 3)
+    +animation-delay(3s)
+  &.tada
+    z-index: 0
+    +animation(tada .5s 1)
+  &.fadeIn
+    +animation(fadeIn .5s 1)
+  &.flipInY
+    +animation(flipInY .3s 1)
+  &.flipOutY
+    +animation(flipOutY .3s 1)
+    +animation-fill-mode(forwards)
+  &.slideUpOut
+    +animation(slideUpOut .5s 1)
+    +animation-fill-mode(forwards)
+  &.slideUpIn
+    opacity: 1
+    -webkit-animation: slideUpIn .33s
+  &.transparent
+    opacity: 0
+
