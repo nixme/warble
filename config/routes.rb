@@ -12,6 +12,8 @@ Warble::Application.routes.draw do
   match  'auth/failure'            => 'sessions#failure'
   # TODO: more resource friendly?
 
+  match  'auth/rdio-oauth2/helper' => 'jukeboxes#rdio_helper', as: :rdio_helper
+
 
   ### ------------------------------ API ROUTES --------------------------------
 

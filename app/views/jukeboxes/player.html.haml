@@ -8,4 +8,5 @@
 - content_for :scripts do
   :javascript
     window.rdio_playback_token = #{@rdio_token.to_json};
+  = javascript_include_tag "https://rdio.com/api/api.js?helper=#{rdio_helper_path}&client_id=#{@rdio_client_id}"
   = javascript_include_tag 'player', debug: Rails.env.development?
