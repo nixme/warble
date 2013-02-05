@@ -468,19 +468,22 @@ header
           +box-shadow(rgba(0, 0, 0, 0.6) 1px 1px 4px)
 
 
-  #youtube_query, #search_query     // TODO: combine
+  #youtube_query, #soundcloud_query, #search_query     // TODO: combine
     width: 220px
 
   #youtube_search, #library_search, #username_search  // TODO: combine
     margin-left: 15px
 
-  #youtube_search_results
+  #youtube_search_results, #soundcloud_search_results
     li  // TODO: combine with pandora_songs list
       height: 48px
       padding: 10px 0
 
       &.preview
         padding-bottom: 220px
+        
+      &.show-preview
+        padding-bottom: 35px
 
       img   // TODO: compied from pandora_songs list, consolidate them
         float: left
@@ -492,7 +495,6 @@ header
 
       .title
         margin-top: 10px
-
 
   a.button
     font-size: 13px
