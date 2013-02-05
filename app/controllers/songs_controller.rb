@@ -8,4 +8,10 @@ class SongsController < ApplicationController
       end
     render json: results
   end
+
+  def reindex
+    Song.all.each do |song|
+      song.update_index
+    end
+  end
 end

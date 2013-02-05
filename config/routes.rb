@@ -10,6 +10,7 @@ Warble::Application.routes.draw do
   delete 'logout'                  => 'sessions#destroy', as: :logout
   match  'auth/:provider/callback' => 'sessions#create'
   match  'auth/failure'            => 'sessions#failure'
+  match  'reindex'                 => 'songs#reindex'
   # TODO: more resource friendly?
 
 
