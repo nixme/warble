@@ -36,7 +36,14 @@ class Warble.HeaderView extends Backbone.View
   notify: ->
     if @notifications && @model.current_play
       song = @model.current_play.get('song')
-      notification = window.webkitNotifications.createNotification(song.cover_url, song.artist, song.title)
+      user = @model.current_play.get('user')
+      if user?
+        info = "Queued by #{user.first_name}"
+      else
+        info = ''
+      notification = window.webkitNotifications.createNotification(song.cover_url,
+        "#{song.title} (#{song.artist})",
+        info)
       notification.ondisplay = ->
         setTimeout (=> @cancel()), 5000
       notification.onclick = -> @cancel()
