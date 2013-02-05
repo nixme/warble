@@ -6,3 +6,8 @@
 {{^}}
   <div id="artist">No songs in queue</div>
 {{/current}}
+{{#if user}}
+  <div class="submitter">
+    <img src="{{user.photo_url}}">
+  </div>
+{{/if}}

@@ -18,6 +18,7 @@ class Warble.PandoraPlayerView extends Backbone.View
       vol = @model.get('volume')
       @$el.html @template
         current: @model.current_play.get('song')
+        user: @model.current_play.get('user')
       @$('audio').bind 'canplay', ->
         @volume = (vol ? DEFAULT_VOLUME) / 100
         @play()  # chrome 10 bug workaround: autoplay on <audio> doesn't work
