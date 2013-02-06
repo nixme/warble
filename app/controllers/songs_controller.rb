@@ -13,5 +13,6 @@ class SongsController < ApplicationController
     Song.all.each do |song|
       song.update_index
     end
+    render json: {}
   end
 end

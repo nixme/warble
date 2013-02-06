@@ -17,7 +17,11 @@ class HypeController < ApplicationController
 
     # convert HypeM API objects to our song objects
     songs = hype_songs.map do |hype_song|
-      Song.find_or_create_from_hype_song(hype_song, current_user)
+      begin
+        Song.find_or_create_from_hype_song(hype_song, current_user)
+      rescue Exception => e
+        Rails.logger.debug e.message
+      end
     end
 
     respond_with songs

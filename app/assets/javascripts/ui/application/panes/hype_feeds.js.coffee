@@ -10,7 +10,7 @@ class Warble.HypeFeedsView extends Warble.PaneView
 
   usernameSearch: (event) ->
     username = @$('#username_query').val()
-    window.workspace.navigate '/hype/#{username}/1', true
+    window.workspace.navigate "/hype/#{username}/1", true
     event.preventDefault()
 
   handleEnter: (event) ->

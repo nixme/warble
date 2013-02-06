@@ -88,6 +88,7 @@ class Song < ActiveRecord::Base
         title:       hype_song.title,
         artist:      hype_song.artist,
         url:         hype_song.url,
+        cover_url:   hype_song.cover_url,
         external_id: hype_song.id,
         user:        submitter
       }, without_protection: true)

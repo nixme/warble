@@ -127,25 +127,33 @@ jQuery(document).ready ($) ->
       this.showSpinner()
       @hypeSongs.feed = 'Latest'
       @hypeSongs.url = "/hype?feed=latest&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch
+        success: =>
+          @switchPane @hypeSongsView
 
     hypePopular3Days: (page = 1) ->
       this.showSpinner()
       @hypeSongs.feed = 'Popular - Last 3 Days'
       @hypeSongs.url = "/hype?feed=popular&time=3days&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch
+        success: =>
+          @switchPane @hypeSongsView
 
     hypePopularWeek: (page = 1) ->
       this.showSpinner()
       @hypeSongs.feed = 'Popular - Last Week'
       @hypeSongs.url = "/hype?feed=popular&time=week&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch
+        success: =>
+          @switchPane @hypeSongsView
 
     hypeUser: (user, page = 1) ->
       this.showSpinner()
       @hypeSongs.feed = "#{user}'s Songs"
       @hypeSongs.url = "/hype?username=#{encodeURIComponent(user)}&page=#{encodeURIComponent(page)}"
-      @hypeSongs.fetch()
+      @hypeSongs.fetch
+        success: =>
+          @switchPane @hypeSongsView
 
     soundcloud: ->
       #SC.initialize client_id: "dae39b5eb16934e43c93209cb65051ee"
