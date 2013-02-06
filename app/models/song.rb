@@ -26,7 +26,7 @@ class Song < ActiveRecord::Base
 
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = where(source: 'pandora').where(external_id: pandora_song.id).first
-      song.fsck! pandora_song.audio_url['HTTP_128_MP3']
+      song.fsck! pandora_song.audio_urls['HTTP_128_MP3']
       song
     else   # first time seeing the song, so create it
       song = Song.create({
