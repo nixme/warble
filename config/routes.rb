@@ -20,6 +20,7 @@ Warble::Application.routes.draw do
     get  'player', :on => :member
     post 'skip',   :on => :member
     put  'volume', :on => :member
+    get  'size', :on => :member
 
     resource :current_play, controller: :plays, only: :show do
       resources :skips, only: :create
@@ -45,8 +46,15 @@ Warble::Application.routes.draw do
   end
 
   match 'hype' => 'hype#index'
+
   match 'reindex' => 'songs#reindex'
 
+  resource :party, :only => :show do
+    get 'app', :on => :member
+    resources :songs, only: :index
+  end
+  match '/apple-touch-icon.png' => redirect('/assets/favicon.png', status: 302)
+  match '/apple-touch-icon-72x72-precomposed.png' => redirect('/assets/favicon.png', status: 302)
 
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
 

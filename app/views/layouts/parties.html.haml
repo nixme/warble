@@ -1,0 +1,20 @@
+!!! 5
+
+%html
+  %head
+    %meta{ :charset => "utf-8" }/
+    %meta{ :name => 'apple-mobile-web-app-capable', :content => 'yes' }/
+    %meta{ :name => 'viewport', :content => 'user-scalable=no, width=device-width' }/
+
+    %title Warble
+
+    %link{ rel: 'icon', type: 'image/png', href: image_path('favicon.png') }
+    = stylesheet_link_tag 'party'
+    = csrf_meta_tag
+
+  %body{ :lang => 'en', :class => 'party' }
+    = yield
+
+    :javascript
+      window.base_url = "#{request.host}";
+    = content_for :scripts

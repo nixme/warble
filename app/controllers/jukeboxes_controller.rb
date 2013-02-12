@@ -1,8 +1,14 @@
 class JukeboxesController < ApplicationController
+  skip_before_filter :authenticate_user!, only: [ :size ]
+
   # App bootstrap
 
   def app
     @volume = Jukebox.volume
+  end
+
+  def size
+    render json: Jukebox.queue.size
   end
 
   # Player page bootstrap

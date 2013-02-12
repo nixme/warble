@@ -1,4 +1,7 @@
 class PlaysController < ApplicationController
+
+  skip_before_filter :authenticate_user!, only: [ :create ]
+
   def index
     render json: Jukebox.queue
   end

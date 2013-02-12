@@ -1,0 +1,12 @@
+<div class="iOSlist-background">
+  <h2>Songs by {{field}}
+    <a href="javascript:void(0);" class="button">Browse by {{availableField}}</a>
+  </h2>
+  <p>Select a letter to view songs</p>
+
+  <ul class="iOSlist">
+    <% (('a'..'z').to_a + ('0'..'9').to_a).each do |char| %>
+    <li data-id="<%= char %>"><%= char.upcase %></li>
+    <% end %>
+  </ul>
+</div>

@@ -30,6 +30,8 @@ jQuery(document).ready ($) ->
       'hype/popular/week/:page'   : 'hypePopularWeek'
       'hype/:user/:page'          : 'hypeUser'
       'soundcloud'                : 'soundcloud'
+      'party/app'                 : 'partyHome'
+      'party/songs/:char'         : 'partySongs'
       '*unmatched'                : 'home'
 
     initialize: ->
@@ -39,6 +41,7 @@ jQuery(document).ready ($) ->
       @searchView  = new Warble.SearchView
       @stationList = new Warble.PandoraStationList
       @hypeSongs   = new Warble.HypeSongList
+      @partySongs  = new Warble.PartySongList
 
       # initialize views
       @headerView             = new Warble.HeaderView model: @jukebox
@@ -51,6 +54,8 @@ jQuery(document).ready ($) ->
       @hypeChooserView        = new Warble.HypeFeedsView
       @hypeSongsView          = new Warble.HypeSongsView collection: @hypeSongs
       @soundcloudSearchView   = new Warble.SoundcloudSearchView
+      @partyHomeView          = new Warble.PartyHomeView model: @partySongs
+      @partySongsView         = new Warble.PartySongsView collection: @partySongs
 
       # load data
       @jukebox.fetch()
@@ -81,6 +86,16 @@ jQuery(document).ready ($) ->
 
     home: ->
       @switchPane @serviceChooserView
+
+    partyHome: ->
+      @switchPane @partyHomeView
+
+    partySongs: (char) ->
+      this.showSpinner()
+      @partySongs.query = "#{@partySongs.field}:#{char}*"
+      @partySongs.fetch
+        success: =>
+          @switchPane @partySongsView
 
     search: (query) ->
       #if query?
