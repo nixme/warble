@@ -1,4 +1,5 @@
 class JukeboxesController < ApplicationController
+
   # App bootstrap
 
   def app

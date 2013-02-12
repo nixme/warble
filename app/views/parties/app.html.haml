@@ -1,0 +1,10 @@
+%header.iOSheader
+  %h1
+    Warble
+    %a.back-button
+      &laquo; Back
+
+#main
+
+- content_for :scripts do
+  = javascript_include_tag 'party', debug: Rails.env.development?

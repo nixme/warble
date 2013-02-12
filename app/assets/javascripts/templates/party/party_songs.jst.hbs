@@ -1,0 +1,15 @@
+<div class="iOSlist-background">
+  <a href="/party/app" data-relative="true">&lt; Go Back</a>
+  <h2>Songs by {{field}}: {{char}}</h2>
+  {{#if noSongs}}
+  <p>No matching songs were found</p>
+  {{else}}
+  <p>Select a song to add it to the queue</p>
+
+  <ul class="iOSlist">
+    {{#songs}}
+    <li data-id="{{id}}">{{artist}}: {{title}}</li>
+    {{/songs}}
+  </ul>
+  {{/if}}
+</div>
