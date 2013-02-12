@@ -49,7 +49,3 @@ jQuery(document).ready ($) ->
 
   window.workspace = workspace = new Warble.WorkspaceRouter
   Backbone.history.start pushState: true
-
-  $('a.back-button').live 'click', (event) ->
-    window.workspace.navigate "foo", true
-    window.workspace.navigate "/party/app", true # Hack for iOS: can't use history.back()

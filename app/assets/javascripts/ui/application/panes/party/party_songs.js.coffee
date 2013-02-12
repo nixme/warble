@@ -16,7 +16,13 @@ class Warble.PartySongsView extends Warble.PaneView
       songs: @collection.toJSON()
       field: @collection.field
       char: @collection.char.toUpperCase()
+
+    $('a.back-button').on 'click', (event) =>
+      @back()
     @
+
+  back: ->
+    window.workspace.navigate '/party/app', true
 
   queueSong: (event) ->
     song_id = $(event.currentTarget).attr('data-id')
@@ -24,4 +30,4 @@ class Warble.PartySongsView extends Warble.PaneView
       'song_id[]': [song_id]
 
     event.preventDefault()
-    window.workspace.navigate '/party/app', true
+    @back()

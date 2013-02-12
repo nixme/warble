@@ -20,7 +20,6 @@ Warble::Application.routes.draw do
     get  'player', :on => :member
     post 'skip',   :on => :member
     put  'volume', :on => :member
-    get  'size', :on => :member
 
     resource :current_play, controller: :plays, only: :show do
       resources :skips, only: :create
