@@ -82,6 +82,14 @@ $ echo 'PANDORA_ENCRYPTION_KEY=encryption_key' >> .env
 $ echo 'PANDORA_DECRYPTION_KEY=decryption_key' >> .env
 ```
 
+If you're running Warble on a Macintosh, you may need to
+instruct ElasticSearch to use Java in 32-bit mode.
+
+```sh
+$ echo 'JAVA_OPTS=-d32 -server' >> .env
+$ echo 'ESJAVA_OPTS=-d32 -server' >> .env 
+```
+
 Copy the sample connection configurations:
 
 ```sh
