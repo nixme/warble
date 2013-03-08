@@ -1,7 +1,23 @@
 @import 'pictos'
 @import 'roboto'
-@import 'compass'
-@import 'compass/reset'
+@import 'bourbon'
+
+= border-radius($radii: 3px)
+  border-radius: $radii
+
+= border-top-right-radius($rad: 3px)
+  border-top-left-radius: $rad
+
+= border-top-left-radius($rad: 3px)
+  border-top-left-radius: $rad
+
+= text-shadow($arg)
+  text-shadow: $arg
+
+= ellipsis
+
+// @import 'compass'
+// @import 'compass/reset'
 @import 'effects'
 @import 'spinner'
 @import 'slider'
@@ -256,7 +272,6 @@ span.pictos
       margin-right: 20px
 
     #artist, #title
-      @extend .ultralight
       +text-shadow(#FFF 0px 1px 1px)
       +ellipsis
 

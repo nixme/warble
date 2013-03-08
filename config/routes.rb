@@ -6,13 +6,13 @@ Warble::Application.routes.draw do
   root to: 'jukeboxes#app'
 
   # Authentication
-  get    'login'                   => 'sessions#new',     as: :login
-  delete 'logout'                  => 'sessions#destroy', as: :logout
-  match  'auth/:provider/callback' => 'sessions#create'
-  match  'auth/failure'            => 'sessions#failure'
+  get     'login'                   => 'sessions#new',     as: :login
+  delete  'logout'                  => 'sessions#destroy', as: :logout
+  get     'auth/:provider/callback', to: 'sessions#create'
+  get     'auth/failure',             to: 'sessions#failure'
   # TODO: more resource friendly?
 
-  match  'auth/rdio-oauth2/helper' => 'jukeboxes#rdio_helper', as: :rdio_helper
+  get  'auth/rdio-oauth2/helper' => 'jukeboxes#rdio_helper', as: :rdio_helper
 
 
   ### ------------------------------ API ROUTES --------------------------------
@@ -50,7 +50,7 @@ Warble::Application.routes.draw do
     resources :songs, only: :index
   end
 
-  match 'hype' => 'hype#index'
+  get 'hype' => 'hype#index'
 
 
   ### ------------------------ ADMINISTRATIVE ROUTES ---------------------------
@@ -93,12 +93,12 @@ Warble::Application.routes.draw do
           html_format[request] &&
           not_handled_by_middleware[request] &&
           authenticated_user[request]
-        }
+        }, via: [:get, :post, :delete, :put]
 
   match '/*client_route' => redirect(catch_all_redirect('/login'), status: 302),
         constraints: ->(request) {
           html_format[request] &&
           not_handled_by_middleware[request]
           # ... && Unauthenticated
-        }
+        }, via: [:get, :post, :delete, :put]
 end

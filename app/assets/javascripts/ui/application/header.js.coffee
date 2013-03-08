@@ -14,7 +14,7 @@ class Warble.ControlsView extends Backbone.View
       animate: true
       value: $('#volume').data 'volume'
       stop: (e, ui) ->
-        $.ajax '/jukebox/volume'
+        $.ajax '/jukebox/volume',
           type: 'put'
           data:
             value: ui.value
