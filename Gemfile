@@ -1,6 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails',           github: 'rails/rails'
+gem 'sass-rails',      github: 'rails/sass-rails'
+
+# TODO: Migrate to new mass-assignment approach
+gem 'protected_attributes'
 
 # Datastore adapters
 gem 'pg'                                # PostgreSQL adapter
@@ -15,7 +19,7 @@ gem 'pandora_client'                    # Pandora Tuner API client
 gem 'rdio-ruby', git: 'https://github.com/nixme/rdio-ruby.git'
 
 # Full-text search
-gem 'tire'                              # ElasticSearch adapter
+gem 'tire', github: 'karmi/tire'        # ElasticSearch adapter
 
 # Async processing
 gem 'sidekiq'                           # Threaded, Resque-compatible task queues
@@ -27,21 +31,26 @@ gem 'omniauth-facebook'
 gem 'omniauth-rdio'
 
 # Front-end asset helpers
-gem 'haml', '3.2.0.beta.3'              # HTML pre-processor
+gem 'sass'
+gem "haml", :github => "haml/haml", :branch => "stable"
+gem 'sass-rails',      github: 'rails/sass-rails'
 
 # Front-end asset helpers not loaded in production
 group :assets do
+  gem 'bourbon'
   gem 'animation', '~> 0.1.alpha.3'               # [TEMP] Sass CSS3 animation helpers. Remove after Compass 0.13 upgrade
-  gem 'sass-rails'                      # CSS pre-processor
-  gem 'compass-rails'                   # CSS helpers and mixins
-  gem 'coffee-rails'                    # CoffeeScript compiling
   gem 'uglifier'                        # JavaScript minifer
+
+  gem 'sprockets-rails', github: 'rails/sprockets-rails'
+  gem 'coffee-rails',    github: 'rails/coffee-rails'
 
   # Vendor JavaScript libraries
   gem 'jquery-rails'
   gem 'rails-behaviors'
   gem 'rails-backbone'
-  gem 'swfobject-rails'
+
+  # This fork adds supports for Rails 4
+  gem 'swfobject-rails', github: 'geraudmathe/swfobject-rails'
 end
 
 # Push server gems. Not loaded by main Rails app.
