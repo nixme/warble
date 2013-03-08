@@ -44,14 +44,16 @@ group :assets do
   gem 'sprockets-rails', github: 'rails/sprockets-rails'
   gem 'coffee-rails',    github: 'rails/coffee-rails'
 
-  # Vendor JavaScript libraries
-  gem 'jquery-rails'
-  gem 'rails-behaviors'
-  gem 'rails-backbone'
-
   # This fork adds supports for Rails 4
   gem 'swfobject-rails', github: 'geraudmathe/swfobject-rails'
 end
+
+# Vendor JavaScript libraries
+gem 'jquery-rails'
+gem 'rails-behaviors'
+gem 'ember-rails'
+gem 'emblem-rails'
+
 
 # Push server gems. Not loaded by main Rails app.
 group :push do

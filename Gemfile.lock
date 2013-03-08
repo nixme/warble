@@ -106,6 +106,8 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    active_model_serializers (0.7.0)
+      activemodel (>= 3.0)
     activerecord-deprecated_finders (0.0.3)
     addressable (2.3.3)
     animation (0.1.alpha.3)
@@ -114,6 +116,13 @@ GEM
     arel (4.0.0.beta1)
     atomic (1.0.1)
     awesome_print (1.1.0)
+    barber (0.4.1)
+      ember-source
+      execjs
+      handlebars-source
+    barber-emblem (0.1.1)
+      barber (>= 0.4.1)
+      emblem-source
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
     bourbon (3.1.1)
@@ -155,7 +164,6 @@ GEM
     debugger-ruby_core_source (1.2.0)
     diff-lcs (1.2.1)
     diffy (2.1.3)
-    ejs (1.1.1)
     em-hiredis (0.1.1)
       hiredis (~> 0.4.0)
     em-http-request (1.0.3)
@@ -166,6 +174,21 @@ GEM
       http_parser.rb (>= 0.5.3)
     em-socksify (0.2.1)
       eventmachine (>= 1.0.0.beta.4)
+    ember-data-source (0.0.5)
+      ember-source
+    ember-rails (0.11.1)
+      active_model_serializers
+      barber (>= 0.4.1)
+      ember-data-source
+      ember-source
+      execjs (>= 1.2)
+      railties (>= 3.1)
+    ember-source (0.0.1)
+      handlebars-source (>= 1.0.0.rc3, < 1.0.0.rc4)
+    emblem-rails (0.1.0)
+      barber-emblem (~> 0.1.1)
+      ember-rails (~> 0.11.1)
+    emblem-source (0.1.13)
     erubis (2.7.0)
     eventmachine (1.0.1)
     execjs (1.4.0)
@@ -197,6 +220,7 @@ GEM
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
       posix-spawn (~> 0.3.6)
+    handlebars-source (1.0.0.rc.3)
     hashie (1.2.0)
     hashr (0.0.22)
     highline (1.6.15)
@@ -301,11 +325,6 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails-backbone (0.9.10)
-      coffee-script (~> 2.2.0)
-      ejs (~> 1.1.1)
-      jquery-rails (~> 2.1.3)
-      railties (>= 3.1.0)
     rails-behaviors (0.4.1)
       coffee-script-source (~> 1.1)
       sprockets (~> 2.0)
@@ -368,6 +387,8 @@ DEPENDENCIES
   capistrano
   coffee-rails!
   connection_pool
+  ember-rails
+  emblem-rails
   execjs
   faraday
   faraday_middleware
@@ -387,7 +408,6 @@ DEPENDENCIES
   protected_attributes
   puma
   rails!
-  rails-backbone
   rails-behaviors
   rdio-ruby!
   redis
