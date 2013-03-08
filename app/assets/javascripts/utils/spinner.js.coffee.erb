@@ -12,7 +12,7 @@ Utils.toggleLoadingSpinner = (show) ->
   if !spinner.size()
     spinner = $("""
       <div class='loading loading-bezel hidden animate'>
-        <img src="<%= asset_path('spinner-small-white.png') %>" alt='loading...' class='spinner' />
+        <img src="<%= image_path('spinner-small-white.png') %>" alt='loading...' class='spinner' />
       </div>
     """).appendTo(el)
   # content.toggleClass 'mask', show

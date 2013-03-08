@@ -8,7 +8,7 @@ Warble::Application.routes.draw do
   # Authentication
   get     'login'                   => 'sessions#new',     as: :login
   delete  'logout'                  => 'sessions#destroy', as: :logout
-  get     'auth/:provider/callback', to: 'sessions#create'
+  match   'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   get     'auth/failure',             to: 'sessions#failure'
   # TODO: more resource friendly?
 
@@ -93,12 +93,12 @@ Warble::Application.routes.draw do
           html_format[request] &&
           not_handled_by_middleware[request] &&
           authenticated_user[request]
-        }, via: [:get, :post, :delete, :put]
+        }, via: :get
 
   match '/*client_route' => redirect(catch_all_redirect('/login'), status: 302),
         constraints: ->(request) {
           html_format[request] &&
           not_handled_by_middleware[request]
           # ... && Unauthenticated
-        }, via: [:get, :post, :delete, :put]
+        }, via: :get
 end
