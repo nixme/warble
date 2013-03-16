@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20120203195018) do
+ActiveRecord::Schema.define(version: 20130315213743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "jukeboxes", force: true do |t|
+    t.string   "name"
+    t.integer  "play_id"
+    t.integer  "volume"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jukeboxes", ["play_id"], name: "index_jukeboxes_on_play_id"
 
   create_table "plays", force: true do |t|
     t.integer  "user_id"

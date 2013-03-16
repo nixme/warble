@@ -7,9 +7,6 @@ Warble::Application.configure do
   config.cache_classes = false
   config.eager_load = false
 
-  # Load ember dev
-  config.ember.variant = :development
-
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
@@ -31,4 +28,8 @@ Warble::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Load ember dev
+  config.ember.variant = :development
+
 end

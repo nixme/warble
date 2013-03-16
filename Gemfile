@@ -38,10 +38,9 @@ gem 'sass-rails',      github: 'rails/sass-rails'
 # Front-end asset helpers not loaded in production
 group :assets do
   gem 'bourbon'
-  gem 'animation', '~> 0.1.alpha.3'               # [TEMP] Sass CSS3 animation helpers. Remove after Compass 0.13 upgrade
+  gem 'animation', '~> 0.1.alpha.3'     # [TEMP] Sass CSS3 animation helpers. Remove after Compass 0.13 upgrade
   gem 'uglifier'                        # JavaScript minifer
 
-  gem 'sprockets-rails', github: 'rails/sprockets-rails'
   gem 'coffee-rails',    github: 'rails/coffee-rails'
 
   # This fork adds supports for Rails 4

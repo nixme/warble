@@ -2,7 +2,6 @@ class JukeboxesController < ApplicationController
   # App bootstrap
 
   def app
-    @volume = Jukebox.volume
   end
 
   # Player page bootstrap
@@ -12,22 +11,30 @@ class JukeboxesController < ApplicationController
   end
 
   def show
-    render json: Jukebox
+    render json: current_jukebox
   end
 
   def skip
     # TODO: only move forward if sent song id = current id, prevent multiple players from skipping too fast
-    Jukebox.skip
+    current_jukebox.skip
     head :ok
   end
 
   def volume
-    Jukebox.volume = params[:value]
-    head :ok
+    current_jukebox.volume = params[:value]
+    if current_jukebox.save
+      head :ok
+    end
   end
 
   # Rdio JS API authentication helper shim
   def rdio_helper
     render layout: false
   end
+
+private
+  def current_jukebox
+    @current_jukebox ||= Jukebox.find(params[:id])
+  end
+
 end
