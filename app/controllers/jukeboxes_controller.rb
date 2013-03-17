@@ -4,6 +4,20 @@ class JukeboxesController < ApplicationController
   def app
   end
 
+  # TODO: Re-add protection
+  def index
+    jukeboxes = Jukebox.all
+    render json: jukeboxes
+  end
+
+  def create
+    jukebox = Jukebox.new
+    jukebox.update_attributes params[:jukebox]
+    if jukebox.save
+      head :created
+    end
+  end
+
   # Player page bootstrap
   def player
     @rdio_client_id = ENV['RDIO_CLIENT_ID']

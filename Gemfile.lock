@@ -377,7 +377,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (~> 0.7.0)
   animation (~> 0.1.alpha.3)
   bourbon
   capistrano

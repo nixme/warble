@@ -1,8 +1,2 @@
 header
-  #info
-    <%= image_tag "logo-small.png", class: 'logo-in-application' %>
-    #profile
-      %span#toolbar
-        a.link-floating#settings(href='#' title='Settings') Settings
-
 

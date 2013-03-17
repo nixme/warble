@@ -31,6 +31,8 @@ gem 'omniauth-facebook'
 gem 'omniauth-rdio'
 
 # Front-end asset helpers
+gem 'ember-rails'
+gem 'emblem-rails'
 gem 'sass'
 gem "haml", :github => "haml/haml", :branch => "stable"
 gem 'sass-rails',      github: 'rails/sass-rails'
@@ -50,8 +52,6 @@ end
 # Vendor JavaScript libraries
 gem 'jquery-rails'
 gem 'rails-behaviors'
-gem 'ember-rails'
-gem 'emblem-rails'
 
 
 # Push server gems. Not loaded by main Rails app.
