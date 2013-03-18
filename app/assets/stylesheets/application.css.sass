@@ -132,10 +132,12 @@ $z-header:             3
 
 html, body
   height: 100%
+  margin: 0
+  padding: 0
 
 body
   min-width: 1150px
-  background: image-url('/assets/wood.jpg') fixed
+  background: #fff // image-url('/assets/kindajean.png') fixed
   color: #555
   position: relative
   z-index: $z-body
@@ -174,6 +176,37 @@ button, .button
   position: relative
   line-height: 1
   cursor: pointer
+
+//
+// Regions
+//
+
+body > .ember-view
+  margin: 0
+  height: 100%
+  width: 100%
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+
+.header-main
+  width: 100%
+  height: 64px
+  padding: 12px
+  margin: 0
+  top: 0
+  background-color: #e69026
+
+  h1, ul, ul li
+    display: inline-block
+
+  a
+    color: white
+//
+//
+//
 
 .plastic-button
   +background(linear-gradient(rgba(255,255,255,.5), rgba(217,217,217,.5)))
@@ -218,8 +251,6 @@ p.tagline
 span.pictos
   font-family: 'Pictos'
   line-height: 0
-
-
 
 #loginboxwrapper
   position: fixed
@@ -549,45 +580,4 @@ ul#pandora_songs, ul#search_results
     .title
       margin-top: 10px
 
-
-#queue
-  background: #DDD
-  +box-shadow(rgba(0, 0, 0, 0.6) 0 0 10px)
-  z-index: $z-queue-background
-
-#songs
-  margin-top: 8px
-  width: $left-column-width
-  overflow-y: auto
-
-  li
-    +card-style
-    margin-bottom: 8px
-
-    img
-      +box-shadow(#fff 0px 1px 1px, #000 0px 1px 4px inset)
-      +border-radius(2px)
-
-    .submitter
-      float: right
-      margin: 17px 15px
-      font-size: 12px   // TODO: remove these text styles if we never put names
-      text-transform: uppercase
-      color: #444
-      +text-shadow(white 0 1px 1px)
-
-      img
-        height: 24px
-        width: 24px
-
-    img.cover
-      float: left
-      height: $small-artwork-size
-      width: $small-artwork-size
-      margin-right: $small-artwork-size / 2
-
-    .name
-      display: block
-      width: $left-column-width - $small-artwork-size - ($small-artwork-size / 2) - ($card-style-padding * 2)
-      margin-left: $small-artwork-size + ($small-artwork-size / 2)
 

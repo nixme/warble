@@ -46,7 +46,6 @@ class JukeboxesController < ApplicationController
     render layout: false
   end
 
-private
   def current_jukebox
     @current_jukebox ||= Jukebox.find(params[:id])
   end

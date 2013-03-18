@@ -401,6 +401,9 @@ DEPENDENCIES
   patron
   pg
   protected_attributes
+  pry
+  pry-debugger
+  pry-rails
   puma
   rails!
   rails-behaviors

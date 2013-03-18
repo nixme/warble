@@ -75,5 +75,8 @@ group :development do
 end
 
 group :development, :test do
+  gem 'pry'
+  gem 'pry-rails', :group => :development
+  gem 'pry-debugger'
   gem 'jazz_hands'                      # Pry-based Rails console + goodies
 end

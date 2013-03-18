@@ -24,6 +24,10 @@ class Song < ActiveRecord::Base
   after_commit ->(song) { IndexSongWorker.perform_async song.id }  # Index after any saves
 
 
+  def object
+    self
+  end
+
   def self.find_or_create_from_pandora_song(pandora_song, submitter)
     if song = where(source: 'pandora').where(external_id: pandora_song.id).first
       song.fsck! pandora_song.audio_url

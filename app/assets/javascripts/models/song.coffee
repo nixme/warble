@@ -2,5 +2,4 @@
 
 Warble.Song = DS.Model.extend
   title: attr 'string'
-  plays: hasMany 'App.Play'
-
+  plays: hasMany 'Warble.Play'

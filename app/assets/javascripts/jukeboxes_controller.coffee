@@ -1,0 +1,1 @@
+# Warble.JukeboxesController = Ember.

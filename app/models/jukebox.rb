@@ -2,6 +2,15 @@ class Jukebox < ActiveRecord::Base
   has_many :songs, through: :plays
 
 
+  def volume
+    $redis_pool.with { |redis| redis.get(scoped_key('volume')).to_i }
+  end
+
+  def volume=(value)
+    $redis_pool.with { |redis| redis.set(scoped_key('volume'), value.to_i) }
+    publish_change_event
+  end
+
   def current_play
     play_id = $redis_pool.with { |redis| redis.get(scoped_key('current_play')) }
     Play.find_by_id(play_id)

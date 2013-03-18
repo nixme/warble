@@ -1,10 +1,14 @@
 class PlaysController < ApplicationController
-  def index
-    render json: Jukebox.queue
-  end
+
+  # TODO: Don't think we need this.
+  #
+  # def index
+  #  render json: current_jukebox.queue
+  # end
 
   def create
     song_ids = params[:song_id]
+
 
     if song_ids
       song_ids.each do |song_id|
@@ -12,6 +16,7 @@ class PlaysController < ApplicationController
       end
       head :created
 
+    # TODO: Genericize partner params.
     elsif params[:youtube]
       song = Song.find_or_create_from_youtube_params(params[:youtube], current_user)
       Jukebox.enqueue(song, current_user)
@@ -21,4 +26,11 @@ class PlaysController < ApplicationController
       head :forbidden
     end
   end
+
+ private
+
+  def current_jukebox
+    @current_jukebox ||= Jukebox.find(params[:id])
+  end
+
 end

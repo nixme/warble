@@ -1,0 +1,5 @@
+h2 Jukeboxes
+ul = each jukebox in controller
+  li
+    / uh...
+    linkTo jukebox jukebox | #{jukebox.name}
