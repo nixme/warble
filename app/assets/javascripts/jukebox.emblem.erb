@@ -1,0 +1,24 @@
+.jukebox-cover
+  Warble.BackgroundView urlBinding=coverPhotoUrl isStretched=false isDarkened=true
+    h1= name
+    button.button-image{action "skip"}
+      img src="<%= asset_url "skip.png" %>"
+
+ul = each plays
+  li
+    / The queuer's photo, if it exists
+    / TODO: Figure out what to put here for auto-play
+    if user
+      .face
+        img src=user.photoUrl
+
+    div.song-cover style=song.backgroundStyle
+    = song.title
+    = song.artist
+
+    ul.facepile
+      each song.voters
+        li.face
+          img src=photoUrl
+      li
+        button{action "vote"} Vote

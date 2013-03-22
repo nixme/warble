@@ -69,7 +69,7 @@ gem 'execjs'                            # JS executor, used for scraping
 
 group :development do
   gem 'foreman'                         # process launcher (Profile executor)
-  gem 'puma'                            # Application server
+  gem 'puma', '~> 2.0.0.b7'             # Application server
   gem 'capistrano'                      # deployment helpers
   gem 'springboard'                     # Simple local ElasticSearch server
 end

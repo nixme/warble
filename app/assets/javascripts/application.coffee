@@ -5,5 +5,5 @@
 #= require_self
 #= require warble
 
-window.Warble = Ember.Application.create()
-
+window.Warble = Ember.Application.create
+  LOG_TRANSITIONS: true

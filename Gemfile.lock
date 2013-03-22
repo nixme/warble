@@ -179,7 +179,7 @@ GEM
     emblem-rails (0.1.0)
       barber-emblem (~> 0.1.1)
       ember-rails (~> 0.11.1)
-    emblem-source (0.1.14)
+    emblem-source (0.1.15)
     erubis (2.7.0)
     eventmachine (1.0.1)
     execjs (1.4.0)
@@ -309,8 +309,8 @@ GEM
     pry-stack_explorer (0.4.9)
       binding_of_caller (>= 0.7)
       pry (~> 0.9.11)
-    puma (1.6.3)
-      rack (~> 1.2)
+    puma (2.0.0.b7)
+      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-protection (1.4.0)
       rack
@@ -404,7 +404,7 @@ DEPENDENCIES
   pry
   pry-debugger
   pry-rails
-  puma
+  puma (~> 2.0.0.b7)
   rails!
   rails-behaviors
   rdio-ruby!

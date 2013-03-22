@@ -72,7 +72,7 @@ $z-header:             3
   border: 1px solid rgba(162,164,166,.5)
 
 @mixin avatar($size:48px, $over-dark:true)
-  +border-radius(2px)
+  +border-radius(4px)
   height: $size
   width: $size
   overflow: hidden
@@ -82,6 +82,36 @@ $z-header:             3
     +box-shadow(rgba(0,0,0,.66) 0 1px 0 inset, rgb(255,255,255) 0 1px 0)
   img
     height: 100%
+
+@mixin pseudoblock
+  pointer-events: none
+  position: absolute
+  content: ' '
+  top: 0
+  left: 0
+  display: block
+  width: 100%
+  height: 100%
+
+
+@mixin artwork($size:96px)
+  +border-radius(4px)
+  height: $size
+  width: $size
+  overflow: hidden
+  display: block
+  background-color: black
+  background-size: auto 100%
+  background-position: center center
+  background-repeat: no-repeat
+  position: relative
+
+  &:after
+    +border-radius(4px)
+    +pseudoblock
+    // +box-shadow(rgba(255,255,255,.18) 0 1px 0 inset)
+    background: image-url('/assets/album-gloss.png') no-repeat
+    background-size: cover
 
 
 
@@ -181,7 +211,12 @@ button, .button
 // Regions
 //
 
+.ember-view
+  position: relative
+  z-index: 1
+
 body > .ember-view
+  z-index: 0
   margin: 0
   height: 100%
   width: 100%
@@ -191,7 +226,37 @@ body > .ember-view
   bottom: 0
   right: 0
 
+.background-cover
+  z-index: 0
+  height: 100%
+  width: 100%
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+  background-position: bottom center
+  // TODO: Allow the user to specify placement of cover images.
+    background-position: bottom left
+
+  &.is-darkened
+    &:after
+      +pseudoblock
+      background-color: rgba(0,0,0,.33)
+
+  &.is-stretched
+    background-position: center center
+    background-repeat: no-repeat
+    background-attachment: fixed
+    -webkit-background-size: cover
+    -moz-background-size: cover
+    -o-background-size: cover
+    background-size: cover
+
+
 .header-main
+  z-index: 1
+  position: relative
   width: 100%
   height: 64px
   padding: 12px
@@ -204,6 +269,22 @@ body > .ember-view
 
   a
     color: white
+
+.jukebox
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  background: rgba(0,0,0,.66)
+  width: 450px
+  height: 100%
+
+
+.jukebox-cover
+  position: relative
+  width: 100%
+  height: 130px
+
 //
 //
 //
@@ -213,6 +294,12 @@ body > .ember-view
   +box-shadow(#fff 0 1px 0, #fff 0px 1px 1px inset)
   &:active
     @extend %button-active
+
+.button-image
+  background: none
+  border: none
+  padding: 0
+  margin: 8px
 
 .card-button
   +card-button
@@ -333,44 +420,15 @@ span.pictos
   float: left
   margin: 0 $application-margin
 
+.face
+  display: inline-block
+  +avatar(36px, false)
 
-.metadata
-  +card-style()
-  display: block
-  +border-radius(0)
+.facepile
+  .face
 
-  p
-    +text-shadow(#fff 0px 1px 1px)
-    +ellipsis
-    color: #545454
-
-  .title, .artist
-    font-weight: bold
-
-  .artist, .album
-    font-size: 12px
-
-  .title
-    font-size: 16px
-    padding-bottom: 5px   // so overflow from @ellipsis doesnt cut off descenders
-
-
-#playing
-  width: $left-column-width
-  position: relative
-  +box-shadow(rgba(0,0,0,.33) 0 1px 8px)
-  .voters
-    margin-top: 8px
-
-  .voter
-    +avatar(32px, false)
-
-  .submitter
-    +avatar(48px)
-    position: absolute
-    top: 8px
-    left: 8px
-    z-index: 100
+.song-cover
+  +artwork(96px)
 
 #cover
   +border-top-left-radius(4px)
@@ -383,16 +441,6 @@ span.pictos
   background-position: center center
   background-repeat: no-repeat
   position: relative
-  &:after
-    +border-top-left-radius()
-    +border-top-right-radius()
-    position: absolute
-    content: ' '
-    display: block
-    width: 100%
-    height: 100%
-    +box-shadow(rgba(255,255,255,.18) 0 1px 0 inset)
-    background: image-url('/assets/album-gloss.png') no-repeat
 
 #controls
   +card-style

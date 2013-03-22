@@ -9,3 +9,4 @@ DS.RESTAdapter.configure 'Warble.Jukebox',
 Warble.Jukebox = Model.extend
   name: attr 'string'
   plays: hasMany 'Warble.Play'
+  coverPhotoUrl: attr 'string'

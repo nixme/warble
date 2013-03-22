@@ -17,6 +17,8 @@ Warble::Application.routes.draw do
 
   ### ------------------------------ API ROUTES --------------------------------
 
+  resources :users # TODO: Jukebox-privacy
+
   resources :songs, only: :index
   resources :jukeboxes do    # TODO: change to resources for multiple jukeboxes
     get  'player', :on => :member

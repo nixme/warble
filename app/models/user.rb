@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :votes
   has_many :plays
 
+  def object
+    self
+  end
 
   def self.find_or_create_by_facebook_auth(access_token)
     if user = where(facebook_id: access_token['uid']).first
@@ -36,15 +39,6 @@ class User < ActiveRecord::Base
     self.pandora_username = nil
     self.pandora_password = nil
     save
-  end
-
-  def as_json(options = {})
-    {
-      first_name: first_name,
-      last_name:  last_name,
-      email:      email,
-      photo_url:  photo_url
-    }
   end
 
   def number_of_plays_today

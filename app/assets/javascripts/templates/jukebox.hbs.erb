@@ -1,0 +1,37 @@
+<div class="jukebox-cover">
+    {{#view Warble.BackgroundView urlBinding=coverPhotoUrl isStretched=false isDarkened=true}}
+    {{/view}}
+    {{#view}}
+      <h1>{{name}}
+      <button class="button-image" {{action "skip"}}>
+        <img src="<%= asset_url "skip.png" %>" />
+      </button>
+    {{/view}}
+</div>
+<ul>
+  {{#each plays}}
+    <li>
+      {{#if user}}
+        <div class="face">
+          <img {{bindAttr src=user.photoUrl}} />
+      {{/if}}
+
+      <div class="song-cover" {{bindAttr style=song.backgroundStyle}}>
+        {{song.title}}
+        {{song.artist}}
+      </div>
+
+      <ul class="facepile">
+        {{#each song.voters}}
+          <li class="face">
+            <img {{bindAttr src=photoUrl}} />
+          </li>
+        {{/each}}
+        <li>
+          <button {{action "vote"}}> Vote </button>
+        </li>
+      </ul>
+    </li>
+  {{/each}}
+</ul>
+

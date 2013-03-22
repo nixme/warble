@@ -1,1 +1,2 @@
-Warble.ApplicationController = Ember.Controller.extend {}
+Warble.ApplicationController = Ember.Controller.extend
+  needs: ['jukebox']

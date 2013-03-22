@@ -39,7 +39,7 @@ class Jukebox < ActiveRecord::Base
 
     $redis_pool.with { |redis| redis.zadd(scoped_key('queue'), priority, play.id) }
 
-    publish_change_event
+    # publish_change_event
 
     skip unless current_play
   end

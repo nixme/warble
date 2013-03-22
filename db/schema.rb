@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130315213743) do
+ActiveRecord::Schema.define(version: 20130320003653) do
 
   create_table "jukeboxes", force: true do |t|
     t.string   "name"
     t.integer  "play_id"
-    t.integer  "volume",     default: 50
+    t.integer  "volume",          default: 50
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "cover_photo_url"
   end
 
   add_index "jukeboxes", ["play_id"], name: "index_jukeboxes_on_play_id"

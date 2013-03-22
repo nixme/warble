@@ -6,5 +6,6 @@ class PlaySerializer < ActiveModel::Serializer
   # We don't want all the actual plays for this jukebox, 
   # just those currently in the queue.
   has_one :song
+  has_one :user
 
 end
